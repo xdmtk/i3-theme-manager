@@ -1,0 +1,43 @@
+# Zshrc
+
+# If not running interactively return
+[[ $- != *i* ]] && return
+
+export PATH=$HOME/bin:$PATH
+
+setopt AUTO_CD BANG_HIST EXTENDED_HISTORY HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_ALL_DUPS HIST_FIND_NO_DUPS HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE HIST_REDUCE_BLANKS HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY SHARE_HISTORY
+
+# Alias
+alias l='ls'
+alias la='ls -A'
+alias ll='ls -lA'
+alias ls='ls --color=auto'
+alias upd='sudo pacman -Syyu'
+alias pac='sudo pacman --color auto'
+alias merge='xrdb -merge ~/.Xresources'
+alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias mirrors='sudo reflector --score 100 --fastest 25 --sort rate --save /etc/pacman.d/mirrorlist --verbose'
+alias runp='python'
+alias run='./a.out'
+alias dmtkSSH='ssh -t u90570398@home699288385.1and1-data.host'
+alias rp='python'
+alias debug='gdb -tui a.out'
+alias ccc='clang -g'
+alias mkobjc='clang -g -c'
+alias mkobjcpp='clang++ -g -c'
+alias gf='git fetch; git pull origin master'
+alias school='cd ~/prog/school2018/'
+alias gopro='cd ~/prog/goprop2p/'
+alias cryptopals='cd ~/prog/cryptopals/'
+alias setgdbdashboard='cp ~/.debugScripts/gdbdashboard ~/.gdbinit'
+alias setdefaultgdb='rm ~/.gdbinit; touch ~/.gdbinit; echo fs cmd | cat >> ~/.gdbinit'
+alias setgdbasm='cp ~/.debugScripts/gdbasm ~/.gdbinit'
+alias colssh='ssh nmartinez@nmartinez.collide.com'
+setxkbmap -option caps:escape
+neofetch
+
+
+alias ec2ssh='ssh -i /home/dmtk/Documents/AWS/UbuntuFinal.pem ubuntu@ec2-54-242-130-77.compute-1.amazonaws.com'
