@@ -3,7 +3,7 @@ import random
 import os
 
 
-colorScheme = random.choice(os.listdir("/home/nmartinez/.vim/colors/"))
+colorScheme = random.choice(os.listdir("/home/xdmtk/.vim/colors/"))
 ar = colorScheme.split(".")
 colorSet = ar[0]
 
@@ -33,5 +33,5 @@ set autoindent
 colorscheme'''
 vimRc = vimRc + " " + colorSet + "\n"
 
-vimrcfile = open("/home/nmartinez/.vimrc", "w" )
+vimrcfile = open("/home/xdmtk/.vimrc", "w" )
 vimrcfile.write(vimRc)

@@ -36,8 +36,6 @@ alias setgdbdashboard='cp ~/.debugScripts/gdbdashboard ~/.gdbinit'
 alias setdefaultgdb='rm ~/.gdbinit; touch ~/.gdbinit; echo fs cmd | cat >> ~/.gdbinit'
 alias setgdbasm='cp ~/.debugScripts/gdbasm ~/.gdbinit'
 alias colssh='ssh nmartinez@nmartinez.collide.com'
-setxkbmap -option caps:escape
-neofetch
-
+alias gotoconfig='cd ~/.config/'
 
 alias ec2ssh='ssh -i /home/dmtk/Documents/AWS/UbuntuFinal.pem ubuntu@ec2-54-242-130-77.compute-1.amazonaws.com'
