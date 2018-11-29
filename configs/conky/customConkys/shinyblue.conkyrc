@@ -1,0 +1,55 @@
+double_buffer yes
+background yes
+own_window  yes
+own_window_transparent no
+own_window_type normal normal
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+own_window_argb_visual yes
+own_window_argb_value 170
+draw_borders no
+draw_graph_borders no
+border_outer_margin 0
+draw_shades no
+gap_y 0
+gap_x 0
+alignment top_middle 
+update_interval 0.5
+default_color D3DFD1
+color2 0088CC
+color3 929292
+color4 D8476A
+#default_shade_color 000000
+own_window_colour 000000
+use_xft yes
+xftfont PF Tempesta Seven Extended:pixelsize=8
+use_spacer none
+minimum_size 1366 50
+border_inner_margin 15
+uppercase yes
+draw_shades no
+draw_graph_borders no
+
+TEXT
+${color2}${color}${color2}${color}
+${voffset 18}Battery ${goto 70}${color2}${battery BAT1}$color
+uptime ${goto 70}${color2}$uptime_short$color
+${offset 162}${voffset -58}
+${offset 162}${voffset 18}cpu0 ${color2}${goto 210}${cpugraph cpu0 8,50}${color}
+${offset 162}cpu1 ${color2}${goto 210}${cpugraph cpu1 8,50}${color}
+${offset 310}${voffset -56}
+${offset 310}${voffset 18}Used${color2}[ ${color}$mem / $memmax ($memperc%)${color2} ]${color}
+${offset 310}$color2${membar 4,160} $color
+${offset 550}${voffset -56}
+${offset 550}${voffset 18}${goto 600}${color2}${fs_bar 10,120 /home/hokage}${color}
+${offset 550}${goto 600}${color2}${fs_bar 10,120 /home/hokage/hd}${color}
+${offset 530}${voffset -58}
+${offset 530}${voffset 18}Home${goto 620}${fs_used /home/hokage} / ${fs_size /home/hokage}    
+${offset 530}Disk${goto 620}${fs_used /home/hokage/hd} / ${fs_size /home/hokage/hd}
+${offset 740}${voffset -56}
+${offset 740}${voffset 16}Up$alignr${color2}${goto 800}${upspeedf wlp6s0}$color
+${offset 740}Down$alignr${color2}${goto 800}${downspeedf wlp6s0}$color
+${offset 860}${voffset -56}
+${offset 860}${voffset 12}$color2${mpd_bar 4,250}$color  ${voffset -1}$mpd_elapsed$color2/$color$mpd_length
+${offset 860}$mpd_artist ${color2}-${color} $mpd_title
+${offset 1160}${voffset -58}
+${offset 1260}${voffset 14}${font Anonymous Pro:size=25:style:bold}${time %I}${font :size=10}${goto 1320}${voffset -13}${color2}${time %M}${color} $alignr${voffset 14}${goto 1320}${font :size=10}${color1}${time %p}${color}

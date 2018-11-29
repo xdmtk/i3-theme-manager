@@ -1,0 +1,111 @@
+# Conky, a system monitor, based on torsmo
+#
+# Any original torsmo code is licensed under the BSD license
+#
+# All code written since the fork of torsmo is licensed under the GPL
+#
+# Please see COPYING for details
+#
+# Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+# Copyright (c) 2005-2010 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+# All rights reserved.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+alignment top_right
+background no
+border_width 0
+cpu_avg_samples 2
+default_color b3e0eC
+default_outline_color black
+default_shade_color black
+double_buffer yes
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades yes
+use_xft yes
+xftalpha 0.6
+xftfont Terminus:size=8
+gap_x 70
+gap_y 10
+minimum_size 180 100
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window yes
+own_window_class Conky
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_type normal
+on_bottom yes
+stippled_borders 0
+update_interval 5.0
+uppercase no
+use_spacer none
+show_graph_scale no
+show_graph_range no
+
+TEXT
+${font Terminus:style=bold:size=9}SYSTEM $hr
+${font}$sysname $kernel $alignr $machine
+Host: $alignr $nodename
+Uptime: $alignr $uptime
+Battery: $alignr ${battery_percent}%
+
+${font Terminus:style=bold:size=9}PROCESSORS $hr
+CPU1: ${cpu cpu1}% ${cpubar cpu1}
+CPU2: ${cpu cpu2}% ${cpubar cpu2}
+${font}CPU1: ${freq_g 1} GHz$alignr CPU2: ${freq_g 2}GHz
+
+${font Terminus:style=bold:size=9}MEMORY $hr
+${font}RAM ${alignc}     $mem/$memmax  $alignr $memperc%
+${membar}
+
+${font Terminus:style=bold:size=9}DISKS $hr
+${font}/ $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%
+${fs_bar /}
+DATA $alignc ${fs_used /mnt/data} / ${fs_size /mnt/data} $alignr ${fs_used_perc /mnt/data}%
+${fs_bar /mnt/data}
+WIN $alignc ${fs_used /mnt/win} / ${fs_size /mnt/win} $alignr ${fs_used_perc /mnt/win}%
+${fs_bar /mnt/win}
+
+${font Terminus:style=bold:size=9}TOP PROCESSES $hr
+${font}${top name 1}$alignr${top cpu 1}%
+${top name 2}$alignr${top cpu 2}%
+${top name 3}$alignr${top cpu 3}%
+${top name 4}$alignr${top cpu 4}%
+${top name 5}$alignr${top cpu 5}%
+---
+${font}${top_io name 1}$alignr${top_io io_perc 1}%
+${top_io name 2}$alignr${top_io io_perc 2}%
+${top_io name 3}$alignr${top_io io_perc 3}%
+---
+${font}${top_mem name 1}$alignr${top_mem mem 1}%
+${top_mem name 2}$alignr${top_mem mem 2}%
+${top_mem name 3}$alignr${top_mem mem 3}%
+${top_mem name 4}$alignr${top_mem mem 4}%
+${top_mem name 5}$alignr${top_mem mem 5}%
+
+${font Terminus:style=bold:size=9}NETWORK $hr
+${font}IP Address: $alignr ${addr wlan0}
+SSID: $alignr ${wireless_essid wlan0}
+Connection Quality: $alignr ${wireless_link_qual wlan0}%
+DLS: ${downspeed wlan0}/s $alignr ${totaldown wlan0}
+ULS: ${upspeed wlan0}/s $alignr ${totalup wlan0}
+
+${font Terminus:style=bold:size=9}TEMPERATURE $hr
+${font}${execi 10 sensors | sensors | grep -E 'FAN|CPU|GPU' | sed 's/\([^ ]*:\) *\([^(]*\).*/\1\t\2/'}
