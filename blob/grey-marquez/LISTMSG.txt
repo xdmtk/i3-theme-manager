@@ -1,0 +1,11 @@
+<b>Configuration name: grey-marquez</b>	
+Saved at Thu Sep 13 00:07:15 PDT 2018
+
+Openbox theme:  Mistral-Thin-Dark\n
+GTK theme:  Bunsen-He;  Icon Theme: Paper-Bunsen\n
+Background set with nitrogen:\n/home/xdmtk/Pictures/wallpapers/4k-marc-marquez-rain-honda-rc213v-night.jpg;\n
+Running Tint2s:\t\n\t.config/tint2/tint2rc-grey\n
+dmenu config:  /home/xdmtk/.config/dmenu/dmenu-bind.sh\n
+bl-exitrc config:  /home/xdmtk/.config/bl-exit/bl-exitrc\n
+X terminal config:  /home/xdmtk/.bashrc; /home/xdmtk/.Xresources (/home/xdmtk/.bashrc will not be auto-restored)\n
+Terminator config:  /home/xdmtk/.config/terminator/config\n
