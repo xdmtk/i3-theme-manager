@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Matcha-sea
+Comment=A dark modern design theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Matcha-sea
+MetacityTheme=Matcha-sea
+IconTheme=Matcha
+CursorTheme=Breeze_cursors
+ButtonLayout=menu:minimize,maximize,close

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Joker-dark
+Comment=A beautiful theme for Gnome Linux
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Joker-dark
+MetacityTheme=Joker-dark
+IconTheme=plane-dark
+CursorTheme=DMZ-Black
+ButtonLayout=menu:minimize,maximize,close

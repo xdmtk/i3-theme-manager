@@ -1,0 +1,59 @@
+# Gmnbox V2 | obliviousgmn.deviantart.com
+# Minimal, Clean & Simple Openbox Theme
+# Only Customizes Menus, OSD and Window Decorations!
+#
+# March 24, 2013 Updated. Fixed title labels and buttons.
+# No previous OBconf tweak required
+# Enjoy! Mod to your liking!!
+#
+# Palette..
+# BG:    #1C1C24
+# Bar:   #34344A
+# Text:  #9AC2C2
+
+# Menu 
+menu.items.active.bg: flat solid
+menu.items.active.bg.color: #34344A
+menu.items.active.text.color: #9AC2C2
+menu.items.bg: flat solid
+menu.items.bg.color: #1C1C24
+menu.items.disabled.text.color: #34344A
+menu.items.text.color: #9AC2C2
+menu.overlap.x: -4
+menu.separator.color: #34344A
+menu.title.bg: flat solid
+menu.title.*.color: #34344A
+*.border.color: black
+*.justify: left
+
+# OSD
+osd.bg: Solid Flat
+osd.bg.color: #1C1C24
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #34344A
+osd.label.bg: parentrelative
+osd.label.text.color: #9AC2C2
+osd.unhilight.bg: flat solid
+osd.unhilight.bg.color: #1C1C24
+
+# Padding
+padding.height: 2
+padding.width: 30
+window.client.padding.width: 0
+
+# Window
+border.width: 1
+window.handle.width: 0
+window.active.title.bg: flat
+window.*.title.bg: flat
+window.*.title.bg.color: #34344A
+window.*.title.separator.color: #1C1C24
+
+# Tweaks
+*.*.label.bg: parentrelative
+*.*.button.*.bg: parentrelative
+window.*.label.text.color: #34344A
+*.*.button.*.image.color: #34344A
+
+# Shadow, Small shadow to menu font
+menu.items.font: shadow=y:shadowoffset=1:shadowtint=25
