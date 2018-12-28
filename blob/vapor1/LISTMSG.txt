@@ -1,0 +1,12 @@
+<b>Configuration name: vapor1</b>	
+Saved at Thu Dec 27 23:17:59 PST 2018
+
+Openbox theme:  Mistral-Thin-Dark\n
+GTK theme:  Crocus-Remix;  Icon Theme: Paper-Bunsen\n
+Background set with nitrogen:\n/home/xdmtk/Pictures/wallpapers/gradient_light_dark_background_51893_2560x1600.jpg;\n/home/xdmtk/Pictures/wallpapers/1534085547229.jpg;\n
+Running Conkys:\t\n\tconky -c /home/xdmtk/.config/conky/sensors.conkyrc\n
+Running Tint2s:\t\n\t/home/xdmtk/.config/tint2/elegantblack.tint2rc\n
+dmenu config:  /home/xdmtk/.config/dmenu/dmenu-bind.sh\n
+bl-exitrc config:  /home/xdmtk/.config/bl-exit\n
+X terminal config:  /home/xdmtk/.bashrc; /home/xdmtk/.Xresources (/home/xdmtk/.bashrc will not be auto-restored)\n
+Terminator config:  /home/xdmtk/.config/terminator/config\n
