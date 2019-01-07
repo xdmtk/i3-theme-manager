@@ -1,0 +1,3 @@
+wget -O grv https://github.com/rgburke/grv/releases/download/v0.3.0/grv_v0.3.0_linux64
+chmod +x ./grv
+./grv -repoFilePath ~/prog/grv-rep
