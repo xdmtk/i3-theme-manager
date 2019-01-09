@@ -128,7 +128,14 @@ usage: blob-packager.sh [ package/load ]
 	-l : Loads a packaged theme
 "
 elif [ "$switch" = "-p" ] ; then
+	curdir=$(pwd)
 	package
+	cd ~
+	tar -czf theme_package.tar tmp_dir/
+	mv theme_package.tar ${curdir} 
+	rm -rf tmp_dir
+
+
 elif [ "$switch" = "-l" ] ; then
 	load
 fi
