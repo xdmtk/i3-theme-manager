@@ -45,6 +45,7 @@ def get_wallpapers():
 					subprocess.call(["cp", wp[:-1], "wallpapers/."])
 	quit()
 
+
 def gtk_get_theme():
 	with open("settings.ini", "r") as f:
 		for line in f:

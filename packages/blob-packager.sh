@@ -2,7 +2,6 @@
 package() {
 
 	getters="$(pwd)/getters.py"
-	echo "1"
 	# Set base location
 	cd ~
 	if [ ! -e "~/tmp_dir" ] ; then
@@ -15,7 +14,6 @@ package() {
 	fi
 	
 	
-	echo "2"
 	# Nitrogen
 	cp -R ~/.config/nitrogen . 
 	cd nitrogen
@@ -27,7 +25,6 @@ package() {
 	cd $base_loc
 	cp -R ~/.config/terminator .
 
-	echo "3"
 	
 	# Openbox
 	cp -R ~/.config/openbox .
@@ -36,7 +33,6 @@ package() {
 	ob_theme=$(python $getters -gob)
 	extractThemes "openbox" $ob_theme "themes"
 
-	echo "4"
 
 
 
@@ -44,21 +40,47 @@ package() {
 	cd $base_loc
 	cp -R ~/.config/gtk-3.0 .
 	cd gtk-3.0
-	echo "5"
 	return_loc=$(pwd)
 
 
 	gtk_theme=$(python $getters -gtkth)
 	extractThemes "gtk-3.0" $gtk_theme "themes" $return_loc
-	echo "6"
 
 	gtk_icons=$(python $getters -gtkic)
 	extractThemes "gtk-3.0" $gtk_icons "icons" $return_loc
-	echo "7"
 
 	gtk_cursor=$(python $getters -gtkcur)
 	extractThemes "gtk-3.0" $gtk_cursor "icons" $return_loc
-	echo "8"
+
+
+	# Tint2
+	cd $base_loc
+	echo "0"
+	if [ -e "/home/${USER}/.config/tint2" ] ; then
+		echo "1"
+		mkdir tint2
+		cd tint2
+		cp ~/.config/tint2/* .
+		if [ -e "/usr/share/tint2" ] ; then
+			echo "2"
+			mkdir share
+			cd share
+			cp /usr/share/tint2/* .
+		fi
+	fi
+
+
+	echo "-1"
+	# Conky
+	cd $base_loc
+	if [ -e "/home/${USER}/.config/conky" ] ; then
+		echo "3"
+		cp -R ~/.config/conky .
+	fi
+
+
+
+		
 
 
 }
@@ -106,7 +128,6 @@ switch=$1
 progs=(
 	"/usr/bin/terminator"
 	"/usr/bin/nitrogen"
-	"/usr/bin/gtk-launch"
 	"/usr/bin/openbox"
 	"/usr/bin/tint2"
 	"/usr/bin/conky"
