@@ -133,6 +133,7 @@ function load() {
 
 	# Unload conky
 	cp -R conky ~/.config/
+	bl-conky-session
 
 	# Get GTK
 	cd gtk-3.0
