@@ -67,12 +67,12 @@ package() {
 		echo "1"
 		mkdir tint2
 		cd tint2
-		cp ~/.config/tint2/* .
+		cp -R ~/.config/tint2/* .
 		if [ -e "/usr/share/tint2" ] ; then
 			echo "2"
 			mkdir share
 			cd share
-			cp /usr/share/tint2/* .
+			cp -R /usr/share/tint2/* .
 		fi
 	fi
 
