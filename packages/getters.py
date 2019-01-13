@@ -4,7 +4,9 @@ import sys
 import pdb
 def main():
 	if (sys.argv[1] == "-gob"):
-		get_openbox_theme()
+		get_openbox_theme("ob")
+	elif (sys.argv[1] == "-gobf"):
+		get_openbox_theme("fonts")
 	elif (sys.argv[1] == "-gwp"):
 		get_wallpapers()
 	elif (sys.argv[1] == "-gtkth"):
@@ -13,26 +15,49 @@ def main():
 		gtk_get_icons()
 	elif (sys.argv[1] == "-gtkcur"):
 		gtk_get_cursor()
+	elif (sys.argv[1] == "-termfont"):
+		get_terminator_fonts()
 	
 
-def get_openbox_theme():
+def get_openbox_theme(arg):
 	ll = []
-	set = False
+	set_theme = False
 	if os.path.isfile("rc.xml"):
 		with open("rc.xml", "r") as f:
 			for line in f:
 				if line.find("<theme>") != -1:
-					set = True
+					set_theme = True
 				elif line.find("</theme>") != -1:
-					set = False
-				if set is True:
+					set_theme = False
+				if set_theme is True:
 					ll.append(line)
 		theme = None
+		x = 0
 		for line in ll:
+			x += 1
 			if line.find("<name>") != -1:
 				theme = line[line.find("<name>")+6:line.find("</name")]
 				break
-		print(theme)
+		set_font = False
+		font_list = []
+		y = 0
+		for line in ll:
+			if y < x:
+				y += 1
+				continue
+			if line.find("<name>") != -1:
+				font_list.append(line[line.find("<name>")+6:line.find("</name")])
+		
+		
+
+		if arg == "ob":	
+			print(theme)
+		elif arg == "fonts":
+			subprocess.call(["touch", "font_list.txt"])
+			with open("font_list.txt", "w") as fl:
+				for ft in font_list:
+					fl.write(ft + "\n")
+
 	quit()
 
 		
@@ -74,6 +99,18 @@ def gtk_get_cursor():
 				break
 	quit()
 
+def get_terminator_fonts():
+	font_loc = sys.argv[2]
+	font_name = []
+	with open(font_loc, "r") as f:
+		for line in f:
+			if line.find("font") != -1 and line.find("_font") == -1:
+				font_name.append(line[line.find("font")+5:])
+				
+	for d in font_name:
+		print(d)
+
+				
 
 
 
