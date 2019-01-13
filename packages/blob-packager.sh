@@ -82,8 +82,10 @@ package() {
 	cd $base_loc
 	mkdir fonts
 	cd fonts
+	cp ../openbox/rc.xml .
 	echo "foo"
 	python $getters -gobf
+	rm rc.xml
 
 
 }

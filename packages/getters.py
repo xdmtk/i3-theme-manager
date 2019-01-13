@@ -30,14 +30,19 @@ def get_openbox_theme(arg):
 				if set_theme is True:
 					ll.append(line)
 		theme = None
+		x = 0
 		for line in ll:
+			x += 1
 			if line.find("<name>") != -1:
 				theme = line[line.find("<name>")+6:line.find("</name")]
 				break
-			ll.remove(line)
 		set_font = False
 		font_list = []
+		y = 0
 		for line in ll:
+			if y < x:
+				y += 1
+				continue
 			if line.find("<name>") != -1:
 				font_list.append(line[line.find("<name>")+6:line.find("</name")])
 		
@@ -47,7 +52,7 @@ def get_openbox_theme(arg):
 			print(theme)
 		elif arg == "fonts":
 			subprocess.call(["touch", "font_list.txt"])
-			with open("font_list", "w") as fl:
+			with open("font_list.txt", "w") as fl:
 				for ft in font_list:
 					fl.write(ft + "\n")
 
