@@ -15,6 +15,8 @@ def main():
 		gtk_get_icons()
 	elif (sys.argv[1] == "-gtkcur"):
 		gtk_get_cursor()
+	elif (sys.argv[1] == "-termfont"):
+		get_terminator_fonts()
 	
 
 def get_openbox_theme(arg):
@@ -97,6 +99,18 @@ def gtk_get_cursor():
 				break
 	quit()
 
+def get_terminator_fonts():
+	font_loc = sys.argv[2]
+	font_name = []
+	with open(font_loc, "r") as f:
+		for line in f:
+			if line.find("font") != -1 and line.find("_font") == -1:
+				font_name.append(line[line.find("font")+5:])
+				
+	for d in font_name:
+		print(d)
+
+				
 
 
 

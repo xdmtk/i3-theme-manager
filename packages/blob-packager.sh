@@ -185,6 +185,7 @@ function load() {
 	# Tint2 
 	cp -R tint2 ~/.config
 
+	python $getters -termfont >> fonts/font_list.txt
 	cat fonts/font_list.txt
 
 }
