@@ -123,16 +123,12 @@ function extractThemes() {
 
 
 function load() {
-	package_loc=$2
-	if [ ! -e $package_loc ] ; then
+	if [ "$1" = "" ] ; then
+		echo $1
 		echo "no package specified.. exiting"
 		exit
 	fi
-	if [ $UID -ne 0 ] ; then
-		echo "please run as root"
-		exit
-	fi
-	tar xf $package_loc
+	tar -xvzf $1
 	cd tmp_dir
 
 	# Unload conky
@@ -140,26 +136,56 @@ function load() {
 
 	# Get GTK
 	cd gtk-3.0
-	obthemeload=$(python $getters -gtkth)
-	obiconsload=$(python $getters -gtkic)
-	obcursload=$(python $getters -gtkcur)
+	gtkthemeload=$(python $getters -gtkth)
+	gtkiconsload=$(python $getters -gtkic)
+	gtkcursload=$(python $getters -gtkcur)
 	
-	if [ ! -d "~/.themes" ] ; then
+	if [ ! -d ~/.themes ] ; then
 		mkdir ~/.themes
 	fi
 
 	# Unload GTK
-	cp -R $obthemeload ~/.themes
-	cp -R $obiconsload /usr/share/icons
-	cp -R $obcursload /usr/share/icons
+	mv $gtkthemeload ~/.themes
+	mv -R $gtkiconsload ~/.themes
+	mv -R $gtkcursload ~/.themes
+	cd ..
+
+	echo "GTK Theme: " $gtkthemeload
+	echo "GTK Icons: " $gtkiconsload
+	echo "GTK Cursors: " $gtkcursload
+
+	cp -R gtk-3.0 ~/.config
+
+	if [ ! -d ~/Pictures/wallpapers ] ; then
+		mkdir ~/Pictures/wallpapers
+	fi
+
+	# Wallpapers
+	cp nitrogen/wallpapers/* ~/Pictures/wallpapers
+
+	# Unload nitrogen config
+	rm -rf nitrogen/wallpapers
+	cp -R nitrogen ~/.config
+	nitrogen --restore
+
 
 	
+	# Openbox
+	obthemeload=$(python $getters -gob)
+	echo "Openbox Theme: " $obthemeload
+	
+	cp -R "openbox/$obthemeload" ~/.themes
+	cp -R openbox ~/.config
+	openbox --reconfigure
 
 
+	# Terminator
+	cp -R terminator ~/.config
+	
+	# Tint2 
+	cp -R tint2 ~/.config
 
-
-
-
+	cat fonts/font_list.txt
 
 }
 
@@ -203,6 +229,6 @@ elif [ "$switch" = "-p" ] ; then
 
 
 elif [ "$switch" = "-l" ] ; then
-	load
+	load $2
 fi
 
