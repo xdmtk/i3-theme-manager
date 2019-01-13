@@ -1,7 +1,7 @@
 #!/bin/bash
+getters="$(pwd)/getters.py"
 package() {
 
-	getters="$(pwd)/getters.py"
 	# Set base location
 	cd ~
 	if [ ! -e "~/tmp_dir" ] ; then
@@ -122,6 +122,46 @@ function extractThemes() {
 }
 
 
+function load() {
+	package_loc=$2
+	if [ ! -e $package_loc ] ; then
+		echo "no package specified.. exiting"
+		exit
+	fi
+	if [ $UID -ne 0 ] ; then
+		echo "please run as root"
+		exit
+	fi
+	tar xf $package_loc
+	cd tmp_dir
+
+	# Unload conky
+	cp -R conky ~/.config/
+
+	# Get GTK
+	cd gtk-3.0
+	obthemeload=$(python $getters -gtkth)
+	obiconsload=$(python $getters -gtkic)
+	obcursload=$(python $getters -gtkcur)
+	
+	if [ ! -d "~/.themes" ] ; then
+		mkdir ~/.themes
+	fi
+
+	# Unload GTK
+	cp -R $obthemeload ~/.themes
+	cp -R $obiconsload /usr/share/icons
+	cp -R $obcursload /usr/share/icons
+
+	
+
+
+
+
+
+
+
+}
 
 
 
@@ -149,7 +189,7 @@ if [ $needs_req ] ; then
 fi
 if  [ "$switch" = "" ] ; then
 	echo "
-usage: blob-packager.sh [ package/load ] 
+usage: blob-packager.sh [ package/load ] <package file>
 	-p : Packages current theme 
 	-l : Loads a packaged theme
 "
