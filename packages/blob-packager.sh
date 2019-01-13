@@ -169,7 +169,7 @@ function load() {
 	nitrogen --restore
 
 
-	
+	cp openbox/rc.xml .	
 	# Openbox
 	obthemeload=$(python $getters -gob)
 	echo "Openbox Theme: " $obthemeload
@@ -184,8 +184,9 @@ function load() {
 	
 	# Tint2 
 	cp -R tint2 ~/.config
+	bl-tint2restart
 
-	python $getters -termfont >> fonts/font_list.txt
+	python $getters -termfont terminator/config >> fonts/font_list.txt
 	cat fonts/font_list.txt
 
 }
