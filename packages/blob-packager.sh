@@ -12,8 +12,15 @@ package() {
 		echo "what is in tmp_dir?"
 		exit
 	fi
-	
-	
+
+	# Bash config
+	mkdir bash
+	cp ~/.bashrc bash/
+	cp ~/.bash_aliases bash/
+
+	# Vim config
+	cp -R ~/.vim .
+		
 	# Nitrogen
 	cp -R ~/.config/nitrogen . 
 	cd nitrogen
@@ -130,6 +137,11 @@ function load() {
 	fi
 	tar -xvzf $1
 	cd tmp_dir
+
+	# Unload bash and vim
+	cp -R .vim ~/
+	cp bash/.bashrc
+	cp bash/.bash_aliases
 
 	# Unload conky
 	cp -R conky ~/.config/
