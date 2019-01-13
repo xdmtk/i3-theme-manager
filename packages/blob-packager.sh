@@ -78,9 +78,12 @@ package() {
 		cp -R ~/.config/conky .
 	fi
 
-
-
-		
+	# Fonts
+	cd $base_loc
+	mkdir fonts
+	cd fonts
+	echo "foo"
+	python $getters -gobf
 
 
 }
