@@ -15,7 +15,7 @@ package() {
 
 	# Bash config
 	mkdir bash
-	cp ~/.bashrc 
+	cp ~/.bashrc bash/
 	cp ~/.bash_aliases bash/
 
 	# Vim config
