@@ -15,7 +15,7 @@ package() {
 
 	# Bash config
 	mkdir bash
-	cp ~/.bashrc bash/
+	cp ~/.bashrc 
 	cp ~/.bash_aliases bash/
 
 	# Vim config
@@ -140,8 +140,14 @@ function load() {
 
 	# Unload bash and vim
 	cp -R .vim ~/
-	cp bash/.bashrc
-	cp bash/.bash_aliases
+	if [ ! -d "~/.bash_files" ] ; then
+		mkdir ~/.bash_files
+	fi
+	mv ~/.bashrc ~/.bash_files/bashrc_$(date +%s)
+	mv ~/.bash_aliases ~/.bash_files/bashalias_$(date +%s)
+	
+	cp bash/.bashrc ~/
+	cp bash/.bash_aliases ~/
 
 	# Unload conky
 	cp -R conky ~/.config/
