@@ -142,7 +142,7 @@ function load() {
 	tar -xvzf $1
 	let l=$(expr length $1)
 	let len=l-4
-	mv $1 ${1:0:$len}
+	mv tmp_dir ${1:0:$len}
 	cd ${1:0:$len}
 
 
@@ -212,6 +212,7 @@ function load() {
 	# Tint2 
 	cp -R tint2 ~/.config
 	bl-tint2restart
+	bl-tint2-session
 
 	python $getters -termfont terminator/config >> fonts/font_list.txt
 	cat fonts/font_list.txt
