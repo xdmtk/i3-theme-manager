@@ -94,6 +94,10 @@ package() {
 	python $getters -gobf
 	rm rc.xml
 
+	cd $base_loc
+	toggle_desktop_key="super+d"
+	# Take screenshot
+	mv $(xfce4-screenshooter -fo ls) $base_loc
 
 }
 
@@ -136,7 +140,11 @@ function load() {
 		exit
 	fi
 	tar -xvzf $1
-	cd tmp_dir
+	let l=$(expr length $1)
+	let len=l-4
+	mv $1 ${1:0:$len}
+	cd ${1:0:$len}
+
 
 	# Unload bash and vim
 	cp -R .vim ~/
