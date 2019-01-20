@@ -7,13 +7,51 @@ MODE_LOAD = False
 MODE_CONFIG = False
 ARG_FAIL = -1
 
+I3_VIS_CONFIG = None
+BASH_PROMPT_CONFIG = None
+
+
 def main():
     if (parse_args() == ARG_FAIL):
         show_usage()
         quit()
     
     if MODE_PACKAGE is True:
-        package
+        package()
+    elif MODE_CONFIG is True:
+        (I3_VIS_CONFIG, BASH_PROMPT_CONFIG) = config()
+    elif MODE_LOAD is True:
+        load()
+
+
+def config():
+
+    i3_config = None ; bash_config = None
+    # Need to verify seperate files for i3 theme/visual configs
+    while True:
+        subprocess.call(['clear'])a
+        print("Enter full path for i3 visual config:\n>>>", end="")
+        i3_config = input()
+        if not os.path.isfile(i3_config):
+            print("Invalid path")
+        else:
+            break
+
+    # Need to verify seperate files for bash prompt/themes
+    while True:
+        subprocess.call(['clear'])a
+        print("Enter full path for bash prompt config:\n>>>", end="")
+        bash_config = input()
+        if not os.path.isfile(i3_config):
+            print("Invalid path")
+        else:
+            break
+
+    return (i3_config, bash_config)
+
+
+
+
 
 
 
@@ -31,7 +69,7 @@ def parse_args():
         return
 
 
-
+    # Parse args ( only  one ) 
     if sys.argv > 1:
         for arg in sys.argv:
             if arg.find("p") != -1:
@@ -45,8 +83,9 @@ def parse_args():
                 return
             else
                 return ARG_FAIL 
-
+config
     return ARG_FAIL
+
 
 def show_usage():
     usage = '''
