@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/home/xdmtk/.local/share/themes/Mistral-Thin-Dark'
-let g:netrw_dirhist_2='/home/xdmtk/.local/share/themes'
-let g:netrw_dirhist_3='/home/xdmtk/.config/terminator'
-let g:netrw_dirhist_4='/home/xdmtk/.config'
-let g:netrw_dirhist_5='/home/xdmtk/.ncmpcpp'
-let g:netrw_dirhist_6='/home/xdmtk/.config/openbox'
