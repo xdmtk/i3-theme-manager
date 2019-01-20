@@ -1,0 +1,50 @@
+o 	C-A-Left        	GoToDesktop
+o 	C-A-Right       	GoToDesktop
+o 	C-A-Up          	GoToDesktop
+o 	C-A-Down        	GoToDesktop
+o 	S-A-Left        	SendToDesktop
+o 	S-A-Right       	SendToDesktop
+o 	S-A-Up          	SendToDesktop
+o 	S-A-Down        	SendToDesktop
+o 	W-F1            	GoToDesktop
+o 	W-F2            	GoToDesktop
+o 	W-F3            	GoToDesktop
+o 	W-F4            	GoToDesktop
+o 	W-d             	ToggleShowDesktop
+o 	A-F4            	Close
+o 	A-F5            	Iconify
+o 	A-F6            	ToggleMaximize
+o 	A-Escape        	Lower, FocusToBottom, Unfocus
+o 	A-space         	client-menu
+x 	Print           	xfce4-screenshooter
+x 	A-Print         	scrot '%Y-%m-%d--%s_$wx$h_scrot.png' -e 'mv $f ~/Pictures/screenshots/ ; bl-image-viewer ~/Pictures/screenshots/$f'
+o 	A-Tab           	NextWindow
+o 	A-S-Tab         	PreviousWindow
+o 	C-A-Tab         	NextWindow
+o 	W-S-Right       	DirectionalCycleWindows
+o 	W-S-Left        	DirectionalCycleWindows
+o 	W-S-Up          	DirectionalCycleWindows
+o 	W-S-Down        	DirectionalCycleWindows
+x 	A-F2            	gmrun
+x 	A-F3            	~/.config/dmenu/dmenu-bind.sh
+x 	W-f             	bl-file-manager
+x 	W-t             	x-terminal-emulator
+x 	W-w             	x-www-browser
+x 	W-l             	bl-lock
+x 	W-e             	bl-text-editor
+x 	W-m             	bl-media-player
+x 	W-h             	x-terminal-emulator -T 'htop task manager' -e htop
+x 	W-v             	pavucontrol
+x 	W-x             	bl-exit
+x 	W-Escape        	xkill
+o 	W-Tab           	client-list-combined-menu
+o 	W-space         	root-menu
+o 	A-C-q           	root-menu
+o 	W-Right         	GrowToEdgeEast
+o 	W-Left          	GrowToEdgeWest
+o 	W-Down          	GrowToEdgeSouth
+o 	W-Up            	GrowToEdgeNorth
+o 	W-A-Left        	UnmaximizeFull, MaximizeVert, MoveResizeTo
+o 	W-A-Right       	UnmaximizeFull, MaximizeVert, MoveResizeTo
+o 	A-r             	Resize
+o 	A-m             	Move

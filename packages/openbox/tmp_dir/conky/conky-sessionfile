@@ -1,0 +1,1 @@
+conky -c /home/xdmtk/.config/conky/sensors.conkyrc & sleep 1s

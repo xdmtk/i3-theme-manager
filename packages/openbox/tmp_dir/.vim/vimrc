@@ -1,0 +1,24 @@
+
+
+
+
+set number
+set tabstop=4
+set shiftwidth=4
+set foldmethod=indent
+syntax on
+
+set foldcolumn=4
+set mouse=v
+set foldlevel=3
+
+set showmatch
+set ignorecase
+set autowrite
+set smartindent
+set smarttab
+set autoindent
+
+command! W write
+
+colorscheme behelit
