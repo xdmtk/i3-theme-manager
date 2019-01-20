@@ -7,6 +7,7 @@ MODE_LOAD = False
 MODE_CONFIG = False
 ARG_FAIL = -1
 
+USER_HOME = None
 I3_VIS_CONFIG = None
 BASH_PROMPT_CONFIG = None
 
@@ -19,7 +20,7 @@ def main():
     if MODE_PACKAGE is True:
         package()
     elif MODE_CONFIG is True:
-        (I3_VIS_CONFIG, BASH_PROMPT_CONFIG) = config()
+        config()
     elif MODE_LOAD is True:
         load()
 
@@ -47,18 +48,14 @@ def config():
         else:
             break
 
-    return (i3_config, bash_config)
-
-
-
-
-
-
-
+    subprocess.call(['touch', USER_HOME + '.config/i3packager/i3packager_rc'])
+    with open(USER_HOME + '.config/i3packager/i3packager_rc', "w" ) as f:
+        f.write("i3=" + i3_config + "\n")
+        f.write("bash=" + i3_config + "\n")
 
 
 def parse_args():
-    global MODE_PACKAGE ; global MODE_LOAD
+    global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
 
     # Check for config settings
     USER_HOME = 'home/' + os.getenv('USER') + '/'
