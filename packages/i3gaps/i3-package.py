@@ -14,8 +14,23 @@ USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
 
-def main():
+DEBUG = 1
 
+config_arg_list = {
+        'bar_prog' : '',
+        'terminal_prog' : '',
+        'i3_visual_config' : '',
+        'bash_visual_config' : '',
+        'nitrogen_dir' : '',
+        'tint2_dir' : '',
+        'polybar_dir' : '',
+        'gtk_dir' : '',
+        'themes_dir' : ''
+}
+
+
+def main():
+    check_config()
     if (parse_args() == ARG_FAIL):
         show_usage()
         quit()
@@ -29,14 +44,18 @@ def main():
 
 
 def parse_config():
-
+    with open(I3P_CONF, "r") as config:
+        for line in config:
+            config_arg_list[line.split('=')[0]] = line.split('=')[1]
+    if DEBUG:
+        print(config_arg_list)
 
 
 def parse_args():
     global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
     
     # Parse args ( only  one ) 
-    if sys.argv > 1:
+    if len(sys.argv) > 1:
         for arg in sys.argv:
             if arg.find("p") != -1:
                 MODE_PACKAGE = True
@@ -63,17 +82,6 @@ def show_usage():
         
 
 def write_blank_config():
-    config_arg_list = [
-            'bar_prog',
-            'terminal_prog',
-            'i3_visual_config',
-            'bash_visual_config',
-            'nitrogen_dir',
-            'tint2_dir',
-            'polybar_dir',
-            'gtk_dir',
-            'themes_dir'
-    ]
     with open(I3P_CONF , 'w') as config:
         for arg in config_arg_list:
             config.write(arg + '=' + '\n')
@@ -87,17 +95,21 @@ def check_config():
     I3P_DIR = USER_HOME + '.config/i3packager'
     I3P_CONF = I3P_DIR + '/config'
 
-    if not os.path.isdir(I3P_DIR)
+    if not os.path.isdir(I3P_DIR):
         os.mkdir(I3P_DIR)
         print('[+] Configuration file not found... creating blank configuration file ' 
                 + 'at ~/.config/i3packager')
-
+        
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
         quit()
 
+def package():
+    quit()
 
     
+def load():
+    quit()
 
 
 
