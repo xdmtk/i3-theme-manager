@@ -44,11 +44,20 @@ def main():
 
 
 def parse_config():
+    FAIL_FLAG = False
     with open(I3P_CONF, "r") as config:
         for line in config:
-            config_arg_list[line.split('=')[0]] = line.split('=')[1]
+            if len(line.split('=')[1]) != 0:
+                config_arg_list[line.split('=')[0]] = line.split('=')[1]
+            else:
+                print('Missing parameter for ' +  line.split('=')[1])
+                FAIL_FLAG = True
+    
+    
     if DEBUG:
         print(config_arg_list)
+    if FAIL_FLAG is True:
+        quit()
 
 
 def parse_args():
@@ -100,12 +109,13 @@ def check_config():
         print('[+] Configuration file not found... creating blank configuration file ' 
                 + 'at ~/.config/i3packager')
         
+    if not os.path.isfile(I3P_CONF):
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
-        quit()
+    quit()
 
 def package():
-    quit()
+
 
     
 def load():
