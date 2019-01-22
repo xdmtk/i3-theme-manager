@@ -151,10 +151,14 @@ def package():
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
 
-    os.mkdir(config_arg_list['terminal_prog'])
     # Package terminator
-    subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
-    print("[+] Copying: " + config_arg_list['terminal_config_file'])
+    package_terminator()
+
+
+    # Package I3 
+    os.mkdir('i3')
+    subprocess.call(['cp', config_arg_list['i3_visual_file'], 'i3/'])
+    
 
 
 
@@ -182,7 +186,31 @@ def package_nitrogen():
             print("[+] Copying:  " + wallpaper_path)
             subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers')
 
+   
+
+# Terminator package function to get config + compile font list
+def package_terminator():
+
+    font_list = [] 
+
+    term_dir = config_arg_list['terminal_prog']
+    os.mkdir(term_dir)
+
+    subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
+    print("[+] Copying: " + config_arg_list['terminal_config_file'])
     
+    with open(term_dir + '/' + config_arg_list['terminal_config_file'], 'r') as config:
+        for line in config:
+            if line.find('font'):
+                font_list.append(line.split('=')[1])
+
+    
+    subprocess.call(['touch', term_dir + '/font_list'])
+    with open(term_dir + '/font_list', 'w') as fl:
+        for font in font_list:
+            fl.write(font + '\n')
+
+        
 
 
 
