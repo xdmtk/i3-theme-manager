@@ -186,29 +186,34 @@ def package_gtk():
                 gtk_icons = line.split("=")[1]
             elif line.find("gtk-cursor-theme-name") != -1:
                 gtk_cursors = line.split("=")[1]
-    
+   
+    get_gtk_assets(gtk_theme)
+    get_gtk_assets(gtk_icons)
+    get_gtk_assets(gtk_cursors)
 
+
+def get_gtk_assets(gtk_asset):
     # Attempt to locate themes referenced in settings.ini
     themes_dir = config_arg_list['themes_dir']
     sys_themes_dir = '/usr/share/themes'
     dir_loc = None
 
-    if os.path.isdir(themes_dir + '/' + gtk_theme):
-        dir_loc = themes_dir
-    elif os.path.isdir(sys_themes_dir + '/' + gtk_theme):
-        dir_loc = sys_themes_dir
+    if os.path.isdir(themes_dir + '/' + gtk_asset):
+        dir_loc = themes_dir + '/'+ gtk_asset
+    elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+        dir_loc = sys_themes_dir + '/' + gtk_asset 
     else:
         # If can't find theme directory, prompt user until valid location is found
         while True:
             print("[-] Couldn't locate directory for GKT theme: " + 
-                    gtk_theme + ". Please enter location\n>>> ", end="")
+                    gtk_asset + ". Please enter location\n>>> ", end="")
             dir_loc = input()a
             if os.path.isdir(dir_loc):
                 break
-
-
-
-
+    
+    subprocess.call(['cp', '-R', , dir_loc, 'gtk/themes'])
+    print("[+] Recursively copying " + dir_loc)    
+    
 
 
 
