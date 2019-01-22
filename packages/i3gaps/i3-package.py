@@ -159,6 +159,52 @@ def package():
     os.mkdir('i3')
     subprocess.call(['cp', config_arg_list['i3_visual_file'], 'i3/'])
     
+    # Package GTK 
+    package_gtk():
+
+
+
+
+def package_gtk():
+   
+    os.mkdir('gtk')
+    os.mkdir('gtk/themes')
+
+    gtk_dir = config_arg_list['gtk_dir']
+    gtk_settings_file = gtk_dir + '/settings.ini'
+    gtk_theme = None ; gtk_icons = None ; gtk_cursor = None
+    
+    subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
+    subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
+
+    # Get theme info from settings file
+    with open(gtk_settings_file, 'r') as config:
+        for line in f:
+            if line.find("gtk-theme-name") != -1:
+                gtk_theme = line.split("=")[1]
+            elif line.find("gtk-icon-theme-name") != -1:
+                gtk_icons = line.split("=")[1]
+            elif line.find("gtk-cursor-theme-name") != -1:
+                gtk_cursors = line.split("=")[1]
+    
+
+    # Attempt to locate themes referenced in settings.ini
+    themes_dir = config_arg_list['themes_dir']
+    sys_themes_dir = '/usr/share/themes'
+    dir_loc = None
+
+    if os.path.isdir(themes_dir + '/' + gtk_theme):
+        dir_loc = themes_dir
+    elif os.path.isdir(sys_themes_dir + '/' + gtk_theme):
+        dir_loc = sys_themes_dir
+    else:
+        # If can't find theme directory, prompt user until valid location is found
+        while True:
+            print("[-] Couldn't locate directory for GKT theme: " + 
+                    gtk_theme + ". Please enter location\n>>> ", end="")
+            dir_loc = input()a
+            if os.path.isdir(dir_loc):
+                break
 
 
 
