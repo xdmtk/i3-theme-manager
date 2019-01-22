@@ -19,6 +19,7 @@ DEBUG = 1
 config_arg_list = {
         'bar_prog' : '',
         'terminal_prog' : '',
+        'terminal_config_file' : '',
         'i3_visual_file' : '',
         'bash_visual_file' : '',
         'bash_aliases_file' : '',
@@ -150,6 +151,10 @@ def package():
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
 
+    os.mkdir(config_arg_list['terminal_prog'])
+    # Package terminator
+    subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
+    print("[+] Copying: " + config_arg_list['terminal_config_file'])
 
 
 
