@@ -162,7 +162,12 @@ def package():
     # Package GTK 
     package_gtk():
 
-
+    # Package Tint2/Polybar
+    bar_prog = config_arg_list['bar_prog']
+    if bar_prog == "polybar" 
+        subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
+    elif bar_prog == "tint2"
+        subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
 
 
 def package_gtk():
