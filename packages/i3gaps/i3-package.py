@@ -11,9 +11,8 @@ MODE_CONFIG = False
 ARG_FAIL = -1
 
 USER_HOME = None
-I3_VIS_CONFIG = None
-BASH_PROMPT_CONFIG = None
-
+I3P_DIR = None
+I3P_CONF = None
 
 def main():
 
@@ -21,52 +20,21 @@ def main():
         show_usage()
         quit()
     
+    parse_config()
+    
     if MODE_PACKAGE is True:
         package()
-    elif MODE_CONFIG is True:
-        config()
     elif MODE_LOAD is True:
         load()
 
 
-def config():
-    i3_config = None ; bash_config = None ; gtk_config = None
-    bar_config = None ; term_config = None ; wallpaper_config = None
-
-def write_blank_config():
-    config_arg_list = [
-            'bar_prog',
-            'terminal_prog',
-            'i3_visual_config',
-            'bash_visual_config',
-            'nitrogen_dir',
-            'tint2_dir',
-            'polybar_dir',
-            'gtk_dir',
-            'themes_dir'
-    ]
-    with open(USER_HOME + '.config/i3packager/config', 'w') as config:
-        for arg in config_arg_list:
-            config.write(arg + '=' + '\n')
-        
+def parse_config():
 
 
 
 def parse_args():
     global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
-
-    # Check for config settings
-    USER_HOME = '/home/' + os.getenv('USER') + '/'
-    if not os.path.isdir(USER_HOME + '.config/i3packager'):
-        os.mkdir(USER_HOME + '.config/i3packager')
-        print('[+] Configuration file not found... creating blank configuration file ' 
-                + 'at ~/.config/i3packager')
-        subprocess.call(['touch', USER_HOME + '.config/i3packager/config'])
-        write_blank_config()
-        quit()
-
-
-
+    
     # Parse args ( only  one ) 
     if sys.argv > 1:
         for arg in sys.argv:
@@ -93,6 +61,42 @@ def show_usage():
 '''
     print(usage)
         
+
+def write_blank_config():
+    config_arg_list = [
+            'bar_prog',
+            'terminal_prog',
+            'i3_visual_config',
+            'bash_visual_config',
+            'nitrogen_dir',
+            'tint2_dir',
+            'polybar_dir',
+            'gtk_dir',
+            'themes_dir'
+    ]
+    with open(I3P_CONF , 'w') as config:
+        for arg in config_arg_list:
+            config.write(arg + '=' + '\n')
+        
+    
+def check_config():
+    global USER_HOME ; global I3P_DIR ; global I3P_CONF 
+    
+    # Check for config settings
+    USER_HOME = '/home/' + os.getenv('USER') + '/'
+    I3P_DIR = USER_HOME + '.config/i3packager'
+    I3P_CONF = I3P_DIR + '/config'
+
+    if not os.path.isdir(I3P_DIR)
+        os.mkdir(I3P_DIR)
+        print('[+] Configuration file not found... creating blank configuration file ' 
+                + 'at ~/.config/i3packager')
+
+        subprocess.call(['touch', I3P_CONF])
+        write_blank_config()
+        quit()
+
+
     
 
 
