@@ -20,7 +20,7 @@ config_arg_list = {
         'bar_prog' : '',
         'terminal_prog' : '',
         'terminal_config_file' : '',
-        'i3_visual_file' : '',
+        'i3_config_file' : '',
         'bash_visual_file' : '',
         'bash_aliases_file' : '',
         'nitrogen_dir' : '',
@@ -138,14 +138,14 @@ def package():
    
     # Package bash files
     os.mkdir('bash')
-    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/']])
-    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/']])
+    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
     print("[+] Copying: " + config_arg_list['bash_visual_file'])
     print("[+] Copying: " + config_arg_list['bash_aliases_file'])
 
     # Package vimrc
     os.mkdir('vim')
-    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/']])
+    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
     print("[+] Copying: " + config_arg_list['vimrc_file'])
 
     # Packaging nitrogen requires special handling of wallpaper files
@@ -156,17 +156,16 @@ def package():
 
 
     # Package I3 
-    os.mkdir('i3')
-    subprocess.call(['cp', config_arg_list['i3_visual_file'], 'i3/'])
+    package_i3()
     
     # Package GTK 
-    package_gtk():
+    package_gtk()
 
     # Package Tint2/Polybar
     bar_prog = config_arg_list['bar_prog']
-    if bar_prog == "polybar" 
+    if bar_prog == "polybar":
         subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
-    elif bar_prog == "tint2"
+    elif bar_prog == "tint2":
         subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
 
 
@@ -212,11 +211,11 @@ def get_gtk_assets(gtk_asset):
         while True:
             print("[-] Couldn't locate directory for GKT theme: " + 
                     gtk_asset + ". Please enter location\n>>> ", end="")
-            dir_loc = input()a
+            dir_loc = input()
             if os.path.isdir(dir_loc):
                 break
     
-    subprocess.call(['cp', '-R', , dir_loc, 'gtk/themes'])
+    subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
     print("[+] Recursively copying " + dir_loc)    
     
 
@@ -226,7 +225,7 @@ def package_nitrogen():
 
     # Package nitrogen
     os.mkdir('nitrogen')
-    subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'] + '/*', 'nitrogen/']])
+    subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'] + '/*', 'nitrogen/'])
    
     # Read bg-saved config to fetch wallpapers
     bg_saved_file = config_arg_list['nitrogen_dir']
@@ -240,7 +239,7 @@ def package_nitrogen():
         if line.find('file') !=  -1:
             wallpaper_path = line.split('=')[1]
             print("[+] Copying:  " + wallpaper_path)
-            subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers')
+            subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
 
    
 
@@ -267,6 +266,30 @@ def package_terminator():
             fl.write(font + '\n')
 
         
+# Workaround for i3 lack of include/source directives
+def package_i3():
+
+    os.mkdir('i3')
+    i3_theme_section = [] ; theme_section_set = False
+    i3_config = config_arg_list['i3_config_file']
+
+    with open(i3_config, 'r') as config:
+        for line in config:
+            if line.find('i3 THEME SECTION START') != -1:
+                theme_section_set = True
+            elif line.find('i3 THEME SECTION END') != -1:
+                theme_section_set = False
+            if theme_section_set is True:
+                i3_theme_section.append(line)
+    
+    subprocess.call(['touch', 'i3/i3_theme_sec'])
+    with open('i3/i3_theme_sec', 'w') as config:
+        for line in i3_theme_section:
+            config.write(line)
+
+                
+
+
 
 
 
@@ -282,6 +305,5 @@ def load():
     quit()
 
 
-``
 
 main()
