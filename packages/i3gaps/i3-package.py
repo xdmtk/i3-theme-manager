@@ -14,7 +14,7 @@ USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
 
-DEBUG = 1
+DEBUG = 0
 
 config_arg_list = {
         'bar_prog' : '',
@@ -58,19 +58,20 @@ def parse_config():
 
             # Expand tilda
             conf_arg.replace('~', USER_HOME)
+            conf_arg = conf_arg[:-1]
 
             if len(conf_arg) != 0:
 
                 # Make sure path is valid
                 if not os.path.exists(conf_arg):
                     FAIL_FLAG = True
-                    print("Path '" + conf_arg + " doesn't exist")
+                    print("[-] Path '" + conf_arg + "' doesn't exist")
                     continue
 
                 config_arg_list[conf_arg_name] = conf_arg
             else:
                 # For empty args, show error and set failure flag
-                print('Missing parameter for ' +  line.split('=')[1])
+                print('[-] Missing parameter for ' + conf_arg_name)
                 FAIL_FLAG = True
     
     
@@ -113,6 +114,7 @@ def show_usage():
 
 def write_blank_config():
 
+    print("Generating empty config file")
     with open(I3P_CONF , 'w') as config:
         # Write arg list into config file
         for arg in config_arg_list:
@@ -128,14 +130,16 @@ def check_config():
     I3P_CONF = I3P_DIR + 'config'
 
     if not os.path.isdir(I3P_DIR):
+        print("[-] Configuration directory not found... creating config directory" 
+                + "at '" + USER_HOME + "/.config/i3packager'" )
         os.mkdir(I3P_DIR)
-        print('[+] Configuration file not found... creating blank configuration file ' 
-                + 'at ~/.config/i3packager')
         
     if not os.path.isfile(I3P_CONF):
+        print("[-] Configuration file not found... creating config file" 
+                + "at '" + USER_HOME + "/.config/i3packager/config'" )
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
-    quit()
+        quit()
 
 def package():
 
