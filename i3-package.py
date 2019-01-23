@@ -225,16 +225,15 @@ def get_gtk_assets(gtk_asset):
     # Attempt to locate themes referenced in settings.ini
     themes_dir = config_arg_list['themes_dir']
     sys_themes_dir = '/usr/share/themes'
+    sys_icons_dir = '/usr/share/icons'
     dir_loc = None
     
     if os.path.isdir(themes_dir + '/' + gtk_asset):
         dir_loc = themes_dir + '/'+ gtk_asset
     elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
         dir_loc = sys_themes_dir + '/' + gtk_asset 
-    elif os.path.isdir(sys_themes_dir + '/icons/' + gtk_asset):
-        dir_loc = sys_themes_dir + '/' + gtk_asset 
-    elif os.path.isdir(sys_themes_dir + '/cursors/' + gtk_asset):
-        dir_loc = sys_themes_dir + '/' + gtk_asset 
+    elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+        dir_loc = sys_icons_dir + '/' + gtk_asset 
     else:
         # If can't find theme directory, prompt user until valid location is found
         while True:
