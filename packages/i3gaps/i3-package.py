@@ -33,6 +33,7 @@ config_arg_list = {
 
 
 def main():
+    #pdb.set_trace()
     # Check if config file exists
     check_config()
     if (parse_args() == ARG_FAIL):
@@ -57,10 +58,15 @@ def parse_config():
             conf_arg = line.split('=')[1] ; conf_arg_name = line.split('=')[0]
 
             # Expand tilda
-            conf_arg.replace('~', USER_HOME)
+            conf_arg = conf_arg.replace('~', USER_HOME)
             conf_arg = conf_arg[:-1]
 
             if len(conf_arg) != 0:
+                if conf_arg_name.find('prog') != -1 or conf_arg.find('none') != 1:
+                    config_arg_list[conf_arg_name] = conf_arg
+                    continue
+                
+
 
                 # Make sure path is valid
                 if not os.path.exists(conf_arg):
@@ -136,7 +142,7 @@ def check_config():
         
     if not os.path.isfile(I3P_CONF):
         print("[-] Configuration file not found... creating config file" 
-                + "at '" + USER_HOME + "/.config/i3packager/config'" )
+                + " at '" + USER_HOME + "/.config/i3packager/config'" )
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
         quit()
