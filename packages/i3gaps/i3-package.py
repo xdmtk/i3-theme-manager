@@ -189,6 +189,8 @@ def package():
         subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
     elif bar_prog == "tint2":
         subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
+    else:
+        print("[-] Invalid bar program: " + bar_prog " ..skipping")
 
 
 def package_gtk():
