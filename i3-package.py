@@ -221,15 +221,19 @@ def package_gtk():
 
 
 def get_gtk_assets(gtk_asset):
+    gtk_asset = gtk_asset.replace('\n','')
     # Attempt to locate themes referenced in settings.ini
     themes_dir = config_arg_list['themes_dir']
     sys_themes_dir = '/usr/share/themes'
     dir_loc = None
     
-    pdb.set_trace()
     if os.path.isdir(themes_dir + '/' + gtk_asset):
         dir_loc = themes_dir + '/'+ gtk_asset
     elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+        dir_loc = sys_themes_dir + '/' + gtk_asset 
+    elif os.path.isdir(sys_themes_dir + '/icons/' + gtk_asset):
+        dir_loc = sys_themes_dir + '/' + gtk_asset 
+    elif os.path.isdir(sys_themes_dir + '/cursors/' + gtk_asset):
         dir_loc = sys_themes_dir + '/' + gtk_asset 
     else:
         # If can't find theme directory, prompt user until valid location is found
