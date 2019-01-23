@@ -54,8 +54,20 @@ def parse_config():
     with open(I3P_CONF, "r") as config:
         for line in config:
             # Load config args into dictionary `config_arg_list`
-            if len(line.split('=')[1]) != 0:
-                config_arg_list[line.split('=')[0]] = line.split('=')[1]
+            conf_arg = line.split('=')[1] ; conf_arg_name = line.split('=')[0]
+
+            # Expand tilda
+            conf_arg.replace('~', USER_HOME)
+
+            if len(conf_arg) != 0:
+
+                # Make sure path is valid
+                if not os.path.exists(conf_arg):
+                    FAIL_FLAG = True
+                    print("Path '" + conf_arg + " doesn't exist")
+                    continue
+
+                config_arg_list[conf_arg_name] = conf_arg
             else:
                 # For empty args, show error and set failure flag
                 print('Missing parameter for ' +  line.split('=')[1])
@@ -111,8 +123,8 @@ def check_config():
     global USER_HOME ; global I3P_DIR ; global I3P_CONF 
     
     # Check for config settings
-    USER_HOME = '/home/' + os.getenv('USER') + '/'
-    I3P_DIR = USER_HOME + '.config/i3packager/'
+    USER_HOME = '/home/' + os.getenv('USER')
+    I3P_DIR = USER_HOME + '/.config/i3packager/'
     I3P_CONF = I3P_DIR + 'config'
 
     if not os.path.isdir(I3P_DIR):
