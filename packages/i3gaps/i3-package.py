@@ -28,6 +28,7 @@ config_arg_list = {
         'polybar_dir' : '',
         'gtk_dir' : '',
         'themes_dir' : '',
+        'icons_dir' : '',
         'vimrc_file' : ''
 }
 
@@ -225,6 +226,8 @@ def get_gtk_assets(gtk_asset):
     gtk_asset = gtk_asset.replace('\n','')
      
     themes_dir = config_arg_list['themes_dir']
+    icons_dir = config_arg_list['icons_dir']
+
     sys_themes_dir = '/usr/share/themes'
     sys_icons_dir = '/usr/share/icons'
     dir_loc = None
