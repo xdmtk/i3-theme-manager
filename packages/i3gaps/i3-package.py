@@ -160,23 +160,15 @@ def package():
     os.chdir(package_dir)
    
     # Package bash files
-    os.mkdir('bash')
-    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
-    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
-    print("[+] Copying: " + config_arg_list['bash_visual_file'])
-    print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+    package_bash() 
 
     # Package vimrc
-    os.mkdir('vim')
-    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
-    print("[+] Copying: " + config_arg_list['vimrc_file'])
 
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
 
     # Package terminator
     package_terminator()
-
 
     # Package I3 
     package_i3()
@@ -194,8 +186,32 @@ def package():
         print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
 
+def package_vim():
+
+
+    print("[+] VIM files\n * * * * * * * * * * * * *\n")
+
+    os.mkdir('vim')
+    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
+    print("[+] Copying: " + config_arg_list['vimrc_file'])
+
+
+
+def package_bash():
+    
+    print("[+] Bash files\n * * * * * * * * * * * * *\n")
+
+    os.mkdir('bash')
+    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
+    print("[+] Copying: " + config_arg_list['bash_visual_file'])
+    print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+
+
 def package_gtk():
    
+    print("[+] GTK files\n * * * * * * * * * * * * *\n")
+    
     os.mkdir('gtk')
     os.mkdir('gtk/themes')
 
@@ -257,6 +273,9 @@ def get_gtk_assets(gtk_asset):
 def package_nitrogen():
 
     # Package nitrogen
+    print("[+] Nitrogen files\n * * * * * * * * * * * * *\n")
+
+
     os.mkdir('nitrogen')
     subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
    
@@ -279,6 +298,8 @@ def package_nitrogen():
 
 # Terminator package function to get config + compile font list
 def package_terminator():
+
+    print("[+] Terminator files\n * * * * * * * * * * * * *\n")
 
     font_list = [] 
 
@@ -305,6 +326,8 @@ def package_terminator():
         
 # Workaround for i3 lack of include/source directives
 def package_i3():
+
+    print("[+] i3 files\n * * * * * * * * * * * * *\n")
 
     os.mkdir('i3')
     i3_theme_section = [] ; theme_section_set = False
