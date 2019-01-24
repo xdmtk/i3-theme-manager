@@ -9,6 +9,7 @@ MODE_PACKAGE = False
 MODE_LOAD = False
 MODE_CONFIG = False
 ARG_FAIL = -1
+NO_ARG = -1
 
 USER_HOME = None
 I3P_DIR = None
@@ -59,17 +60,24 @@ def parse_config():
     with open(I3P_CONF, "r") as config:
         for line in config:
             # Load config args into dictionary `config_arg_list`
-            conf_arg = line.split('=')[1] ; conf_arg_name = line.split('=')[0]
+            conf_arg = line.split('=')[1].replace('\n','') ; conf_arg_name = line.split('=')[0]
 
             # Expand tilda
             conf_arg = conf_arg.replace('~', USER_HOME)
             conf_arg = conf_arg[:-1]
 
             if len(conf_arg) != 0:
-                if conf_arg_name.find('prog') != -1 or conf_arg.find('none') != 1:
-                    config_arg_list[conf_arg_name] = conf_arg
+                if conf_arg.find('none') != 1:
+                    config_arg_list[conf_arg_name] = NO_ARG 
                     continue
-                
+                # For program names, verify existence 
+                elif conf_arg.find('prog') != 1:
+                    if len(subprocess.check_output(['which', conf_arg])) != 0:
+                        config_arg_list[conf_arg_name] = conf_arg
+                    else:
+                        print("[-] Couldn't find program '" + conf_arg + "'")
+                        config_arg_list[conf_arg_name] = NO_ARG
+                        continue 
 
 
                 # Make sure path is valid
