@@ -190,7 +190,7 @@ def package():
     elif bar_prog == "tint2":
         subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
     else:
-        print("[-] Invalid bar program: " + bar_prog " ..skipping")
+        print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
 
 def package_gtk():
@@ -207,7 +207,7 @@ def package_gtk():
 
     # Get theme info from settings file
     with open(gtk_settings_file, 'r') as config:
-        for line in f:
+        for line in config:
             if line.find("gtk-theme-name") != -1:
                 gtk_theme = line.split("=")[1]
             elif line.find("gtk-icon-theme-name") != -1:
@@ -222,14 +222,20 @@ def package_gtk():
 
 def get_gtk_assets(gtk_asset):
     # Attempt to locate themes referenced in settings.ini
+    gtk_asset = gtk_asset.replace('\n','')
+     
     themes_dir = config_arg_list['themes_dir']
     sys_themes_dir = '/usr/share/themes'
+    sys_icons_dir = '/usr/share/icons'
     dir_loc = None
 
+    
     if os.path.isdir(themes_dir + '/' + gtk_asset):
         dir_loc = themes_dir + '/'+ gtk_asset
     elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
         dir_loc = sys_themes_dir + '/' + gtk_asset 
+    elif os.path.isdir(sys_icons_dir + '/' + gtk_asset):
+        dir_loc = sys_icons_dir + '/' + gtk_asset 
     else:
         # If can't find theme directory, prompt user until valid location is found
         while True:
@@ -249,7 +255,7 @@ def package_nitrogen():
 
     # Package nitrogen
     os.mkdir('nitrogen')
-    subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'] + '/*', 'nitrogen/'])
+    subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
    
     # Read bg-saved config to fetch wallpapers
     bg_saved_file = config_arg_list['nitrogen_dir']
@@ -260,10 +266,11 @@ def package_nitrogen():
     # Copy wallpaper file into nitrogen package directory
     os.mkdir('nitrogen/wallpapers')
     with open(bg_saved_file, 'r') as config:
-        if line.find('file') !=  -1:
-            wallpaper_path = line.split('=')[1]
-            print("[+] Copying:  " + wallpaper_path)
-            subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
+        for line in config:
+            if line.find('file') !=  -1:
+                wallpaper_path = line.split('=')[1].replace('\n','')
+                print("[+] Copying:  " + wallpaper_path)
+                subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
 
    
 
@@ -278,10 +285,13 @@ def package_terminator():
     subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
     print("[+] Copying: " + config_arg_list['terminal_config_file'])
     
-    with open(term_dir + '/' + config_arg_list['terminal_config_file'], 'r') as config:
+    with open(config_arg_list['terminal_config_file'], 'r') as config:
         for line in config:
-            if line.find('font'):
-                font_list.append(line.split('=')[1])
+            if line.find('font') != -1:
+                try: 
+                    font_list.append(line.split('=')[1])
+                except:
+                    pdb.set_trace()
 
     
     subprocess.call(['touch', term_dir + '/font_list'])
