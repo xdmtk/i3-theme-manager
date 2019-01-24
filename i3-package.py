@@ -28,6 +28,7 @@ config_arg_list = {
         'polybar_dir' : '',
         'gtk_dir' : '',
         'themes_dir' : '',
+        'icons_dir' : '',
         'vimrc_file' : ''
 }
 
@@ -159,23 +160,15 @@ def package():
     os.chdir(package_dir)
    
     # Package bash files
-    os.mkdir('bash')
-    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
-    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
-    print("[+] Copying: " + config_arg_list['bash_visual_file'])
-    print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+    package_bash() 
 
     # Package vimrc
-    os.mkdir('vim')
-    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
-    print("[+] Copying: " + config_arg_list['vimrc_file'])
 
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
 
     # Package terminator
     package_terminator()
-
 
     # Package I3 
     package_i3()
@@ -193,8 +186,32 @@ def package():
         print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
 
+def package_vim():
+
+
+    print("[+] VIM files\n * * * * * * * * * * * * *\n")
+
+    os.mkdir('vim')
+    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
+    print("[+] Copying: " + config_arg_list['vimrc_file'])
+
+
+
+def package_bash():
+    
+    print("\n[+] Bash files\n * * * * * * * * * * * * *")
+
+    os.mkdir('bash')
+    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
+    print("[+] Copying: " + config_arg_list['bash_visual_file'])
+    print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+
+
 def package_gtk():
    
+    print("\n[+] GTK files\n * * * * * * * * * * * * *")
+    
     os.mkdir('gtk')
     os.mkdir('gtk/themes')
 
@@ -223,7 +240,11 @@ def package_gtk():
 def get_gtk_assets(gtk_asset):
     gtk_asset = gtk_asset.replace('\n','')
     # Attempt to locate themes referenced in settings.ini
+    gtk_asset = gtk_asset.replace('\n','')
+     
     themes_dir = config_arg_list['themes_dir']
+    icons_dir = config_arg_list['icons_dir']
+
     sys_themes_dir = '/usr/share/themes'
     sys_icons_dir = '/usr/share/icons'
     dir_loc = None
@@ -232,7 +253,7 @@ def get_gtk_assets(gtk_asset):
         dir_loc = themes_dir + '/'+ gtk_asset
     elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
         dir_loc = sys_themes_dir + '/' + gtk_asset 
-    elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+    elif os.path.isdir(sys_icons_dir + '/' + gtk_asset):
         dir_loc = sys_icons_dir + '/' + gtk_asset 
     else:
         # If can't find theme directory, prompt user until valid location is found
@@ -252,6 +273,9 @@ def get_gtk_assets(gtk_asset):
 def package_nitrogen():
 
     # Package nitrogen
+    print("[+] Nitrogen files\n * * * * * * * * * * * * *\n")
+
+
     os.mkdir('nitrogen')
     subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
    
@@ -275,6 +299,8 @@ def package_nitrogen():
 # Terminator package function to get config + compile font list
 def package_terminator():
 
+    print("[+] Terminator files\n * * * * * * * * * * * * *\n")
+
     font_list = [] 
 
     term_dir = config_arg_list['terminal_prog']
@@ -286,7 +312,10 @@ def package_terminator():
     with open(config_arg_list['terminal_config_file'], 'r') as config:
         for line in config:
             if line.find('font') != -1:
-                font_list.append(line.split('=')[1])
+                try: 
+                    font_list.append(line.split('=')[1])
+                except:
+                    pdb.set_trace()
 
     
     subprocess.call(['touch', term_dir + '/font_list'])
@@ -298,23 +327,31 @@ def package_terminator():
 # Workaround for i3 lack of include/source directives
 def package_i3():
 
+    print("[+] i3 files\n * * * * * * * * * * * * *\n")
+
     os.mkdir('i3')
-    i3_theme_section = [] ; theme_section_set = False
+    i3_theme_section = [] ; theme_section_set = False ; extracted = False
     i3_config = config_arg_list['i3_config_file']
 
     with open(i3_config, 'r') as config:
         for line in config:
             if line.find('i3 THEME SECTION START') != -1:
                 theme_section_set = True
+                extracted = True
             elif line.find('i3 THEME SECTION END') != -1:
                 theme_section_set = False
             if theme_section_set is True:
                 i3_theme_section.append(line)
-    
-    subprocess.call(['touch', 'i3/i3_theme_sec'])
-    with open('i3/i3_theme_sec', 'w') as config:
-        for line in i3_theme_section:
-            config.write(line)
+    if extracted is True: 
+        print("[+] Extracting theme section from i3 config")
+        
+        subprocess.call(['touch', 'i3/i3_theme_sec'])
+        print("[+] Writing to file `i3_theme_sec`"
+        with open('i3/i3_theme_sec', 'w') as config:
+            for line in i3_theme_section:
+                config.write(line)
+    else:
+        print("[+] No theme section found in i3 config file")
 
                 
 
