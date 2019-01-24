@@ -234,17 +234,21 @@ def take_screenshot():
     if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
-
+    term_prog = config_arg_list['terminal_prog']
     subprocess.call(['i3-msg','workspace', '666'])
     os.chdir(BASE_DIR)
-    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 1"'])
-    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 5"'])
-    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 7"'])
-    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 4"'])
 
-     
-      
-
+    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 1"'])
+    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 3"'])
+    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 5"'])
+    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 7"'])
+    
+    screenshot_prog = config_arg_list['screenshot_prog']
+    
+    # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
+    if screenshot_prog == "xfce4-screenshooter":
+        tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])
+        subprocess.call([
 
 
 
