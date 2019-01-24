@@ -14,23 +14,25 @@ USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
 PACKAGE_NAME = ""
+BASE_DIR
 
 DEBUG = 0
 
 config_arg_list = {
         'bar_prog' : '',
         'terminal_prog' : '',
+        'screenshot_prog' : '',
         'terminal_config_file' : '',
         'i3_config_file' : '',
         'bash_visual_file' : '',
         'bash_aliases_file' : '',
+        'vimrc_file' : '',
         'nitrogen_dir' : '',
         'tint2_dir' : '',
         'polybar_dir' : '',
         'gtk_dir' : '',
         'themes_dir' : '',
-        'icons_dir' : '',
-        'vimrc_file' : ''
+        'icons_dir' : ''
 }
 
 
@@ -177,7 +179,9 @@ def check_config():
 
 def package():
     
-    global PACKAGE_NAME
+    global PACKAGE_NAME ; global BASE_DIR
+    BASE_DIR = subprocess.check_output(['pwd']).replace('\n','')
+
     # Create tmp dir for package name
     if PACKAGE_NAME == "":
         print("Enter package name:\n>>>", end="")
@@ -193,6 +197,7 @@ def package():
     package_bash() 
 
     # Package vimrc
+    package_vim()
 
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
@@ -207,6 +212,38 @@ def package():
     package_gtk()
 
     # Package Tint2/Polybar
+    package_bar()
+   
+    take_screenshot()
+
+
+    print("\n\n[+] Successfully created package file at '" + package_dir)
+
+
+def take_screenshot():
+    
+    # Jump to empty workspace and open some visual programs
+    if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
+        print("[-] Screenshot requires i3-msg... how do you not have this?")
+        return
+
+    subprocess.call(['i3-msg','workspace', '666'])
+    os.chdir(BASE_DIR)
+    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 1"'])
+    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 5"'])
+    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 7"'])
+    subprocess.call(['i3-msg','exec', '"terminator -e ' + BASE_DIR + '/pipes.sh -t 4"'])
+
+     
+      
+
+
+
+
+
+
+
+def package_bar():
     bar_prog = config_arg_list['bar_prog']
     if bar_prog == "polybar":
         subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
