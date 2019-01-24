@@ -15,7 +15,8 @@ USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
 PACKAGE_NAME = ""
-BASE_DIR
+BASE_DIR = None
+PACKAGE_DIR = None
 
 DEBUG = 0
 
@@ -187,7 +188,7 @@ def check_config():
 
 def package():
     
-    global PACKAGE_NAME ; global BASE_DIR
+    global PACKAGE_NAME ; global PACKAGE_DIR ; global BASE_DIR
     BASE_DIR = subprocess.check_output(['pwd']).replace('\n','')
 
     # Create tmp dir for package name
@@ -195,11 +196,11 @@ def package():
         print("Enter package name:\n>>>", end="")
         PACKAGE_NAME = input()
 
-    package_dir = I3P_DIR + PACKAGE_NAME
-    os.mkdir(package_dir)
+    PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
+    os.mkdir(PACKAGE_DIR)
     
     # CD to package directory
-    os.chdir(package_dir)
+    os.chdir(PACKAGE_DIR)
    
     # Package bash files
     package_bash() 
@@ -229,6 +230,7 @@ def package():
 
 
 def take_screenshot():
+   
     
     # Jump to empty workspace and open some visual programs
     if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
@@ -248,7 +250,7 @@ def take_screenshot():
     # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
     if screenshot_prog == "xfce4-screenshooter":
         tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])
-        subprocess.call([
+        subprocess.call(['mv', tmp_ss_loc, PACKAGE_DIR])
 
 
 
