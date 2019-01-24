@@ -199,7 +199,7 @@ def package_vim():
 
 def package_bash():
     
-    print("[+] Bash files\n * * * * * * * * * * * * *\n")
+    print("\n[+] Bash files\n * * * * * * * * * * * * *")
 
     os.mkdir('bash')
     subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
@@ -210,7 +210,7 @@ def package_bash():
 
 def package_gtk():
    
-    print("[+] GTK files\n * * * * * * * * * * * * *\n")
+    print("\n[+] GTK files\n * * * * * * * * * * * * *")
     
     os.mkdir('gtk')
     os.mkdir('gtk/themes')
@@ -330,22 +330,28 @@ def package_i3():
     print("[+] i3 files\n * * * * * * * * * * * * *\n")
 
     os.mkdir('i3')
-    i3_theme_section = [] ; theme_section_set = False
+    i3_theme_section = [] ; theme_section_set = False ; extracted = False
     i3_config = config_arg_list['i3_config_file']
 
     with open(i3_config, 'r') as config:
         for line in config:
             if line.find('i3 THEME SECTION START') != -1:
                 theme_section_set = True
+                extracted = True
             elif line.find('i3 THEME SECTION END') != -1:
                 theme_section_set = False
             if theme_section_set is True:
                 i3_theme_section.append(line)
-    
-    subprocess.call(['touch', 'i3/i3_theme_sec'])
-    with open('i3/i3_theme_sec', 'w') as config:
-        for line in i3_theme_section:
-            config.write(line)
+    if extracted is True: 
+        print("[+] Extracting theme section from i3 config")
+        
+        subprocess.call(['touch', 'i3/i3_theme_sec'])
+        print("[+] Writing to file `i3_theme_sec`"
+        with open('i3/i3_theme_sec', 'w') as config:
+            for line in i3_theme_section:
+                config.write(line)
+    else:
+        print("[+] No theme section found in i3 config file")
 
                 
 
