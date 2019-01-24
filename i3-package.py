@@ -189,7 +189,7 @@ def package():
 def package_vim():
 
 
-    print("[+] VIM files\n * * * * * * * * * * * * *\n")
+    print("\n[+] VIM files\n * * * * * * * * * * * * *")
 
     os.mkdir('vim')
     subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
@@ -273,7 +273,7 @@ def get_gtk_assets(gtk_asset):
 def package_nitrogen():
 
     # Package nitrogen
-    print("[+] Nitrogen files\n * * * * * * * * * * * * *\n")
+    print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
 
     os.mkdir('nitrogen')
@@ -299,7 +299,7 @@ def package_nitrogen():
 # Terminator package function to get config + compile font list
 def package_terminator():
 
-    print("[+] Terminator files\n * * * * * * * * * * * * *\n")
+    print("\n[+] Terminator files\n * * * * * * * * * * * * *")
 
     font_list = [] 
 
@@ -327,7 +327,7 @@ def package_terminator():
 # Workaround for i3 lack of include/source directives
 def package_i3():
 
-    print("[+] i3 files\n * * * * * * * * * * * * *\n")
+    print("\n[+] i3 files\n * * * * * * * * * * * * *")
 
     os.mkdir('i3')
     i3_theme_section = [] ; theme_section_set = False ; extracted = False
@@ -346,7 +346,7 @@ def package_i3():
         print("[+] Extracting theme section from i3 config")
         
         subprocess.call(['touch', 'i3/i3_theme_sec'])
-        print("[+] Writing to file `i3_theme_sec`"
+        print("[+] Writing to file `i3_theme_sec`")
         with open('i3/i3_theme_sec', 'w') as config:
             for line in i3_theme_section:
                 config.write(line)
