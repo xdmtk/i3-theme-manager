@@ -13,6 +13,7 @@ ARG_FAIL = -1
 USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
+PACKAGE_NAME = ""
 
 DEBUG = 0
 
@@ -91,19 +92,34 @@ def parse_config():
 
 def parse_args():
     global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
+    global PACKAGE_NAME  
     
     # Parse args ( only  one ) 
     if len(sys.argv) > 1:
-        for arg in sys.argv:
-            if arg.find("p") != -1:
+        mode = sys.argv[1]
+        if mode != "load" and mode != "package":
+            print("[-] Invalid mode '" + mode + "' supplied")
+            return ARG_FAIL
+        else:
+            if mode == "load":
+                MODE_LOAD = True
+            elif mode == "package":
                 MODE_PACKAGE = True
-                return
-            elif arg.find("l") != -1:
-                MODE_PACKAGE = True
-                return
-            else:
-                return ARG_FAIL 
-    return ARG_FAIL
+        x = 1
+        for x in range(1,len(sys.argv)):
+            # Optional CLI package name specification
+            if sys.argv[x].find("-o") != -1:
+                PACKAGE_NAME = sys.argv[x+1]
+                x += 1
+                continue
+        return
+    else:
+        return ARG_FAIL
+
+                
+
+
+
 
 
 def show_usage():
@@ -111,9 +127,20 @@ def show_usage():
     
     * * * * * * * * * * * * *  i3-Gaps Theme Packaging Script * * * * * * * * * 
 
-        usage: python i3-package.py [ -l (load) / -p (package) ] 
+        usage: python i3-package.py [ MODE ] [ OPTIONS ]
+            
+            Modes:
+                load - Load and apply specified theme package
+                package - Package current theme setup
 
-            Edit config file at ~/.config/i3packager/config to specify theme components
+
+            Options:
+                -o [ PACKAGE NAME ] - Specify package name in argument over interactive stdin 
+
+
+            First time use:
+                i3-theme-manager will generate an empty config file in the standard user config directory,
+                edit this file to specify directories for various theme components
 
 '''
     print(usage)
@@ -149,11 +176,14 @@ def check_config():
         quit()
 
 def package():
-
+    
+    global PACKAGE_NAME
     # Create tmp dir for package name
-    print("Enter package name:\n>>>", end="")
-    package_name = input()
-    package_dir = I3P_DIR + package_name
+    if PACKAGE_NAME == "":
+        print("Enter package name:\n>>>", end="")
+        PACKAGE_NAME = input()
+
+    package_dir = I3P_DIR + PACKAGE_NAME
     os.mkdir(package_dir)
     
     # CD to package directory
