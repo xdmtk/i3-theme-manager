@@ -239,6 +239,20 @@ def i3_msg(mode, args=False, t=0.1):
     time.sleep(t)
     
 
+def setup_workspace():
+    
+    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
+    i3_msg('workspace', '666')
+    i3_msg('split', 'horizontal')
+    i3_msg('exec', pipe_arg + ' 1"', .5)
+    i3_msg('exec', pipe_arg + ' 3"', .5)
+    i3_msg('split', 'vertical')
+    i3_msg('exec', pipe_arg + ' 5"', .5)
+    i3_msg('focus', 'left')
+    i3_msg('split', 'vertical')
+    i3_msg('exec', pipe_arg + ' 7"', .5)
+
+
 
 
 def take_screenshot():
@@ -249,25 +263,9 @@ def take_screenshot():
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
     term_prog = config_arg_list['terminal_prog']
-    i3_msg('workspace', '666')
-
     os.chdir(BASE_DIR)
-    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
 
-    
-    i3_msg('split', 'h')
-    i3_msg('exec', pipe_arg + ' 1"', 2)
-    i3_msg('split', 'v')
-    i3_msg('exec', pipe_arg + ' 3"', 2)
-
-
-    i3_msg('split', 'h')
-    i3_msg('exec', pipe_arg + ' 5"', 2)
-
-    i3_msg('focus', 'up')
-    i3_msg('split', 'h')
-    i3_msg('exec', pipe_arg + ' 7"', 2)
-
+    setup_workspace()
 
     quit() 
     screenshot_prog = config_arg_list['screenshot_prog']
