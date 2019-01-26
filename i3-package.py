@@ -300,7 +300,7 @@ def take_screenshot():
     setup_workspace()
 
     screenshot_prog = config_arg_list['screenshot_prog']
-
+    time.sleep(2)
     # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
     if screenshot_prog == "xfce4-screenshooter":
 
