@@ -197,8 +197,6 @@ def package():
         print("Enter package name:\n>>>", end="")
         PACKAGE_NAME = input()
 
-    take_screenshot()
-    quit()
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
     os.mkdir(PACKAGE_DIR)
     
@@ -228,7 +226,8 @@ def package():
    
 
 
-    print("\n\n[+] Successfully created package file at '" + package_dir)
+    print("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
+    take_screenshot()
 
 def i3_msg(mode, args=False, t=0.1):
     if args is not False:
@@ -280,8 +279,6 @@ def take_screenshot():
 
     # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
     if screenshot_prog == "xfce4-screenshooter":
-        tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])
-        subprocess.call(['mv', tmp_ss_loc, PACKAGE_DIR])
 
         tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])[:-1]
         subprocess.call(['cp', tmp_ss_loc, PACKAGE_DIR])
