@@ -1,3 +1,4 @@
+import json
 import time
 import os
 import subprocess
@@ -12,6 +13,8 @@ MODE_CONFIG = False
 ARG_FAIL = -1
 NO_ARG = -1
 
+
+CURRENT_WORKSPACE = None
 USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
@@ -198,6 +201,8 @@ def package():
         PACKAGE_NAME = input()
 
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
+    take_screenshot()
+    quit()
     os.mkdir(PACKAGE_DIR)
     
     # CD to package directory
@@ -239,7 +244,18 @@ def i3_msg(mode, args=False, t=0.1):
     
 
 def setup_workspace():
-    
+  
+    # Before switching workspaces, get current workspace to jump back,
+    # i3-msg -t get_workspaces returns JSON, so need to parse
+    workspace_json = subprocess.check_output(['i3-msg', '-t','get_workspaces'])
+    workspace_json = json.loads(str(workspace_json)[2:-3])
+    for x in range(0,len(workspace_json)):
+        if workspace_json[x]["focused"] == True:
+            CURRENT_WORKSPACE = x+1
+            break
+
+    # Quick and dirty calls to i3-msg to setup 4 panel display with
+    # various visual terminal scripts for screenshot
     term_prog = config_arg_list['terminal_prog']
     pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
 
@@ -265,6 +281,16 @@ def setup_workspace():
 
 
 
+def kill_workspace():
+
+    for x in range(0,3):
+        subprocess.call(['xdotool', 'key', 'c'])
+        i3_msg('kill')
+    
+    i3_msg
+
+
+
 def take_screenshot():
    
     
@@ -273,7 +299,7 @@ def take_screenshot():
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
     os.chdir(BASE_DIR)
-#    setup_workspace()
+    setup_workspace()
 
     screenshot_prog = config_arg_list['screenshot_prog']
 
@@ -285,10 +311,11 @@ def take_screenshot():
         shot_file = str(tmp_ss_loc).split('/')[2][:-1]
         subprocess.call(['mv', PACKAGE_DIR + '/' +  shot_file, 
             PACKAGE_DIR + '/' + PACKAGE_NAME + '.png'])
-        quit()
 
+        print("[+] Saved screenshot to package directory at '" + PACKAGE_DIR + "'")
 
-
+    
+    kill_workspace()
 
 
 def package_bar():
