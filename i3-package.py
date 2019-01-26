@@ -241,16 +241,21 @@ def i3_msg(mode, args=False, t=0.1):
 
 def setup_workspace():
     
+    term_prog = config_arg_list['terminal_prog']
     pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
     i3_msg('workspace', '666')
     i3_msg('split', 'horizontal')
     i3_msg('exec', pipe_arg + ' 1"', .5)
+    i3_msg('split', 'vertical')
     i3_msg('exec', pipe_arg + ' 3"', .5)
-    i3_msg('split', 'vertical')
+    i3_msg('split', 'horizontal')
     i3_msg('exec', pipe_arg + ' 5"', .5)
-    i3_msg('focus', 'left')
-    i3_msg('split', 'vertical')
-    i3_msg('exec', pipe_arg + ' 7"', .5)
+    i3_msg('focus', 'up')
+    i3_msg('split', 'horizontal')
+    i3_msg('exec', term_prog, .5)
+    subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/neofetch'])
+    subprocess.call(['xdotool', 'key', 'Return'])
+
 
 
 
@@ -262,7 +267,6 @@ def take_screenshot():
     if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
-    term_prog = config_arg_list['terminal_prog']
     os.chdir(BASE_DIR)
 
     setup_workspace()
