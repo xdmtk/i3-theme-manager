@@ -201,8 +201,6 @@ def package():
         PACKAGE_NAME = input()
 
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
-    take_screenshot()
-    quit()
     os.mkdir(PACKAGE_DIR)
     
     # CD to package directory
@@ -244,7 +242,7 @@ def i3_msg(mode, args=False, t=0.1):
     
 
 def setup_workspace():
-  
+    global CURRENT_WORKSPACE 
     # Before switching workspaces, get current workspace to jump back,
     # i3-msg -t get_workspaces returns JSON, so need to parse
     workspace_json = subprocess.check_output(['i3-msg', '-t','get_workspaces'])
@@ -287,7 +285,7 @@ def kill_workspace():
         subprocess.call(['xdotool', 'key', 'c'])
         i3_msg('kill')
     
-    i3_msg
+    i3_msg('workspace', str(CURRENT_WORKSPACE))
 
 
 
