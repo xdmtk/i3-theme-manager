@@ -274,16 +274,21 @@ def take_screenshot():
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
     os.chdir(BASE_DIR)
-    setup_workspace()
+#    setup_workspace()
 
-    quit() 
     screenshot_prog = config_arg_list['screenshot_prog']
-    
+
     # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
     if screenshot_prog == "xfce4-screenshooter":
         tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])
         subprocess.call(['mv', tmp_ss_loc, PACKAGE_DIR])
 
+        tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])[:-1]
+        subprocess.call(['cp', tmp_ss_loc, PACKAGE_DIR])
+        shot_file = str(tmp_ss_loc).split('/')[2][:-1]
+        subprocess.call(['mv', PACKAGE_DIR + '/' +  shot_file, 
+            PACKAGE_DIR + '/' + PACKAGE_NAME + '.png'])
+        quit()
 
 
 
