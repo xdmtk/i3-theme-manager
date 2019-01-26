@@ -1,3 +1,4 @@
+import time
 import os
 import subprocess
 import sys
@@ -61,20 +62,21 @@ def parse_config():
     with open(I3P_CONF, "r") as config:
         for line in config:
             # Load config args into dictionary `config_arg_list`
-            conf_arg = line.split('=')[1].replace('\n','') ; conf_arg_name = line.split('=')[0]
+            conf_arg = line.split('=')[1].replace('\n','') 
+            conf_arg_name = line.split('=')[0]
 
             # Expand tilda
-            conf_arg = conf_arg.replace('~', USER_HOME)
-            conf_arg = conf_arg[:-1]
+            conf_arg = conf_arg.replace('~', USER_HOME).replace('\n','')
 
             if len(conf_arg) != 0:
-                if conf_arg.find('none') != 1:
+                if conf_arg.find('none') != -1:
                     config_arg_list[conf_arg_name] = NO_ARG 
                     continue
                 # For program names, verify existence 
-                elif conf_arg.find('prog') != 1:
+                elif conf_arg_name.find('prog') != -1:
                     if len(subprocess.check_output(['which', conf_arg])) != 0:
                         config_arg_list[conf_arg_name] = conf_arg
+                        continue
                     else:
                         print("[-] Couldn't find program '" + conf_arg + "'")
                         config_arg_list[conf_arg_name] = NO_ARG
@@ -189,13 +191,14 @@ def check_config():
 def package():
     
     global PACKAGE_NAME ; global PACKAGE_DIR ; global BASE_DIR
-    BASE_DIR = subprocess.check_output(['pwd']).replace('\n','')
-
+    BASE_DIR = str(subprocess.check_output(['pwd']))[2:-3]
     # Create tmp dir for package name
     if PACKAGE_NAME == "":
         print("Enter package name:\n>>>", end="")
         PACKAGE_NAME = input()
 
+    take_screenshot()
+    quit()
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
     os.mkdir(PACKAGE_DIR)
     
@@ -223,10 +226,19 @@ def package():
     # Package Tint2/Polybar
     package_bar()
    
-    take_screenshot()
 
 
     print("\n\n[+] Successfully created package file at '" + package_dir)
+
+def i3_msg(mode, args=False, t=0.1):
+    if args is not False:
+        subprocess.call(['i3-msg', mode, args])
+        time.sleep(t)
+        return
+    subprocess.call(['i3-msg', mode])
+    time.sleep(t)
+    
+
 
 
 def take_screenshot():
@@ -237,14 +249,27 @@ def take_screenshot():
         print("[-] Screenshot requires i3-msg... how do you not have this?")
         return
     term_prog = config_arg_list['terminal_prog']
-    subprocess.call(['i3-msg','workspace', '666'])
-    os.chdir(BASE_DIR)
+    i3_msg('workspace', '666')
 
-    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 1"'])
-    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 3"'])
-    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 5"'])
-    subprocess.call(['i3-msg','exec', '"' + term_prog + ' -e ' + BASE_DIR + '/pipes.sh -t 7"'])
+    os.chdir(BASE_DIR)
+    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
+
     
+    i3_msg('split', 'h')
+    i3_msg('exec', pipe_arg + ' 1"', 2)
+    i3_msg('split', 'v')
+    i3_msg('exec', pipe_arg + ' 3"', 2)
+
+
+    i3_msg('split', 'h')
+    i3_msg('exec', pipe_arg + ' 5"', 2)
+
+    i3_msg('focus', 'up')
+    i3_msg('split', 'h')
+    i3_msg('exec', pipe_arg + ' 7"', 2)
+
+
+    quit() 
     screenshot_prog = config_arg_list['screenshot_prog']
     
     # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
