@@ -223,7 +223,7 @@ def package(backup=False):
     vim("package")
 
     # Packaging nitrogen requires special handling of wallpaper files
-    package_nitrogen()
+    nitrogen("package")
 
     # Package terminator
     package_terminator()
@@ -498,29 +498,32 @@ def get_gtk_assets(gtk_asset):
 
 
 
-def package_nitrogen():
+def nitrogen(mode):
 
     # Package nitrogen
     print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
+    if mode == "package":
+        os.mkdir('nitrogen')
+        subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
+       
+        # Read bg-saved config to fetch wallpapers
+        bg_saved_file = config_arg_list['nitrogen_dir']
+        if bg_saved_file[len(bg_saved_file)-1] != '/':
+            bg_saved_file += '/'
+        bg_saved_file += 'bg-saved.cfg'
+       
+        # Copy wallpaper file into nitrogen package directory
+        os.mkdir('nitrogen/wallpapers')
+        with open(bg_saved_file, 'r') as config:
+            for line in config:
+                if line.find('file') !=  -1:
+                    wallpaper_path = line.split('=')[1].replace('\n','')
+                    print("[+] Copying:  " + wallpaper_path)
+                    subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
+    
+    elif mode == "load":
 
-    os.mkdir('nitrogen')
-    subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
-   
-    # Read bg-saved config to fetch wallpapers
-    bg_saved_file = config_arg_list['nitrogen_dir']
-    if bg_saved_file[len(bg_saved_file)-1] != '/':
-        bg_saved_file += '/'
-    bg_saved_file += 'bg-saved.cfg'
-   
-    # Copy wallpaper file into nitrogen package directory
-    os.mkdir('nitrogen/wallpapers')
-    with open(bg_saved_file, 'r') as config:
-        for line in config:
-            if line.find('file') !=  -1:
-                wallpaper_path = line.split('=')[1].replace('\n','')
-                print("[+] Copying:  " + wallpaper_path)
-                subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
 
    
 
@@ -604,14 +607,10 @@ def load(restore=False):
         package(True)
     
     os.chdir(I3P_DIR + LOAD_PACKAGE_NAME)
-    # Package bash files
+    
     bash("load") 
-
-    # Package vimrc
-    package_vim()
-
-    # Packaging nitrogen requires special handling of wallpaper files
-    package_nitrogen()
+    vim("load")
+    nitrogen("load")
 
     # Package terminator
     package_terminator()
