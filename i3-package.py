@@ -293,8 +293,11 @@ def setup_workspace():
 
 
 def kill_workspace():
-
-    for x in range(0,3):
+    workspaces =  subprocess.check_output('xdotool search --all --onlyvisible' +
+        ' --desktop $(xprop -notype -root _NET_CURRENT_DESKTOP' +
+        ' | cut -c 24-) "" 2>/dev/null', shell=True) 
+    window_count = len(str(workspaces)[2:-1].split('\\n'))
+    for x in range(0,window_count):
         subprocess.call(['xdotool', 'key', 'c'])
         i3_msg('kill')
     
