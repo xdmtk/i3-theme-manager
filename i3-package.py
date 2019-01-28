@@ -220,7 +220,7 @@ def package(backup=False):
     bash("package") 
 
     # Package vimrc
-    package_vim()
+    vim("package")
 
     # Packaging nitrogen requires special handling of wallpaper files
     package_nitrogen()
@@ -342,51 +342,66 @@ def package_bar():
         print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
 
-def package_vim():
+def vim(mode):
 
-
+    
     print("\n[+] VIM files\n * * * * * * * * * * * * *")
-
-    os.mkdir('vim')
-    os.mkdir('vim/color_scheme')
-    subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
-    print("[+] Copying: " + config_arg_list['vimrc_file'])
+    if mode == "package":
+        os.mkdir('vim')
+        os.mkdir('vim/color_scheme')
+        subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
+        print("[+] Copying: " + config_arg_list['vimrc_file'])
+            
+        # Extract colorscheme from vimrc
+        color_scheme = None
+        with open(config_arg_list['vimrc_file'], 'r') as vimrc:
+            for line in vimrc: 
+                if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
+                    color_scheme = line.split(' ')[1].replace('\n','')
+                    break
         
-    # Extract colorscheme from vimrc
-    color_scheme = None
-    with open(config_arg_list['vimrc_file'], 'r') as vimrc:
-        for line in vimrc: 
-            if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
-                color_scheme = line.split(' ')[1].replace('\n','')
-                break
-    
-    if color_scheme is None:
-        return
-    file_listing = None
-    # Look for colorscheme in home dir
-    if os.path.isdir(USER_HOME + '/.vim/colors'):
-        file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
-        file_listing = str(file_listing)[2:-1].split('\\n')
-        for cs in file_listing:
-            if cs.replace('\'', '').find(color_scheme) != -1:
-                subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
-                print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
-                return
-    
-    # Try system dir if no luck
-    file_listing_sys = None
-    for x in range(70,81):
-        if os.path.isdir('/usr/share/vim/vim' + str(x) + '/colors'):
-            file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
+        if color_scheme is None:
+            return
+        file_listing = None
+        # Look for colorscheme in home dir
+        if os.path.isdir(USER_HOME + '/.vim/colors'):
+            file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
             file_listing = str(file_listing)[2:-1].split('\\n')
             for cs in file_listing:
-                if cs.replace('\'','').find(color_scheme) != -1:
-                    subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                if cs.replace('\'', '').find(color_scheme) != -1:
+                    subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
                     print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                     return
-    
-    print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
+        
+        # Try system dir if no luck
+        file_listing_sys = None
+        for x in range(70,81):
+            if os.path.isdir('/usr/share/vim/vim' + str(x) + '/colors'):
+                file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
+                file_listing = str(file_listing)[2:-1].split('\\n')
+                for cs in file_listing:
+                    if cs.replace('\'','').find(color_scheme) != -1:
+                        subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                        print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                        return
+        
+        print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
 
+    elif mode == "load":
+        
+        print("[+] Loading: " + config_arg_list['vimrc_file'])
+        vimrc = len(config_arg_list['vimrc_file'].split('/'))
+        vimrc = config_arg_list['vimrc_file'].split('/')[vimrc-1]
+        subprocess.call(['cp', 'vim/' + vimrc.replace('\n',''), 
+            config_arg_list['vimrc_file']])
+        
+        if not os.path.isdir(USER_HOME + '/.vim/'):
+            os.mkdir(USER_HOME + '/.vim/')
+        if not os.path.isdir(USER_HOME + '/.vim/colors'):
+            os.mkdir(USER_HOME + '/.vim/colors')
+
+        print("[+] Loading VIM colorscheme")
+        subprocess.call(['cp', 'vim/color_scheme/*', USER_HOME + '/.vim/colors'])
 
 
         
