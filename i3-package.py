@@ -352,20 +352,20 @@ def package_vim():
     with open(config_arg_list['vimrc_file'], 'r') as vimrc:
         for line in vimrc: 
             if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
-                color_scheme = line.split(' ')[1]
+                color_scheme = line.split(' ')[1].replace('\n','')
                 break
     
     if color_scheme is None:
         return
-
     file_listing = None
     # Look for colorscheme in home dir
     if os.path.isdir(USER_HOME + '/.vim/colors'):
         file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
         file_listing = str(file_listing)[2:-1].split('\\n')
         for cs in file_listing:
-            if cs.find(color_scheme) != -1:
+            if cs.replace('\'', '').find(color_scheme) != -1:
                 subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
+                print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                 return
     
     # Try system dir if no luck
@@ -375,8 +375,9 @@ def package_vim():
             file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
             file_listing = str(file_listing)[2:-1].split('\\n')
             for cs in file_listing:
-                if cs.find(color_scheme) != -1:
+                if cs.replace('\'','').find(color_scheme) != -1:
                     subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                    print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                     return
     
     print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
