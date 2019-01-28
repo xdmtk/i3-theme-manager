@@ -569,8 +569,16 @@ def load():
         if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
             print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
             quit()
-    
-    
+    else:
+        while True:
+            print("[+] Enter package name to load:\n>>>". end="")
+            LOAD_PACKAGE_NAME = input()
+            if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
+                print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                quit()
+            else:
+                break
+
     # Before load, create backup of current theme
     package(True)
 
