@@ -217,7 +217,7 @@ def package(backup=False):
     os.chdir(PACKAGE_DIR)
    
     # Package bash files
-    package_bash() 
+    bash("package") 
 
     # Package vimrc
     package_vim()
@@ -392,15 +392,33 @@ def package_vim():
         
 
 
-def package_bash():
-    
+def bash(mode):
     print("\n[+] Bash files\n * * * * * * * * * * * * *")
+    if mode == "package": 
 
-    os.mkdir('bash')
-    subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
-    subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
-    print("[+] Copying: " + config_arg_list['bash_visual_file'])
-    print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+        os.mkdir('bash')
+        
+        print("[+] Copying: " + config_arg_list['bash_visual_file'])
+        subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+        print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+        subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
+
+    elif mode == "load":
+       
+        print("[+] Loading: " + config_arg_list['bash_visual_file'])
+        bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
+        bash_aliases_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
+        subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
+            config_arg_list['bash_visual_file']])
+
+        
+        print("[+] Loading: " + config_arg_list['bash_aliases_file'])
+        bash_aliases_file = len(config_arg_list['bash_aliases_file'].split('/'))
+        bash_aliases_file = config_arg_list['bash_aliases_file'].split('/')[bash_aliases_file-1]
+        subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
+            config_arg_list['bash_aliases_file']])
+        
+
 
 
 def package_gtk():
@@ -549,21 +567,8 @@ def package_i3():
     else:
         print("[+] No theme section found in i3 config file")
 
-                
-
-
-
-
-
-
-
-
-
     
-
-
-    
-def load():
+def load(restore=False):
     
     if LOAD_PACKAGE_NAME != "":
         if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
@@ -580,7 +585,31 @@ def load():
                 break
 
     # Before load, create backup of current theme
-    package(True)
+    if restore is False:
+        package(True)
+    
+    os.chdir(I3P_DIR + LOAD_PACKAGE_NAME)
+    # Package bash files
+    bash("load") 
+
+    # Package vimrc
+    package_vim()
+
+    # Packaging nitrogen requires special handling of wallpaper files
+    package_nitrogen()
+
+    # Package terminator
+    package_terminator()
+
+    # Package I3 
+    package_i3()
+    
+    # Package GTK 
+    package_gtk()
+
+    # Package Tint2/Polybar
+    package_bar()
+
 
 
 
