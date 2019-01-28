@@ -266,22 +266,24 @@ def setup_workspace():
     # Quick and dirty calls to i3-msg to setup 4 panel display with
     # various visual terminal scripts for screenshot
     term_prog = config_arg_list['terminal_prog']
-    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes.sh ' + ' -t '
+    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes ' + ' -t '
 
     i3_msg('workspace', '666')
     i3_msg('split', 'horizontal')
-    i3_msg('exec', pipe_arg + ' 1"', .5)
+
+    i3_msg('exec', BASE_DIR + '/visual-scripts/flow', .75)
+
     i3_msg('split', 'vertical')
-    i3_msg('exec', term_prog, .5)
+    i3_msg('exec', term_prog, .75)
     
     subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/cmatrix'])
     subprocess.call(['xdotool', 'key', 'Return'])
     
     i3_msg('split', 'horizontal')
-    i3_msg('exec', pipe_arg + ' 5"', .5)
+    i3_msg('exec', pipe_arg + ' 5"', .75)
     i3_msg('focus', 'up')
     i3_msg('split', 'horizontal')
-    i3_msg('exec', term_prog, .5)
+    i3_msg('exec', term_prog, .75)
     
     subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/neofetch'])
     subprocess.call(['xdotool', 'key', 'Return'])
@@ -529,6 +531,7 @@ def package_i3():
                 theme_section_set = True
                 extracted = True
             elif line.find('i3 THEME SECTION END') != -1:
+                i3_theme_section.append(line)
                 theme_section_set = False
             if theme_section_set is True:
                 i3_theme_section.append(line)
