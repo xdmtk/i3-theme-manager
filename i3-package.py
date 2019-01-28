@@ -19,6 +19,7 @@ USER_HOME = None
 I3P_DIR = None
 I3P_CONF = None
 PACKAGE_NAME = ""
+LOAD_PACKAGE_NAME = ""
 BASE_DIR = None
 PACKAGE_DIR = None
 
@@ -128,6 +129,10 @@ def parse_args():
                 PACKAGE_NAME = sys.argv[x+1]
                 x += 1
                 continue
+            if sys.argv[x].find("-t") != -1:
+                LOAD_PACKAGE_NAME = sys.argv[x+1]
+                x += 1
+                continue
         return
     else:
         return ARG_FAIL
@@ -151,7 +156,8 @@ def show_usage():
 
 
             Options:
-                -o [ PACKAGE NAME ] - Specify package name in argument over interactive stdin 
+                -o [ PACKAGE NAME ] - Specify package name for packaging mode
+                -t [ PACKAGE NAME ] - Specify package name for loading mode
 
 
             First time use:
@@ -191,15 +197,19 @@ def check_config():
         write_blank_config()
         quit()
 
-def package():
+def package(backup=False):
     
     global PACKAGE_NAME ; global PACKAGE_DIR ; global BASE_DIR
     BASE_DIR = str(subprocess.check_output(['pwd']))[2:-3]
     # Create tmp dir for package name
-    if PACKAGE_NAME == "":
-        print("Enter package name:\n>>>", end="")
-        PACKAGE_NAME = input()
+    if backup is False:
+        if PACKAGE_NAME == "":
+            print("Enter package name:\n>>>", end="")
+            PACKAGE_NAME = input()
+    else: 
+        PACKAGE_NAME = ".last"
 
+    
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
     os.mkdir(PACKAGE_DIR)
     
@@ -228,9 +238,10 @@ def package():
     package_bar()
    
 
+    if backup is False: 
+        print("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
+        take_screenshot()
 
-    print("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
-    take_screenshot()
 
 def i3_msg(mode, args=False, t=0.1):
     if args is not False:
@@ -508,6 +519,19 @@ def package_i3():
 
     
 def load():
+    
+    if LOAD_PACKAGE_NAME != "":
+        if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
+            print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+            quit()
+    
+    
+    # Before load, create backup of current theme
+    package(True)
+
+
+
+
     quit()
 
 
