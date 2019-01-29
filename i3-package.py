@@ -231,7 +231,7 @@ def package(backup=False):
     terminator("package")
 
     # Package I3 
-    package_i3()
+    i3("package")
     
     # Package GTK 
     package_gtk()
@@ -608,36 +608,60 @@ def terminator(mode):
 
         
 # Workaround for i3 lack of include/source directives
-def package_i3():
+def i3(mode):
 
     print("\n[+] i3 files\n * * * * * * * * * * * * *")
-
-    os.mkdir('i3')
-    i3_theme_section = [] ; theme_section_set = False ; extracted = False
-    i3_config = config_arg_list['i3_config_file']
-
-    with open(i3_config, 'r') as config:
-        for line in config:
-            if line.find('i3 THEME SECTION START') != -1:
-                theme_section_set = True
-                extracted = True
-            elif line.find('i3 THEME SECTION END') != -1:
-                i3_theme_section.append(line)
-                theme_section_set = False
-            if theme_section_set is True:
-                i3_theme_section.append(line)
-    if extracted is True: 
-        print("[+] Extracting theme section from i3 config")
-        
-        subprocess.call(['touch', 'i3/i3_theme_sec'])
-        print("[+] Writing to file `i3_theme_sec`")
-        with open('i3/i3_theme_sec', 'w') as config:
-            for line in i3_theme_section:
-                config.write(line)
-    else:
-        print("[+] No theme section found in i3 config file")
-
     
+    if mode == "package":
+        os.mkdir('i3')
+        i3_theme_section = [] ; theme_section_set = False ; extracted = False
+        i3_config = config_arg_list['i3_config_file']
+
+        with open(i3_config, 'r') as config:
+            for line in config:
+                if line.find('i3 THEME SECTION START') != -1:
+                    theme_section_set = True
+                    extracted = True
+                elif line.find('i3 THEME SECTION END') != -1:
+                    i3_theme_section.append(line)
+                    theme_section_set = False
+                if theme_section_set is True:
+                    i3_theme_section.append(line)
+        if extracted is True: 
+            print("[+] Extracting theme section from i3 config")
+            
+            subprocess.call(['touch', 'i3/i3_theme_sec'])
+            print("[+] Writing to file `i3_theme_sec`")
+            with open('i3/i3_theme_sec', 'w') as config:
+                for line in i3_theme_section:
+                    config.write(line)
+        else:
+            print("[+] No theme section found in i3 config file")
+
+    elif mode == "load":
+        theme_section_set = False
+        i3_conf_list = []
+        with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
+            for line in i3_conf_read:
+                if line.find("# i3 THEME SECTION START") != -1:
+                    theme_section_set = True
+                    continue
+                if line.find("# i3 THEME SECTION END") != -1:
+                    theme_section_set = False
+                    continue
+                if theme_section_set is False:
+                    i3_conf_list.append(line)
+
+        with open('i3/i3_theme_sec', 'r') as i3_theme_read:
+            for line in i3_theme_read:
+                i3_conf_list.append(line)
+            
+        with open(config_arg_list['i3_config_file'], 'w') as i3_conf:
+            for line in i3_conf_list:
+                i3_conf_write.write(line)
+
+
+
 def load(restore=False):
     global LOAD_PACKAGE_NAME
 
@@ -669,7 +693,7 @@ def load(restore=False):
     terminator("load")
 
     # Package I3 
-    package_i3()
+    i3("load")
     
     # Package GTK 
     package_gtk()
