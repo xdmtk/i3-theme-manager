@@ -204,7 +204,41 @@ def write_blank_config():
 		'# Terminal Program',
 		'# --------------------:',
 		'# Similar to the bar program, the Terminator console emulator is the only program',
+		'# hardcoded into the script to work correctly, though it can be easily modified for your',
+		'# specific terminal emulator',
 		'# ',
+	]
+	i3_conf_desc = [
+		'# i3 Config File',
+		'# --------------------:',
+		'# The i3 config file is handled by specifying a region that is unique to the theme',
+		'# which becomes the only part of the config file that is stored during package creation',
+		'# ',
+		'# During package loading, if no specified theme region is found, the theme region stored',
+		'# in the package is simply appended to the i3 config file, otherwise it is replaced',
+		'# ',
+		'# Aside from the obvious visual configuration elements that should be included in this region',
+		'# some other considerations are exec commands against other theme specified items like your status',
+		'# bar or other theme specific programs',
+		'# ',
+		'# Format this region by',
+		'# 		',
+		'# 		\'# i3 THEME REGION START\'',
+		'# 		and',
+		'# 		\'# i3 THEME REGION END\'',
+		'# 		',
+		'# ',
+	]
+	screenshot_desc = [
+		'# Screenshot Program',
+		'# --------------------:',
+		'# Once again another area that supports only a particular program (more support to follow in later releases',
+		'# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
+		'# package creation',
+		'# ',
+	]
+
+	
 
     print("Generating empty config file")
     with open(I3P_CONF , 'w') as config:
