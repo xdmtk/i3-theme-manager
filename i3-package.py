@@ -228,7 +228,7 @@ def package(backup=False):
     nitrogen("package")
 
     # Package terminator
-    package_terminator()
+    terminator("package")
 
     # Package I3 
     package_i3()
@@ -565,31 +565,46 @@ def check_image(p):
    
 
 # Terminator package function to get config + compile font list
-def package_terminator():
+def terminator(mode):
 
     print("\n[+] Terminator files\n * * * * * * * * * * * * *")
+    if mode == "package":
+        font_list = [] 
 
-    font_list = [] 
+        term_dir = config_arg_list['terminal_prog']
+        os.mkdir(term_dir)
 
-    term_dir = config_arg_list['terminal_prog']
-    os.mkdir(term_dir)
+        subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
+        print("[+] Copying: " + config_arg_list['terminal_config_file'])
+        
+        with open(config_arg_list['terminal_config_file'], 'r') as config:
+            for line in config:
+                if line.find('font') != -1:
+                    try: 
+                        font_list.append(line.split('=')[1])
+                    except:
+                        pdb.set_trace()
 
-    subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
-    print("[+] Copying: " + config_arg_list['terminal_config_file'])
-    
-    with open(config_arg_list['terminal_config_file'], 'r') as config:
-        for line in config:
-            if line.find('font') != -1:
-                try: 
-                    font_list.append(line.split('=')[1])
-                except:
-                    pdb.set_trace()
+        
+        subprocess.call(['touch', term_dir + '/font_list'])
+        with open(term_dir + '/font_list', 'w') as fl:
+            for font in font_list:
+                fl.write(font + '\n')
 
-    
-    subprocess.call(['touch', term_dir + '/font_list'])
-    with open(term_dir + '/font_list', 'w') as fl:
-        for font in font_list:
-            fl.write(font + '\n')
+    elif mode == "load":
+        config_file_name = config_arg_list['terminal_config_file'].split('/')
+        config_file_name = config_file_name[len(config_file_name)-1]
+        subprocess.call(['cp', 'terminator/' + config_file_name, 
+            config_arg_list['terminal_config_file'])
+   
+        print("[-] ##### Fonts required #####")
+        with open('terminator/font_list', 'r') as fl:
+            for font in fl:
+                print("[-] " + font.replace('\n',''))
+                
+                
+
+
 
         
 # Workaround for i3 lack of include/source directives
@@ -651,7 +666,7 @@ def load(restore=False):
     nitrogen("load")
 
     # Package terminator
-    package_terminator()
+    terminator("load")
 
     # Package I3 
     package_i3()
