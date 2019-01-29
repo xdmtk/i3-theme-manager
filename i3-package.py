@@ -169,6 +169,42 @@ def show_usage():
         
 
 def write_blank_config():
+	'''
+	config_arg_list = {
+			'bar_prog' : '',
+			'terminal_prog' : '',
+			'screenshot_prog' : '',
+			'terminal_config_file' : '',
+			'i3_config_file' : '',
+			'bash_visual_file' : '',
+			'bash_aliases_file' : '',
+			'vimrc_file' : '',
+			'nitrogen_dir' : '',
+			'tint2_dir' : '',
+			'polybar_dir' : '',
+			'gtk_dir' : '',
+			'themes_dir' : '',
+			'icons_dir' : ''
+	}
+	'''
+
+	bar_prog_desc = [
+		'# Bar Program:',
+		'# --------------------:',
+		'# As of right now, only tint2 and polybar are supported, though the script',
+		'# can be easily tweaked to whatever status bar program you are using, as the copy/load functions',
+		'# are simply just recursive copy operations on the current set of bar themes over to',
+		'# your specified bar config directory',
+		'# ',
+		'# To have your specified bar start with your config, include an exec command on your specific bar',
+		'# in your i3 config file',
+		'# ',
+	]
+	term_prog_desc = [
+		'# Terminal Program',
+		'# --------------------:',
+		'# Similar to the bar program, the Terminator console emulator is the only program',
+		'# ',
 
     print("Generating empty config file")
     with open(I3P_CONF , 'w') as config:
