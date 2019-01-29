@@ -654,6 +654,10 @@ def i3(mode):
     elif mode == "load":
         theme_section_set = False
         i3_conf_list = []
+
+        # Backup original file just in case
+        subprocess.call(['cp', config_arg_list['i3_config_file'], 
+            config_arg_list['i3_config_file'] + '.backup'])
         with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
             for line in i3_conf_read:
                 if line.find("# i3 THEME SECTION START") != -1:
