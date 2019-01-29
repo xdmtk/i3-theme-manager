@@ -237,6 +237,42 @@ def write_blank_config():
 		'# package creation',
 		'# ',
 	]
+	bash_visual_file_desc = [
+		'# Bash Visual File',
+		'# --------------------:',
+		'# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
+		'# and should be sourced in your \'master\' .bashrc file as an extension',
+		'# ',
+	]
+	bash_aliases_file_desc = [
+		'# Bash Aliases File',
+		'# --------------------:',
+		'# Self explanatory but include this if your have theme dependent aliases you would like to include',
+		'# in your theme package',
+		'# ',
+	]
+	vimrc_desc = [
+		'# Vimrc File',
+		'# --------------------:',
+		'# Any colorscheme specified in this file will also be included in the theme package, the script',
+		'# will make an attempt to search for that color scheme in the standard home and system directories',
+		'# ',
+		'# If it can\'t be located, the script will ask you to specify continuously until the directory',
+		'# is found.',
+		'# ',
+	]
+	nitrogen_desc = [
+		'# Nitrogen Directory',
+		'# --------------------:',
+		'# Another area where only one specified program is supported, though this should change in future',
+		'# releases. Given your nitrogen configuration directory, typically located in ~/.config/nitrogen, ',
+		'# in addition to including the entire configuration directory in the package,',
+		'# the script will read the config file, and attempt to locate the specified wallpaper to be also',
+		'# included in the package',
+		'# ',
+	]
+
+	
 
 	
 
