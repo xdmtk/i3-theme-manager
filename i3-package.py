@@ -234,7 +234,7 @@ def package(backup=False):
     i3("package")
     
     # Package GTK 
-    package_gtk()
+    gtk("package")
 
     # Package Tint2/Polybar
     package_bar()
@@ -438,20 +438,14 @@ def bash(mode):
 
 
 
-def package_gtk():
+def gtk(mode):
    
     print("\n[+] GTK files\n * * * * * * * * * * * * *")
     
-    os.mkdir('gtk')
-    os.mkdir('gtk/themes')
-
     gtk_dir = config_arg_list['gtk_dir']
     gtk_settings_file = gtk_dir + '/settings.ini'
     gtk_theme = None ; gtk_icons = None ; gtk_cursor = None
     
-    subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
-    subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
-
     # Get theme info from settings file
     with open(gtk_settings_file, 'r') as config:
         for line in config:
@@ -461,10 +455,37 @@ def package_gtk():
                 gtk_icons = line.split("=")[1]
             elif line.find("gtk-cursor-theme-name") != -1:
                 gtk_cursors = line.split("=")[1]
-   
-    get_gtk_assets(gtk_theme)
-    get_gtk_assets(gtk_icons)
-    get_gtk_assets(gtk_cursors)
+    
+    if mode == "package": 
+       
+        os.mkdir('gtk')
+        os.mkdir('gtk/themes')
+        
+        subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
+        subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
+
+        get_gtk_assets(gtk_theme)
+        get_gtk_assets(gtk_icons)
+        get_gtk_assets(gtk_cursors)
+
+    elif mode == "load":
+        
+        subprocess.call(['cp', 'gtk/settings.ini', gtk_settings_file])
+        subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
+        
+        themes_dir = config_arg_list['themes_dir']
+        themes_dir = config_arg_list['icons_dir']
+        
+        print("[+] Loading GTK theme '" + gtk_theme + "'")
+        print("[+] Loading GTK icons '" + gtk_icons + "'")
+        print("[+] Loading GTK cursors '" + gtk_cursors + "'")
+
+        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_theme , themes_dir])
+        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_icons , icons_dir])
+        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_cursors, icons_dir])
+
+
+
 
 
 def get_gtk_assets(gtk_asset):
@@ -696,7 +717,7 @@ def load(restore=False):
     i3("load")
     
     # Package GTK 
-    package_gtk()
+    gtk("load")
 
     # Package Tint2/Polybar
     package_bar()
