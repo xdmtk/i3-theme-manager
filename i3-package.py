@@ -215,28 +215,14 @@ def package(backup=False):
         subprocess.call(['rm', '-rf', PACKAGE_DIR])
     os.mkdir(PACKAGE_DIR)
     
-    # CD to package directory
     os.chdir(PACKAGE_DIR)
    
-    # Package bash files
     bash("package") 
-
-    # Package vimrc
     vim("package")
-
-    # Packaging nitrogen requires special handling of wallpaper files
     nitrogen("package")
-
-    # Package terminator
     terminator("package")
-
-    # Package I3 
     i3("package")
-    
-    # Package GTK 
     gtk("package")
-
-    # Package Tint2/Polybar
     bar("package")
    
 
@@ -309,7 +295,6 @@ def kill_workspace():
 
 def take_screenshot():
    
-    
     # Jump to empty workspace and open some visual programs
     if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
         print("[-] Screenshot requires i3-msg... how do you not have this?")
@@ -427,9 +412,6 @@ def vim(mode):
         subprocess.call(['cp', 'vim/color_scheme/*', USER_HOME + '/.vim/colors'])
 
 
-        
-
-
 def bash(mode):
     print("\n[+] Bash files\n * * * * * * * * * * * * *")
     if mode == "package": 
@@ -456,8 +438,6 @@ def bash(mode):
         subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
             config_arg_list['bash_aliases_file']])
         
-
-
 
 def gtk(mode):
    
@@ -506,9 +486,6 @@ def gtk(mode):
         subprocess.call(['cp', ,'-R', 'gtk/' + gtk_cursors, icons_dir])
 
 
-
-
-
 def get_gtk_assets(gtk_asset):
     gtk_asset = gtk_asset.replace('\n','')
     # Attempt to locate themes referenced in settings.ini
@@ -539,8 +516,6 @@ def get_gtk_assets(gtk_asset):
     subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
     print("[+] Recursively copying " + dir_loc)    
     
-
-
 
 def nitrogen(mode):
     # Package nitrogen
@@ -588,7 +563,6 @@ def nitrogen(mode):
                             os.mkdir(wallpaper_path_build)
 
 
-
 def check_image(p):
     img_type = [
             ".png",
@@ -603,8 +577,6 @@ def check_image(p):
 
     return False
 
-
-   
 
 # Terminator package function to get config + compile font list
 def terminator(mode):
@@ -644,10 +616,6 @@ def terminator(mode):
             for font in fl:
                 print("[-] " + font.replace('\n',''))
                 
-                
-
-
-
         
 # Workaround for i3 lack of include/source directives
 def i3(mode):
@@ -703,7 +671,6 @@ def i3(mode):
                 i3_conf_write.write(line)
 
 
-
 def load(restore=False):
     global LOAD_PACKAGE_NAME
 
@@ -730,25 +697,12 @@ def load(restore=False):
     bash("load") 
     vim("load")
     nitrogen("load")
-
-    # Package terminator
     terminator("load")
-
-    # Package I3 
     i3("load")
-    
-    # Package GTK 
     gtk("load")
-
-    # Package Tint2/Polybar
     bar("load")
 
-
-
-
-
     quit()
-
 
 
 main()
