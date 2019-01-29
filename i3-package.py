@@ -169,24 +169,6 @@ def show_usage():
         
 
 def write_blank_config():
-	'''
-	config_arg_list = {
-			'bar_prog' : '',
-			'terminal_prog' : '',
-			'screenshot_prog' : '',
-			'terminal_config_file' : '',
-			'i3_config_file' : '',
-			'bash_visual_file' : '',
-			'bash_aliases_file' : '',
-			'vimrc_file' : '',
-			'nitrogen_dir' : '',
-			'tint2_dir' : '',
-			'polybar_dir' : '',
-			'gtk_dir' : '',
-			'themes_dir' : '',
-			'icons_dir' : ''
-	}
-	'''
 
 	bar_prog_desc = [
 		'# Bar Program:',
@@ -198,7 +180,7 @@ def write_blank_config():
 		'# ',
 		'# To have your specified bar start with your config, include an exec command on your specific bar',
 		'# in your i3 config file',
-		'# ',
+		'# '
 	]
 	term_prog_desc = [
 		'# Terminal Program',
@@ -206,7 +188,7 @@ def write_blank_config():
 		'# Similar to the bar program, the Terminator console emulator is the only program',
 		'# hardcoded into the script to work correctly, though it can be easily modified for your',
 		'# specific terminal emulator',
-		'# ',
+		'# '
 	]
 	i3_conf_desc = [
 		'# i3 Config File',
@@ -227,7 +209,7 @@ def write_blank_config():
 		'# 		and',
 		'# 		\'# i3 THEME REGION END\'',
 		'# 		',
-		'# ',
+		'# '
 	]
 	screenshot_desc = [
 		'# Screenshot Program',
@@ -235,21 +217,21 @@ def write_blank_config():
 		'# Once again another area that supports only a particular program (more support to follow in later releases',
 		'# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
 		'# package creation',
-		'# ',
+		'# '
 	]
 	bash_visual_file_desc = [
 		'# Bash Visual File',
 		'# --------------------:',
 		'# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
 		'# and should be sourced in your \'master\' .bashrc file as an extension',
-		'# ',
+		'# '
 	]
 	bash_aliases_file_desc = [
 		'# Bash Aliases File',
 		'# --------------------:',
 		'# Self explanatory but include this if your have theme dependent aliases you would like to include',
 		'# in your theme package',
-		'# ',
+		'# '
 	]
 	vimrc_desc = [
 		'# Vimrc File',
@@ -259,7 +241,7 @@ def write_blank_config():
 		'# ',
 		'# If it can\'t be located, the script will ask you to specify continuously until the directory',
 		'# is found.',
-		'# ',
+		'# '
 	]
 	nitrogen_desc = [
 		'# Nitrogen Directory',
@@ -269,20 +251,20 @@ def write_blank_config():
 		'# in addition to including the entire configuration directory in the package,',
 		'# the script will read the config file, and attempt to locate the specified wallpaper to be also',
 		'# included in the package',
-		'# ',
+		'# '
 	]
 	tint2_desc = [
 		'# Tint2 Directory',
 		'# --------------------:',
 		'# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
 		'# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
-		'# ',
+		'# '
 	]
-	tint2_desc = [
+	polybar_desc = [
 		'# Polybar Directory',
 		'# --------------------:',
 		'# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
-		'# ',
+		'# '
 	]
 	gtk_desc = [
 		'# GTK Directory',
@@ -290,26 +272,40 @@ def write_blank_config():
 		'# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
 		'# the current theme, cursors and icons. The following directory specifications should provide the',
 		'# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
-		'# ',
+		'# '
 	]
 	gtk_icons_desc = [
 		'# GTK Icons Directory',
 		'# --------------------:',
 		'# In addition to the user specified icons directory, the script will also check the default system',
 		'# locations for GTK icons, typically /usr/share/icons',
-		'# ',
+		'# '
 	]
 	gtk_cursors_desc = [
 		'# GTK Cursors Directory',
 		'# --------------------:',
 		'# In addition to the user specified cursors directory, the script will also check the default system',
 		'# locations for GTK icons, typically /usr/share/icons/cursors',
-		'# ',
+		'# '
 	]
-
-
-    print("Generating empty config file")
-    with open(I3P_CONF , 'w') as config:
+	
+	desc_list = [
+		bar_prog_desc,
+		term_prog_desc,
+		i3_conf_desc,
+		screenshot_desc,
+		bash_visual_file_desc,
+		bash_aliases_file_desc,
+		vimrc_desc,
+		nitrogen_desc,
+		tint2_desc,
+		polybar_desc,
+		gtk_desc,
+		gtk_icons_desc,
+		gtk_cursors_desc
+	]
+	print("[+] Generating empty config file")
+	with open(I3P_CONF, 'w') as config:
         # Write arg list into config file
         for arg in config_arg_list:
             config.write(arg + '=' + '\n')
