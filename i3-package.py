@@ -271,10 +271,42 @@ def write_blank_config():
 		'# included in the package',
 		'# ',
 	]
+	tint2_desc = [
+		'# Tint2 Directory',
+		'# --------------------:',
+		'# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
+		'# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
+		'# ',
+	]
+	tint2_desc = [
+		'# Polybar Directory',
+		'# --------------------:',
+		'# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
+		'# ',
+	]
+	gtk_desc = [
+		'# GTK Directory',
+		'# --------------------:',
+		'# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
+		'# the current theme, cursors and icons. The following directory specifications should provide the',
+		'# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
+		'# ',
+	]
+	gtk_icons_desc = [
+		'# GTK Icons Directory',
+		'# --------------------:',
+		'# In addition to the user specified icons directory, the script will also check the default system',
+		'# locations for GTK icons, typically /usr/share/icons',
+		'# ',
+	]
+	gtk_cursors_desc = [
+		'# GTK Cursors Directory',
+		'# --------------------:',
+		'# In addition to the user specified cursors directory, the script will also check the default system',
+		'# locations for GTK icons, typically /usr/share/icons/cursors',
+		'# ',
+	]
 
-	
-
-	
 
     print("Generating empty config file")
     with open(I3P_CONF , 'w') as config:
