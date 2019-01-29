@@ -237,7 +237,7 @@ def package(backup=False):
     gtk("package")
 
     # Package Tint2/Polybar
-    package_bar()
+    bar("package")
    
 
     if backup is False: 
@@ -329,19 +329,40 @@ def take_screenshot():
             PACKAGE_DIR + '/' + PACKAGE_NAME + '.png'])
 
         print("[+] Saved screenshot to package directory at '" + PACKAGE_DIR + "'")
+    else:
+        print("[-] Requires 'xfce4-screenshooter' for screen capture")
 
     
     kill_workspace()
 
 
-def package_bar():
-    bar_prog = config_arg_list['bar_prog']
-    if bar_prog == "polybar":
-        subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
-    elif bar_prog == "tint2":
-        subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
-    else:
-        print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+def bar(mode):
+    
+    print("\n[+] Bar files\n * * * * * * * * * * * * *")
+    
+    if mode == "package":
+        bar_prog = config_arg_list['bar_prog']
+        if bar_prog == "polybar":
+            print("[+] Copying polybar files ")
+            subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
+        elif bar_prog == "tint2":
+            print("[+] Copying tint2 files ")
+            subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
+        else:
+            print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+
+    elif mode == "load":
+        bar_prog = config_arg_list['bar_prog']
+        if bar_prog == "polybar":
+            print("[+] Loading polybar files ")
+            subprocess.call(['cp', bar_prog + '/*', config_arg_list['polybar_dir']])
+        elif bar_prog == "tint2":
+            print("[+] Loading tint2 files ")
+            subprocess.call(['cp', bar_prog + '/*', config_arg_list['tint2_dir']])
+        else:
+            print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+
+
 
 
 def vim(mode):
@@ -720,7 +741,7 @@ def load(restore=False):
     gtk("load")
 
     # Package Tint2/Polybar
-    package_bar()
+    bar("load")
 
 
 
