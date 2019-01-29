@@ -109,7 +109,7 @@ def parse_config():
 
 def parse_args():
     global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
-    global PACKAGE_NAME  
+    global PACKAGE_NAME ; global LOAD_PACKAGE_NAME
     
     # Parse args ( only  one ) 
     if len(sys.argv) > 1:
@@ -211,6 +211,8 @@ def package(backup=False):
 
     
     PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
+    if os.path.isdir(PACKAGE_DIR):
+        subprocess.call(['rm', '-rf', PACKAGE_DIR])
     os.mkdir(PACKAGE_DIR)
     
     # CD to package directory
@@ -499,13 +501,11 @@ def get_gtk_assets(gtk_asset):
 
 
 def nitrogen(mode):
-
     # Package nitrogen
     print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
     if mode == "package":
-        os.mkdir('nitrogen')
-        subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], 'nitrogen/'])
+        subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], '.'])
        
         # Read bg-saved config to fetch wallpapers
         bg_saved_file = config_arg_list['nitrogen_dir']
@@ -528,12 +528,12 @@ def nitrogen(mode):
         subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
         
         wallpaper_path = ""
-        wallpaper_path_build = ""
         with open(bg_saved_file, 'r') as config:
             for line in config:
+                wallpaper_path_build = ""
                 if line.find('file') !=  -1:
                     wallpaper_path = line.split('=')[1].replace('\n','')
-                    for x in range(0,len(wallpaper_path.split('/'))-1):
+                    for x in range(0,len(wallpaper_path.split('/'))):
                         wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
                         # If path contains image, stop making directories if needed and make the copy
                         if check_image(wallpaper_path_build) == True:
@@ -543,7 +543,7 @@ def nitrogen(mode):
                         if not os.path.isdir(wallpaper_path_build):
                             # If the wallpaper path specified doesn't exist, gradually
                             # construct the needed directories until image can be copied successfully
-                            os,mkdir(wallpaper_path_build)
+                            os.mkdir(wallpaper_path_build)
 
 
 
@@ -624,14 +624,15 @@ def package_i3():
 
     
 def load(restore=False):
-    
+    global LOAD_PACKAGE_NAME
+
     if LOAD_PACKAGE_NAME != "":
         if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
             print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
             quit()
     else:
         while True:
-            print("[+] Enter package name to load:\n>>>". end="")
+            print("[+] Enter package name to load:\n>>>", end="")
             LOAD_PACKAGE_NAME = input()
             if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
                 print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
