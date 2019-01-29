@@ -44,7 +44,7 @@ config_arg_list = {
 
 
 def main():
-    #pdb.set_trace()
+    
     # Check if config file exists
     check_config()
     if (parse_args() == ARG_FAIL):
@@ -340,10 +340,11 @@ def bar(mode):
         bar_prog = config_arg_list['bar_prog']
         if bar_prog == "polybar":
             print("[+] Loading polybar files ")
-            subprocess.call(['cp', bar_prog + '/*', config_arg_list['polybar_dir']])
+            subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
         elif bar_prog == "tint2":
+            pdb.set_trace()
             print("[+] Loading tint2 files ")
-            subprocess.call(['cp', bar_prog + '/*', config_arg_list['tint2_dir']])
+            subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
         else:
             print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
@@ -409,7 +410,9 @@ def vim(mode):
             os.mkdir(USER_HOME + '/.vim/colors')
 
         print("[+] Loading VIM colorscheme")
-        subprocess.call(['cp', 'vim/color_scheme/*', USER_HOME + '/.vim/colors'])
+        color_scheme = subprocess.check_output(['ls', 'vim/color_scheme'])
+        color_scheme = str(color_scheme).replace('\\n','')[2:-1]
+        subprocess.call(['cp', 'vim/color_scheme/' + color_scheme, USER_HOME + '/.vim/colors'])
 
 
 def bash(mode):
@@ -427,7 +430,7 @@ def bash(mode):
        
         print("[+] Loading: " + config_arg_list['bash_visual_file'])
         bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
-        bash_aliases_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
+        bash_visual_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
         subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
             config_arg_list['bash_visual_file']])
 
@@ -451,11 +454,12 @@ def gtk(mode):
     with open(gtk_settings_file, 'r') as config:
         for line in config:
             if line.find("gtk-theme-name") != -1:
-                gtk_theme = line.split("=")[1]
+                gtk_theme = line.split("=")[1].replace('\n','')
             elif line.find("gtk-icon-theme-name") != -1:
-                gtk_icons = line.split("=")[1]
+                gtk_icons = line.split("=")[1].replace('\n','')
             elif line.find("gtk-cursor-theme-name") != -1:
-                gtk_cursors = line.split("=")[1]
+                gtk_cursors = line.split("=")[1].replace('\n','')
+
     
     if mode == "package": 
        
@@ -475,19 +479,19 @@ def gtk(mode):
         subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
         
         themes_dir = config_arg_list['themes_dir']
-        themes_dir = config_arg_list['icons_dir']
+        icons_dir = config_arg_list['icons_dir']
         
         print("[+] Loading GTK theme '" + gtk_theme + "'")
         print("[+] Loading GTK icons '" + gtk_icons + "'")
         print("[+] Loading GTK cursors '" + gtk_cursors + "'")
 
-        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_theme , themes_dir])
-        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_icons , icons_dir])
-        subprocess.call(['cp', ,'-R', 'gtk/' + gtk_cursors, icons_dir])
+        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_theme, themes_dir])
+        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_icons, icons_dir])
+        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_cursors, icons_dir])
 
 
 def get_gtk_assets(gtk_asset):
-    gtk_asset = gtk_asset.replace('\n','')
+    
     # Attempt to locate themes referenced in settings.ini
     gtk_asset = gtk_asset.replace('\n','')
      
@@ -597,7 +601,7 @@ def terminator(mode):
                     try: 
                         font_list.append(line.split('=')[1])
                     except:
-                        pdb.set_trace()
+                        pass
 
         
         subprocess.call(['touch', term_dir + '/font_list'])
@@ -609,7 +613,7 @@ def terminator(mode):
         config_file_name = config_arg_list['terminal_config_file'].split('/')
         config_file_name = config_file_name[len(config_file_name)-1]
         subprocess.call(['cp', 'terminator/' + config_file_name, 
-            config_arg_list['terminal_config_file'])
+            config_arg_list['terminal_config_file']])
    
         print("[-] ##### Fonts required #####")
         with open('terminator/font_list', 'r') as fl:
@@ -665,8 +669,8 @@ def i3(mode):
         with open('i3/i3_theme_sec', 'r') as i3_theme_read:
             for line in i3_theme_read:
                 i3_conf_list.append(line)
-            
-        with open(config_arg_list['i3_config_file'], 'w') as i3_conf:
+        
+        with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
             for line in i3_conf_list:
                 i3_conf_write.write(line)
 
@@ -693,7 +697,7 @@ def load(restore=False):
         package(True)
     
     os.chdir(I3P_DIR + LOAD_PACKAGE_NAME)
-    
+
     bash("load") 
     vim("load")
     nitrogen("load")
