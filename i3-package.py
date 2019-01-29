@@ -524,9 +524,9 @@ def nitrogen(mode):
     
     elif mode == "load":
 
-        subprocess.call(['cp', 'nitrogen/bg-saved.cfg', config_arg_list['nitrogen_dir']])
-        
         bg_saved_file = 'nitrogen/bg-saved.cfg'
+        subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
+        
         wallpaper_path = ""
         wallpaper_path_build = ""
         with open(bg_saved_file, 'r') as config:
@@ -536,8 +536,10 @@ def nitrogen(mode):
                     for x in range(0,len(wallpaper_path.split('/'))-1):
                         wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
                         # If path contains image, stop making directories if needed and make the copy
-                        if check_image(wallpaper_path_build) == -1:
-                            # TODO
+                        if check_image(wallpaper_path_build) == True:
+                            subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
+                                wallpaper_path_build])
+                            break
                         if not os.path.isdir(wallpaper_path_build):
                             # If the wallpaper path specified doesn't exist, gradually
                             # construct the needed directories until image can be copied successfully
@@ -545,8 +547,20 @@ def nitrogen(mode):
 
 
 
+def check_image(p):
+    img_type = [
+            ".png",
+            ".jpeg",
+            ".jpg",
+            ".gif",
+            ".bmp",
+       ] 
+    for img in img_type:
+        if p.find(img) != -1:
+            return True
 
-        
+    return False
+
 
    
 
