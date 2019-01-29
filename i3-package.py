@@ -342,7 +342,6 @@ def bar(mode):
             print("[+] Loading polybar files ")
             subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
         elif bar_prog == "tint2":
-            pdb.set_trace()
             print("[+] Loading tint2 files ")
             subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
         else:
