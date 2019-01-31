@@ -168,142 +168,142 @@ def show_usage():
     print(usage)
         
 
-def write_blank_config():
+def write_blank_config():	
 
-	bar_prog_desc = [
-		'# Bar Program:',
-		'# --------------------:',
-		'# As of right now, only tint2 and polybar are supported, though the script',
-		'# can be easily tweaked to whatever status bar program you are using, as the copy/load functions',
-		'# are simply just recursive copy operations on the current set of bar themes over to',
-		'# your specified bar config directory',
-		'# ',
-		'# To have your specified bar start with your config, include an exec command on your specific bar',
-		'# in your i3 config file',
-		'# '
-	]
-	term_prog_desc = [
-		'# Terminal Program',
-		'# --------------------:',
-		'# Similar to the bar program, the Terminator console emulator is the only program',
-		'# hardcoded into the script to work correctly, though it can be easily modified for your',
-		'# specific terminal emulator',
-		'# '
-	]
-	i3_conf_desc = [
-		'# i3 Config File',
-		'# --------------------:',
-		'# The i3 config file is handled by specifying a region that is unique to the theme',
-		'# which becomes the only part of the config file that is stored during package creation',
-		'# ',
-		'# During package loading, if no specified theme region is found, the theme region stored',
-		'# in the package is simply appended to the i3 config file, otherwise it is replaced',
-		'# ',
-		'# Aside from the obvious visual configuration elements that should be included in this region',
-		'# some other considerations are exec commands against other theme specified items like your status',
-		'# bar or other theme specific programs',
-		'# ',
-		'# Format this region by',
-		'# 		',
-		'# 		\'# i3 THEME REGION START\'',
-		'# 		and',
-		'# 		\'# i3 THEME REGION END\'',
-		'# 		',
-		'# '
-	]
-	screenshot_desc = [
-		'# Screenshot Program',
-		'# --------------------:',
-		'# Once again another area that supports only a particular program (more support to follow in later releases',
-		'# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
-		'# package creation',
-		'# '
-	]
-	bash_visual_file_desc = [
-		'# Bash Visual File',
-		'# --------------------:',
-		'# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
-		'# and should be sourced in your \'master\' .bashrc file as an extension',
-		'# '
-	]
-	bash_aliases_file_desc = [
-		'# Bash Aliases File',
-		'# --------------------:',
-		'# Self explanatory but include this if your have theme dependent aliases you would like to include',
-		'# in your theme package',
-		'# '
-	]
-	vimrc_desc = [
-		'# Vimrc File',
-		'# --------------------:',
-		'# Any colorscheme specified in this file will also be included in the theme package, the script',
-		'# will make an attempt to search for that color scheme in the standard home and system directories',
-		'# ',
-		'# If it can\'t be located, the script will ask you to specify continuously until the directory',
-		'# is found.',
-		'# '
-	]
-	nitrogen_desc = [
-		'# Nitrogen Directory',
-		'# --------------------:',
-		'# Another area where only one specified program is supported, though this should change in future',
-		'# releases. Given your nitrogen configuration directory, typically located in ~/.config/nitrogen, ',
-		'# in addition to including the entire configuration directory in the package,',
-		'# the script will read the config file, and attempt to locate the specified wallpaper to be also',
-		'# included in the package',
-		'# '
-	]
-	tint2_desc = [
-		'# Tint2 Directory',
-		'# --------------------:',
-		'# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
-		'# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
-		'# '
-	]
-	polybar_desc = [
-		'# Polybar Directory',
-		'# --------------------:',
-		'# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
-		'# '
-	]
-	gtk_desc = [
-		'# GTK Directory',
-		'# --------------------:',
-		'# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
-		'# the current theme, cursors and icons. The following directory specifications should provide the',
-		'# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
-		'# '
-	]
-	gtk_icons_desc = [
-		'# GTK Icons Directory',
-		'# --------------------:',
-		'# In addition to the user specified icons directory, the script will also check the default system',
-		'# locations for GTK icons, typically /usr/share/icons',
-		'# '
-	]
-	gtk_cursors_desc = [
-		'# GTK Cursors Directory',
-		'# --------------------:',
-		'# In addition to the user specified cursors directory, the script will also check the default system',
-		'# locations for GTK icons, typically /usr/share/icons/cursors',
-		'# '
-	]
-	
-	desc_list = [
-		bar_prog_desc,
-		term_prog_desc,
-		i3_conf_desc,
-		screenshot_desc,
-		bash_visual_file_desc,
-		bash_aliases_file_desc,
-		vimrc_desc,
-		nitrogen_desc,
-		tint2_desc,
-		polybar_desc,
-		gtk_desc,
-		gtk_icons_desc,
-		gtk_cursors_desc
-	]
+    bar_prog_desc = [
+        '# Bar Program:',
+        '# --------------------:',
+        '# As of right now, only tint2 and polybar are supported, though the script',
+        '# can be easily tweaked to whatever status bar program you are using, as the copy/load functions',
+        '# are simply just recursive copy operations on the current set of bar themes over to',
+        '# your specified bar config directory',
+        '# ',
+        '# To have your specified bar start with your config, include an exec command on your specific bar',
+        '# in your i3 config file',
+        '# '
+    ]
+    term_prog_desc = [
+        '# Terminal Program',
+        '# --------------------:',
+        '# Similar to the bar program, the Terminator console emulator is the only program',
+        '# hardcoded into the script to work correctly, though it can be easily modified for your',
+        '# specific terminal emulator',
+        '# '
+    ]
+    i3_conf_desc = [
+        '# i3 Config File',
+        '# --------------------:',
+        '# The i3 config file is handled by specifying a region that is unique to the theme',
+        '# which becomes the only part of the config file that is stored during package creation',
+        '# ',
+        '# During package loading, if no specified theme region is found, the theme region stored',
+        '# in the package is simply appended to the i3 config file, otherwise it is replaced',
+        '# ',
+        '# Aside from the obvious visual configuration elements that should be included in this region',
+        '# some other considerations are exec commands against other theme specified items like your status',
+        '# bar or other theme specific programs',
+        '# ',
+        '# Format this region by',
+        '# 		',
+        '# 		\'# i3 THEME REGION START\'',
+        '# 		and',
+        '# 		\'# i3 THEME REGION END\'',
+        '# 		',
+        '# '
+    ]
+    screenshot_desc = [
+        '# Screenshot Program',
+        '# --------------------:',
+        '# Once again another area that supports only a particular program (more support to follow in later releases',
+        '# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
+        '# package creation',
+        '# '
+    ]
+    bash_visual_file_desc = [
+        '# Bash Visual File',
+        '# --------------------:',
+        '# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
+        '# and should be sourced in your \'master\' .bashrc file as an extension',
+        '# '
+    ]
+    bash_aliases_file_desc = [
+        '# Bash Aliases File',
+        '# --------------------:',
+        '# Self explanatory but include this if your have theme dependent aliases you would like to include',
+        '# in your theme package',
+        '# '
+    ]
+    vimrc_desc = [
+        '# Vimrc File',
+        '# --------------------:',
+        '# Any colorscheme specified in this file will also be included in the theme package, the script',
+        '# will make an attempt to search for that color scheme in the standard home and system directories',
+        '# ',
+        '# If it can\'t be located, the script will ask you to specify continuously until the directory',
+        '# is found.',
+        '# '
+    ]
+    nitrogen_desc = [
+        '# Nitrogen Directory',
+        '# --------------------:',
+        '# Another area where only one specified program is supported, though this should change in future',
+        '# releases. Given your nitrogen configuration directory, typically located in ~/.config/nitrogen, ',
+        '# in addition to including the entire configuration directory in the package,',
+        '# the script will read the config file, and attempt to locate the specified wallpaper to be also',
+        '# included in the package',
+        '# '
+    ]
+    tint2_desc = [
+        '# Tint2 Directory',
+        '# --------------------:',
+        '# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
+        '# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
+        '# '
+    ]
+    polybar_desc = [
+        '# Polybar Directory',
+        '# --------------------:',
+        '# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
+        '# '
+    ]
+    gtk_desc = [
+        '# GTK Directory',
+        '# --------------------:',
+        '# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
+        '# the current theme, cursors and icons. The following directory specifications should provide the',
+        '# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
+        '# '
+    ]
+    gtk_icons_desc = [
+        '# GTK Icons Directory',
+        '# --------------------:',
+        '# In addition to the user specified icons directory, the script will also check the default system',
+        '# locations for GTK icons, typically /usr/share/icons',
+        '# '
+    ]
+    gtk_cursors_desc = [
+        '# GTK Cursors Directory',
+        '# --------------------:',
+        '# In addition to the user specified cursors directory, the script will also check the default system',
+        '# locations for GTK icons, typically /usr/share/icons/cursors',
+        '# '
+    ]
+
+    desc_list = [
+        bar_prog_desc,
+        term_prog_desc,
+        i3_conf_desc,
+        screenshot_desc,
+        bash_visual_file_desc,
+        bash_aliases_file_desc,
+        vimrc_desc,
+        nitrogen_desc,
+        tint2_desc,
+        polybar_desc,
+        gtk_desc,
+        gtk_icons_desc,
+        gtk_cursors_desc
+    ]
 	print("[+] Generating empty config file")
 	with open(I3P_CONF, 'w') as config:
         # Write arg list into config file
