@@ -304,8 +304,8 @@ def write_blank_config():
         gtk_icons_desc,
         gtk_cursors_desc
     ]
-	print("[+] Generating empty config file")
-	with open(I3P_CONF, 'w') as config:
+    print("[+] Generating empty config file")
+    with open(I3P_CONF, 'w') as config:
         # Write arg list into config file
         for arg in config_arg_list:
             config.write(arg + '=' + '\n')
