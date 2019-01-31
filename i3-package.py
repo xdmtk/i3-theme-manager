@@ -281,34 +281,40 @@ def write_blank_config():
         '# locations for GTK icons, typically /usr/share/icons',
         '# '
     ]
-    gtk_cursors_desc = [
-        '# GTK Cursors Directory',
+    themes_desc = [
+        '# Themes Directory',
         '# --------------------:',
-        '# In addition to the user specified cursors directory, the script will also check the default system',
-        '# locations for GTK icons, typically /usr/share/icons/cursors',
+        '# This is generally ~/.themes, used to store all GTK themes. If the theme specified is not located'
+        '# here, the script will attempt to locate it in the system directory \'/usr/share/themes\'',
         '# '
     ]
 
     desc_list = [
-        bar_prog_desc,
-        term_prog_desc,
-        i3_conf_desc,
-        screenshot_desc,
-        bash_visual_file_desc,
-        bash_aliases_file_desc,
-        vimrc_desc,
-        nitrogen_desc,
-        tint2_desc,
-        polybar_desc,
-        gtk_desc,
-        gtk_icons_desc,
-        gtk_cursors_desc
+        'bar_prog' : bar_prog_desc,
+        'terminal_prog' : term_prog_desc,
+        'terminal_config_file' :
+        'i3_config_file' : i3_conf_desc,
+        'screenshot_prog' : screenshot_desc,
+        'bash_visual_file' : bash_visual_file_desc,
+        'bash_aliases_file' : bash_aliases_file_desc,
+        'vimrc_file' : vimrc_desc,
+        'nitrogen_dir' : nitrogen_desc,
+        'tint2_dir' : tint2_desc,
+        'polybar_dir' : polybar_desc,
+        'gtk_dir' : gtk_desc,
+        'icons_dir' : gtk_icons_desc,
+        'themes_dir' : themes_desc,
     ]
-    print("[+] Generating empty config file")
+   
+   print("[+] Generating empty config file")
+    x = 0
     with open(I3P_CONF, 'w') as config:
         # Write arg list into config file
         for arg in config_arg_list:
             config.write(arg + '=' + '\n')
+            for line in desc_list[x]:
+                config.write(line + '\n')
+            x += 1
         
     
 def check_config():
