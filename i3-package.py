@@ -190,6 +190,13 @@ def write_blank_config():
         '# specific terminal emulator',
         '# '
     ]
+    term_conf_desc = [
+        '# Terminal Config File',
+        '# --------------------:',
+        '# For terminator the default name should be \'config\', but this option should still be specified',
+        '# as in future releases various config file formats and locations will be supported'
+        '# '
+    ]
     i3_conf_desc = [
         '# i3 Config File',
         '# --------------------:',
@@ -289,10 +296,10 @@ def write_blank_config():
         '# '
     ]
 
-    desc_list = [
+    desc_list = {
         'bar_prog' : bar_prog_desc,
         'terminal_prog' : term_prog_desc,
-        'terminal_config_file' :
+        'terminal_config_file' : term_conf_desc,
         'i3_config_file' : i3_conf_desc,
         'screenshot_prog' : screenshot_desc,
         'bash_visual_file' : bash_visual_file_desc,
@@ -304,18 +311,17 @@ def write_blank_config():
         'gtk_dir' : gtk_desc,
         'icons_dir' : gtk_icons_desc,
         'themes_dir' : themes_desc,
-    ]
+    }
    
-   print("[+] Generating empty config file")
+    print("[+] Generating empty config file")
     x = 0
     with open(I3P_CONF, 'w') as config:
-        # Write arg list into config file
         for arg in config_arg_list:
-            config.write(arg + '=' + '\n')
-            for line in desc_list[x]:
+            for line in desc_list[arg]:
                 config.write(line + '\n')
+            # Write arg list into config file
+            config.write(arg + '=' + '\n')
             x += 1
-        
     
 def check_config():
     global USER_HOME ; global I3P_DIR ; global I3P_CONF 
