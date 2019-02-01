@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1003</width>
-    <height>452</height>
+    <width>648</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,29 +27,29 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
-      <width>631</width>
-      <height>431</height>
+      <y>460</y>
+      <width>491</width>
+      <height>91</height>
      </rect>
     </property>
    </widget>
    <widget class="QGraphicsView" name="theme_view">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>10</x>
       <y>10</y>
-      <width>341</width>
-      <height>291</height>
+      <width>631</width>
+      <height>431</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="load_button">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>310</y>
-      <width>161</width>
-      <height>61</height>
+      <x>510</x>
+      <y>460</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -59,10 +59,10 @@
    <widget class="QPushButton" name="package_button">
     <property name="geometry">
      <rect>
-      <x>830</x>
-      <y>310</y>
-      <width>161</width>
-      <height>61</height>
+      <x>510</x>
+      <y>490</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -72,10 +72,10 @@
    <widget class="QPushButton" name="revert_button">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>380</y>
-      <width>341</width>
-      <height>61</height>
+      <x>510</x>
+      <y>520</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
