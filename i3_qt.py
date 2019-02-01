@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
-        MainWindow.resize(648, 566)
+        MainWindow.resize(848, 766)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -26,19 +26,19 @@ class Ui_MainWindow(object):
         self.centralWidget = QtWidgets.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.theme_list = QtWidgets.QListWidget(self.centralWidget)
-        self.theme_list.setGeometry(QtCore.QRect(10, 460, 491, 91))
+        self.theme_list.setGeometry(QtCore.QRect(10, 660, 691, 91))
         self.theme_list.setObjectName("theme_list")
         self.theme_view = QtWidgets.QLabel(self.centralWidget)
-        self.theme_view.setGeometry(QtCore.QRect(10, 10, 631, 431))
+        self.theme_view.setGeometry(QtCore.QRect(10, 10, 831, 631))
         self.theme_view.setObjectName("theme_view")
         self.load_button = QtWidgets.QPushButton(self.centralWidget)
-        self.load_button.setGeometry(QtCore.QRect(510, 460, 131, 31))
+        self.load_button.setGeometry(QtCore.QRect(710, 660, 131, 31))
         self.load_button.setObjectName("load_button")
         self.package_button = QtWidgets.QPushButton(self.centralWidget)
-        self.package_button.setGeometry(QtCore.QRect(510, 490, 131, 31))
+        self.package_button.setGeometry(QtCore.QRect(710, 690, 131, 31))
         self.package_button.setObjectName("package_button")
         self.revert_button = QtWidgets.QPushButton(self.centralWidget)
-        self.revert_button.setGeometry(QtCore.QRect(510, 520, 131, 31))
+        self.revert_button.setGeometry(QtCore.QRect(710, 720, 131, 31))
         self.revert_button.setObjectName("revert_button")
         MainWindow.setCentralWidget(self.centralWidget)
 
@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.theme_list.itemClicked.connect(self.onclick_theme_list)
         self.load_button.clicked.connect(self.onclick_load_button)
+        self.package_button.clicked.connect(self.onclick_package_button)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -78,7 +79,7 @@ class Ui_MainWindow(object):
             fail_box.exec_()
             return
         cur_dir = os.getcwd()
-        #subprocess.call(['python3', cur_dir + '/i3-package.py', 'load', '-t ', CURRENT_SELECTION, '-g'])
+        subprocess.call(['python3', cur_dir + '/i3-package.py', 'load', '-t ', CURRENT_SELECTION, '-g'])
         qbox = QtWidgets.QMessageBox()
         qbox.setText("i3-theme-manager needs to kill the current i3 session to reload the applied theme. \n\n "
                      + "Kill current i3 session?")
@@ -89,6 +90,8 @@ class Ui_MainWindow(object):
             subprocess.call(['killall', 'i3'])
 
 
+    def onclick_package_button(self):
+        pass
 
 
     def onclick_theme_list(self):
