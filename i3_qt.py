@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'mainwindow.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+import os
+
 
 class Ui_MainWindow(object):
+
+
+
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -40,6 +38,23 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        # Quick and dirty...
+        USER = os.environ.get("USER")
+        I3P_DIR = "/home/" + USER + "/.config/i3packager/"
+
+
+        if not (os.path.isdir(I3P_DIR) and os.path.isfile(I3P_DIR + "config")):
+            print("[-] Please run CLI application first to generate config file and directory")
+            quit()
+
+        theme_dir_listing = os.listdir(I3P_DIR)
+        for dir in theme_dir_listing:
+            if os.path.isdir(I3P_DIR + dir) and dir != ".last":
+                self.theme_list.addItem(dir)
+
+
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -56,4 +71,5 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
 
