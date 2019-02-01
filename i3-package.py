@@ -10,6 +10,7 @@ import pdb
 
 
 MODE_PACKAGE = False
+MODE_REVERT = False
 MODE_LOAD = False
 MODE_CONFIG = False
 ARG_FAIL = -1
@@ -61,6 +62,8 @@ def main():
         package()
     elif MODE_LOAD is True:
         load()
+    elif MODE_REVERT is True:
+        load("revert")
 
 
 def parse_config():
@@ -113,13 +116,13 @@ def parse_config():
 
 
 def parse_args():
-    global MODE_PACKAGE ; global MODE_LOAD ; global USER_HOME
-    global PACKAGE_NAME ; global LOAD_PACKAGE_NAME
+    global MODE_PACKAGE ; global MODE_LOAD ; global MOAD_REVERT
+    global PACKAGE_NAME ; global LOAD_PACKAGE_NAME ; global USER_HOME
     
     # Parse args ( only  one ) 
     if len(sys.argv) > 1:
         mode = sys.argv[1]
-        if mode != "load" and mode != "package":
+        if mode != "load" and mode != "package" and mode != "revert":
             print("[-] Invalid mode '" + mode + "' supplied")
             return ARG_FAIL
         else:
@@ -127,6 +130,8 @@ def parse_args():
                 MODE_LOAD = True
             elif mode == "package":
                 MODE_PACKAGE = True
+            elif mode == "revert":
+                MODE_REVERT = True
         x = 1
         for x in range(1,len(sys.argv)):
             # Optional CLI package name specification
@@ -158,6 +163,7 @@ def show_usage():
             Modes:
                 load - Load and apply specified theme package
                 package - Package current theme setup
+                revert - Revert to the last applied theme
 
 
             Options:
@@ -829,25 +835,33 @@ def i3(mode):
                 i3_conf_write.write(line)
 
 
-def load(restore=False):
+def load(mode=False):
     global LOAD_PACKAGE_NAME
-
-    if LOAD_PACKAGE_NAME != "":
-        if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
-            print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
-            quit()
-    else:
-        while True:
-            print("[+] Enter package name to load:\n>>>", end="")
-            LOAD_PACKAGE_NAME = input()
+    if mode is False: 
+        if LOAD_PACKAGE_NAME != "":
             if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
                 print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
                 quit()
-            else:
-                break
+        else:
+            while True:
+                print("[+] Enter package name to load:\n>>>", end="")
+                LOAD_PACKAGE_NAME = input()
+                if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
+                    print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                    quit()
+                else:
+                    break
+    else:
+        LOAD_PACKAGE_NAME = ".last"
+        if os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME):
+            print("[+] Reverting to last applied theme!")
+        else:
+            print("[-] No previously applied theme found!")
+            quit()
+
 
     # Before load, create backup of current theme
-    if restore is False:
+    if mode is False:
         package(True)
     
     os.chdir(I3P_DIR + LOAD_PACKAGE_NAME)
