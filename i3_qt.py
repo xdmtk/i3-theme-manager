@@ -9,6 +9,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
+CURRENT_SELECTION = None
+
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -41,6 +44,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.theme_list.itemClicked.connect(self.onclick_theme_list)
+        self.load_button.clicked.connect(self.onclick_load_button)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -66,10 +70,20 @@ class Ui_MainWindow(object):
                 self.theme_list.addItem(dir)
 
 
+    def onclick_load_button(self):
+        if CURRENT_SELECTION is None or CURRENT_SELECTION == "":
+            fail_box = QtWidgets.QMessageBox()
+            fail_box.setText("Please select a theme to load!")
+            fail_box.exec_()
+
+
+
+
 
     def onclick_theme_list(self):
-
+        global CURRENT_SELECTION
         selected_item = self.theme_list.selectedItems()[0]
+        CURRENT_SELECTION = selected_item.text()
 
 
         # Quick and dirty...
