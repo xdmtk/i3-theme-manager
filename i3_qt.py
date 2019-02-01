@@ -38,6 +38,11 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        # Event handlers
+        self.theme_list.itemClicked.connect(self.onclick_theme_list)
+
+
+
         # Quick and dirty...
         USER = os.environ.get("USER")
         I3P_DIR = "/home/" + USER + "/.config/i3packager/"
@@ -51,6 +56,24 @@ class Ui_MainWindow(object):
         for dir in theme_dir_listing:
             if os.path.isdir(I3P_DIR + dir) and dir != ".last":
                 self.theme_list.addItem(dir)
+
+
+
+    def onclick_theme_list(self):
+
+        selected_item = self.theme_list.selectedItems()
+
+        # Quick and dirty...
+        USER = os.environ.get("USER")
+        I3P_DIR = "/home/" + USER + "/.config/i3packager/"
+
+
+
+
+
+
+
+
 
 
 
