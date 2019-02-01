@@ -7,6 +7,8 @@ import curses
 import signal
 import pdb
 
+
+
 MODE_PACKAGE = False
 MODE_LOAD = False
 MODE_CONFIG = False
@@ -65,6 +67,9 @@ def parse_config():
     FAIL_FLAG = False
     with open(I3P_CONF, "r") as config:
         for line in config:
+            # Skip comments
+            if line.find("#") != -1:
+                continue
             # Load config args into dictionary `config_arg_list`
             conf_arg = line.split('=')[1].replace('\n','') 
             conf_arg_name = line.split('=')[0]
@@ -854,8 +859,7 @@ def load(restore=False):
     i3("load")
     gtk("load")
     bar("load")
-
-    quit()
+    
 
 
 main()
