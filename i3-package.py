@@ -25,6 +25,7 @@ PACKAGE_NAME = ""
 LOAD_PACKAGE_NAME = ""
 BASE_DIR = None
 PACKAGE_DIR = None
+FORCE_RESTART = False
 
 DEBUG = 0
 
@@ -118,6 +119,7 @@ def parse_config():
 def parse_args():
     global MODE_PACKAGE ; global MODE_LOAD ; global MOAD_REVERT
     global PACKAGE_NAME ; global LOAD_PACKAGE_NAME ; global USER_HOME
+    global FORCE_RESTART 
     
     # Parse args ( only  one ) 
     if len(sys.argv) > 1:
@@ -143,6 +145,8 @@ def parse_args():
                 LOAD_PACKAGE_NAME = sys.argv[x+1]
                 x += 1
                 continue
+            if sys.argv[x].find("-t") != -1:
+                FORCE_RESTART = True
         return
     else:
         return ARG_FAIL
@@ -873,6 +877,22 @@ def load(mode=False):
     i3("load")
     gtk("load")
     bar("load")
+
+    if FORCE_RESTART is True:
+        restart_i3_session()
+    else
+        print("[+] Theme files sucessfully loaded, kill i3 session " 
+                + "to reload files? (y/N)\n>>>", end="")
+        res = input()
+        if str(res).lower() == "y":
+            restart_i3_session()
+        else:
+            quit()
+
+
+def restart_i3_session():
+    subprocess.call(['killall', 'i3'])
+    quit() 
     
 
 
