@@ -147,8 +147,10 @@ def parse_args():
                 LOAD_PACKAGE_NAME = sys.argv[x+1]
                 x += 1
                 continue
-            if sys.argv[x].find("-t") != -1:
+            if sys.argv[x].find("-f") != -1:
                 FORCE_RESTART = True
+            if sys.argv[x].find("-g") != -1:
+                FORCE_RESTART = "gui"
         return
     else:
         return ARG_FAIL
@@ -229,9 +231,9 @@ def write_blank_config():
         '# ',
         '# Format this region by',
         '# 		',
-        '# 		\'# i3 THEME REGION START\'',
+        '# 		\'# i3 THEME SECTION START\'',
         '# 		and',
-        '# 		\'# i3 THEME REGION END\'',
+        '# 		\'# i3 THEME SECTION END\'',
         '# 		',
         '# '
     ]
@@ -882,7 +884,10 @@ def load(mode=False):
 
     if FORCE_RESTART is True:
         restart_i3_session()
+    elif FORCE_RESTART == "gui":
+        quit()
     else:
+
         print("[+] Theme files sucessfully loaded, kill i3 session " 
                 + "to reload files? (y/N)\n>>>", end="")
         res = input()
