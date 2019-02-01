@@ -78,18 +78,16 @@ class Ui_MainWindow(object):
             fail_box.exec_()
             return
         cur_dir = os.getcwd()
-        subprocess.call(['python3', cur_dir + '/i3-package.py', 'load', '-t ', CURRENT_SELECTION, '-g'])
+        #subprocess.call(['python3', cur_dir + '/i3-package.py', 'load', '-t ', CURRENT_SELECTION, '-g'])
         qbox = QtWidgets.QMessageBox()
         qbox.setText("i3-theme-manager needs to kill the current i3 session to reload the applied theme. \n\n "
                      + "Kill current i3 session?")
         qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
-        qbox.buttonClicked.connect(self.onclick_reload_msgbox_button)
-        qbox.exec_()
+        retval = qbox.exec_()
 
+        if retval == 1024:
+            subprocess.call(['killall', 'i3'])
 
-
-    def onclick_reload_msgbox_button(i):
-        pass
 
 
 
