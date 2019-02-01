@@ -21,7 +21,7 @@ class Ui_MainWindow(object):
         self.theme_list = QtWidgets.QListWidget(self.centralWidget)
         self.theme_list.setGeometry(QtCore.QRect(10, 10, 631, 431))
         self.theme_list.setObjectName("theme_list")
-        self.theme_view = QtWidgets.QGraphicsView(self.centralWidget)
+        self.theme_view = QtWidgets.QLabel(self.centralWidget)
         self.theme_view.setGeometry(QtCore.QRect(650, 10, 341, 291))
         self.theme_view.setObjectName("theme_view")
         self.load_button = QtWidgets.QPushButton(self.centralWidget)
@@ -61,11 +61,15 @@ class Ui_MainWindow(object):
 
     def onclick_theme_list(self):
 
-        selected_item = self.theme_list.selectedItems()
+        selected_item = self.theme_list.selectedItems()[0]
+
 
         # Quick and dirty...
         USER = os.environ.get("USER")
         I3P_DIR = "/home/" + USER + "/.config/i3packager/"
+        image = QtGui.QImage(I3P_DIR + selected_item.text() + '/' + selected_item.text() + '.png')
+        image = QtGui.QPixmap.fromImage(image)
+        self.theme_view.setPixmap(image.scaled(self.theme_view.width(),self.theme_view.height()))
 
 
 

@@ -75,6 +75,8 @@ def parse_config():
             if line.find("#") != -1:
                 continue
             # Load config args into dictionary `config_arg_list`
+            if not len(line.split('=')) > 1:
+                continue
             conf_arg = line.split('=')[1].replace('\n','') 
             conf_arg_name = line.split('=')[0]
 
@@ -880,7 +882,7 @@ def load(mode=False):
 
     if FORCE_RESTART is True:
         restart_i3_session()
-    else
+    else:
         print("[+] Theme files sucessfully loaded, kill i3 session " 
                 + "to reload files? (y/N)\n>>>", end="")
         res = input()
