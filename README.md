@@ -1,8 +1,10 @@
 # i3-theme-manager
 ----
-![](http://i66.tinypic.com/11rvct3.gif)
 
-`i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting
+![](themes.gif)
+
+
+`i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting of
 the various components of your chosen theme. A package consists of: 
 1. i3 configuation 
 2. status bar configuation
