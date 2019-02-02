@@ -23,15 +23,15 @@ Both the CLI tool and GUI component require Python 3.
 For the GUI component of `i3-theme-manager` to work correctly, you will need to have `pyqt5`
 which can be installed by:
 
-    `pip3 install pyqt5`
+`pip3 install pyqt5`
 
 
 ![](http://i.imgur.com/5xOYo9X.png)
 
 
 For supported theme component programs
-    
-    **Status Bar** : `tint2` or `polybar`
-    **Terminal Emulators** : `terminator`
-    **Wallpaper Setters** : `nitrogen`
+
+**Status Bar** : `tint2` or `polybar`
+**Terminal Emulators** : `terminator`
+**Wallpaper Setters** : `nitrogen`
 
