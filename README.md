@@ -25,9 +25,8 @@ config file in the standard config directory `~/.config/i3packager`
 
 #### i3 Configuration File
 
-Because i3 does not supported sourcing parts of the config file from other files, in order for
-`i3-theme-manager` to package only theme specific elements of the config file, you need to edit 
-your configuration file by surrounding the theme specific portion of your config with the lines
+Because i3 does not support sourcing parts of the config file from other files, in order for
+`i3-theme-manager` to package only theme specific elements of the config file, you should edit your config file by inserting markers surrounding the theme specific portion:
 
 `# i3 THEME SECTION START`
 
