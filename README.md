@@ -49,12 +49,21 @@ which can be installed by:
 `pip3 install pyqt5`
 
 
-![](http://i.imgur.com/5xOYo9X.png)
-
 
 For supported theme component programs
 
 **Status Bar** : `tint2` or `polybar`<br>
 **Terminal Emulators** : `terminator`<br>
 **Wallpaper Setters** : `nitrogen`<br>
+
+
+### CLI Screenshots
+
+![](http://imgur.com/ooh9OEgl.png)
+
+
+
+### GUI Screenshots
+
+![](http://i.imgur.com/5xOYo9X.png)
 
