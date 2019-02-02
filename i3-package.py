@@ -119,7 +119,7 @@ def parse_config():
 
 
 def parse_args():
-    global MODE_PACKAGE ; global MODE_LOAD ; global MOAD_REVERT
+    global MODE_PACKAGE ; global MODE_LOAD ; global MODE_REVERT
     global PACKAGE_NAME ; global LOAD_PACKAGE_NAME ; global USER_HOME
     global FORCE_RESTART 
     
@@ -177,6 +177,7 @@ def show_usage():
             Options:
                 -o [ PACKAGE NAME ] - Specify package name for packaging mode
                 -t [ PACKAGE NAME ] - Specify package name for loading mode
+                -f                  - Automatically kill i3 session after loading theme
 
 
             First time use:

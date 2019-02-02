@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="264c44f2-2570-4242-abd5-6aff87510d4a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/i3-package.py" beforeDir="false" afterPath="$PROJECT_DIR$/i3-package.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/i3_qt.py" beforeDir="false" afterPath="$PROJECT_DIR$/i3_qt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,15 +16,15 @@
     <SUITE FILE_PATH="coverage/i3_theme_manager$py_qt_2.coverage" NAME="py_qt_2 Coverage Results" MODIFIED="1549056804414" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ui" />
     <SUITE FILE_PATH="coverage/i3_theme_manager$i3_package.coverage" NAME="i3-package Coverage Results" MODIFIED="1549060303984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/i3_theme_manager$_pydev_execfile.coverage" NAME="_pydev_execfile Coverage Results" MODIFIED="1549067038848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps" />
-    <SUITE FILE_PATH="coverage/i3_theme_manager$i3_qt.coverage" NAME="i3_qt Coverage Results" MODIFIED="1549067057445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/i3_theme_manager$i3_qt.coverage" NAME="i3_qt Coverage Results" MODIFIED="1549074965802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/i3_qt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="133" column="46" lean-forward="true" selection-start-line="133" selection-start-column="46" selection-end-line="133" selection-end-column="46" />
+            <state>
+              <caret line="155" column="22" selection-start-line="155" selection-start-column="22" selection-end-line="155" selection-end-column="22" />
               <folding>
                 <element signature="e#196#238#0" expanded="true" />
               </folding>
@@ -34,8 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/i3-package.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13215">
-              <caret line="888" selection-start-line="888" selection-end-line="888" />
+            <state relative-caret-position="210">
+              <caret line="887" selection-start-line="887" selection-end-line="887" />
             </state>
           </provider>
         </entry>
@@ -55,8 +56,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1946" />
-    <option name="y" value="49" />
+    <option name="x" value="1958" />
+    <option name="y" value="54" />
     <option name="width" value="1844" />
     <option name="height" value="969" />
   </component>
@@ -239,15 +240,15 @@
       <updated>1549051688263</updated>
       <workItem from="1549051691123" duration="1581000" />
       <workItem from="1549054854204" duration="6956000" />
-      <workItem from="1549062472369" duration="4479000" />
+      <workItem from="1549062472369" duration="6603000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13016000" />
+    <option name="totallyTimeSpent" value="15140000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1946" y="49" width="1844" height="969" extended-state="0" />
+    <frame x="1958" y="54" width="1844" height="969" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16722408" />
@@ -334,20 +335,27 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/py_qt_2.py" />
-    <entry file="file://$PROJECT_DIR$/i3_qt.py">
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="133" column="46" lean-forward="true" selection-start-line="133" selection-start-column="46" selection-end-line="133" selection-end-column="46" />
-          <folding>
-            <element signature="e#196#238#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="150">
+          <caret line="10" column="54" lean-forward="true" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/i3-package.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13215">
-          <caret line="888" selection-start-line="888" selection-end-line="888" />
+        <state relative-caret-position="210">
+          <caret line="887" selection-start-line="887" selection-end-line="887" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i3_qt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="155" column="22" selection-start-line="155" selection-start-column="22" selection-end-line="155" selection-end-column="22" />
+          <folding>
+            <element signature="e#196#238#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

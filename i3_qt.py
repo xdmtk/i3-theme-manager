@@ -35,6 +35,8 @@ class Ui_MainWindow(object):
         self.theme_view = QtWidgets.QLabel(self.centralWidget)
         self.theme_view.setGeometry(QtCore.QRect(10, 10, 831, 631))
         self.theme_view.setObjectName("theme_view")
+        self.theme_view.setText("No theme selected")
+        self.theme_view.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter)
         self.load_button = QtWidgets.QPushButton(self.centralWidget)
         self.load_button.setGeometry(QtCore.QRect(710, 660, 131, 31))
         self.load_button.setObjectName("load_button")
@@ -58,6 +60,7 @@ class Ui_MainWindow(object):
         self.load_button.clicked.connect(self.onclick_load_button)
         self.package_button.clicked.connect(self.onclick_package_button)
         self.delete_button.clicked.connect(self.onclick_delete_button)
+        self.revert_button.clicked.connect(self.onclick_revert_button)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -140,7 +143,45 @@ class Ui_MainWindow(object):
         self.theme_view.setPixmap(image.scaled(self.theme_view.width(),self.theme_view.height()))
 
     def onclick_delete_button(self):
-        pass
+        USER = os.environ.get("USER")
+        I3P_DIR = "/home/" + USER + "/.config/i3packager/"
+
+        qbox = QtWidgets.QMessageBox()
+        qbox.setText("Delete selected theme '" + CURRENT_SELECTION + "' ?")
+        qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        retval = qbox.exec_()
+
+        if retval == 1024:
+            subprocess.call(['rm', '-rf', I3P_DIR + CURRENT_SELECTION])
+            self.theme_list.clear()
+
+            theme_dir_listing = os.listdir(I3P_DIR)
+            for dir in theme_dir_listing:
+                if os.path.isdir(I3P_DIR + dir) and dir != ".last":
+                    self.theme_list.addItem(dir)
+
+            self.theme_view.clear()
+            self.theme_view.setText("No theme selected")
+
+    def onclick_revert_button(self):
+
+        qbox = QtWidgets.QMessageBox()
+        qbox.setText("Are you sure you want to revert to the last applied theme?")
+        qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        retval = qbox.exec_()
+        cur_dir = os.getcwd()
+
+        if retval == 1024:
+            subprocess.call(['python3', cur_dir + '/i3-package.py', 'revert', '-g'])
+
+            qvbox = QtWidgets.QMessageBox()
+            qvbox.setText("i3-theme-manager needs to kill the current i3 session to reload the applied theme. \n\n "
+                         + "Kill current i3 session?")
+            qvbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+            retval_v = qvbox.exec_()
+
+            if retval_v == 1024:
+                subprocess.call(['killall', 'i3'])
 
 if __name__ == "__main__":
     import sys
