@@ -11,10 +11,14 @@ import os
 import subprocess
 
 CURRENT_SELECTION = None
+MAIN_WIN_GLOB = None
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
+        global MAIN_WIN_GLOB
+        MAIN_WIN_GLOB = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
         MainWindow.resize(848, 766)
@@ -91,7 +95,23 @@ class Ui_MainWindow(object):
 
 
     def onclick_package_button(self):
-        pass
+        name_package = QtWidgets.QInputDialog()
+        (package_name, ok) = name_package.getText(MAIN_WIN_GLOB, "Enter package name", "Enter package name")
+        if ok is True:
+            cur_dir = os.getcwd()
+            subprocess.call(['python3', cur_dir + '/i3-package.py', 'package', '-o ', package_name])
+
+
+            # Quick and dirty...
+            USER = os.environ.get("USER")
+            I3P_DIR = "/home/" + USER + "/.config/i3packager/"
+            self.theme_list.clear()
+
+            theme_dir_listing = os.listdir(I3P_DIR)
+            for dir in theme_dir_listing:
+                if os.path.isdir(I3P_DIR + dir) and dir != ".last":
+                    self.theme_list.addItem(dir)
+
 
 
     def onclick_theme_list(self):
