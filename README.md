@@ -15,6 +15,29 @@ the various components of your chosen theme. A package consists of:
 For certain theme components like wallpaper setters and terminal emulators, `i3-theme-manager` only supports selected programs,
 but will eventually support more in the future. 
 
+### Getting Started
+
+`i3-theme-manager` looks for theme components based on where they are specified in the config file.
+On first use, run the CLI application before the GUI application. This will generate a blank
+config file in the standard config directory `~/.config/i3packager`
+
+#### i3 Configuration File
+
+Because i3 does not supported sourcing parts of the config file from other files, in order for
+`i3-theme-manager` to package only theme specific elements of the config file, you need to edit 
+your configuration file by surrounding the theme specific portion of your config with the lines
+
+`# i3 THEME SECTION START`
+
+and 
+
+`# i3 THEME SECTION END`
+
+This will allow the script to save and deploy only parts of your configuration that are theme 
+specific, allowing you to keep non theme essential settings intact when switching themes, or 
+deploying themes to a seperate machine.
+
+
 
 ### Dependencies 
 
