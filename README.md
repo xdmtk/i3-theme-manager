@@ -1,6 +1,8 @@
 # i3-theme-manager
 ----
-![](https://i.ibb.co/hCbrR12/themes.gif)
+
+![](https://s2.gifyu.com/images/themes.gif)
+
 
 `i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting of
 the various components of your chosen theme. A package consists of: 
