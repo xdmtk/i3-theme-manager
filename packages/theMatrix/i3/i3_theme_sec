@@ -1,0 +1,28 @@
+# i3 THEME SECTION START 
+#
+#
+default_orientation horizontal
+
+
+
+exec "nitrogen --restore"
+exec "bl-tint2-session"
+exec "bl-compositor --start"
+exec "clipit &"
+exec "pnmixer &"
+exec "xfce4-power-manager &"
+
+exec "synclient VertEdgeScroll=1 HorizEdgeScroll=1 TapButton1=1 2>/dev/null"
+exec "syndaemon -i .5 -K -t -R -d &"
+exec "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &"
+exec "sudo powertop --auto-tune &"
+exec "sudo tlp"
+exec "mpd"
+
+for_window [class="^.*"] border pixel 5
+gaps inner 10
+gaps outer 10
+client.focused          #138a64 #138a64 #138a64 #138a64
+#
+#
+# i3 THEME SECTION END
