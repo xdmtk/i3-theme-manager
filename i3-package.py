@@ -16,7 +16,7 @@ MODE_CONFIG = False
 ARG_FAIL = -1
 NO_ARG = -1
 
-
+WALLPAPER = None
 CURRENT_WORKSPACE = None
 USER_HOME = None
 I3P_DIR = None
@@ -43,7 +43,7 @@ config_arg_list = {
         'polybar_dir' : '',
         'gtk_dir' : '',
         'themes_dir' : '',
-        'icons_dir' : ''
+        'icons_dir' : '',
 }
 
 
@@ -97,12 +97,12 @@ def parse_config():
                         config_arg_list[conf_arg_name] = NO_ARG
                         continue 
 
-
-                # Make sure path is valid
-                if not os.path.exists(conf_arg):
-                    FAIL_FLAG = True
-                    print("[-] Path '" + conf_arg + "' doesn't exist")
-                    continue
+                if conf_arg_name.find("file") != -1 or conf_arg_name.find("dir") != -1:
+                    # Make sure path is valid
+                    if not os.path.exists(conf_arg):
+                        FAIL_FLAG = True
+                        print("[-] Path '" + conf_arg + "' doesn't exist")
+                        continue
 
                 config_arg_list[conf_arg_name] = conf_arg
             else:
@@ -315,6 +315,15 @@ def write_blank_config():
         '# here, the script will attempt to locate it in the system directory \'/usr/share/themes\'',
         '# '
     ]
+    pywal_desc = [
+        '# Pywal',
+        '# --------------------:',
+        '# If you dynamically set your background and prompt colors with pywal',
+        '# uncomment the following line ',
+        '#',
+        '#pywal=true'
+    ]
+
 
     desc_list = {
         'bar_prog' : bar_prog_desc,
@@ -331,6 +340,7 @@ def write_blank_config():
         'gtk_dir' : gtk_desc,
         'icons_dir' : gtk_icons_desc,
         'themes_dir' : themes_desc,
+        'pywal_set' : pywal_desc,
     }
    
     print("[+] Generating empty config file")
@@ -424,8 +434,7 @@ def setup_workspace():
 
     i3_msg('workspace', '666')
     i3_msg('split', 'horizontal')
-
-    i3_msg('exec', BASE_DIR + '/visual-scripts/flow', .75)
+    i3_msg('exec', 'feh --scale-down --zoom fill ' + WALLPAPER)
 
     i3_msg('split', 'vertical')
     i3_msg('exec', term_prog, .75)
@@ -439,8 +448,8 @@ def setup_workspace():
     i3_msg('split', 'horizontal')
     i3_msg('exec', term_prog, .75)
     
-    subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/neofetch'])
-    subprocess.call(['xdotool', 'key', 'Return'])
+#    subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/neofetch'])
+#    subprocess.call(['xdotool', 'key', 'Return'])
 
 
 
@@ -687,6 +696,17 @@ def get_gtk_assets(gtk_asset):
     
 
 def nitrogen(mode):
+    global WALLPAPER
+    if "pywal" in config_arg_list:
+        with open(USER_HOME + "/.cache/wal/wal", "r") as f:
+            for line in f:
+                WALLPAPER = line.replace('\n','')
+                os.mkdir('pywal')
+                subprocess.call(['cp', WALLPAPER, 'pywal/'])
+                break
+
+                
+
     # Package nitrogen
     print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
@@ -705,6 +725,8 @@ def nitrogen(mode):
             for line in config:
                 if line.find('file') !=  -1:
                     wallpaper_path = line.split('=')[1].replace('\n','')
+                    if WALLPAPER == None:
+                        WALLPAPER = wallpaper_path
                     print("[+] Copying:  " + wallpaper_path)
                     subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
     
