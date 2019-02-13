@@ -323,6 +323,13 @@ def write_blank_config():
         '#',
         '#pywal=true'
     ]
+    compton_desc = [
+        '# Compton',
+        '# --------------------:',
+        '# If you\'d like to save your compton configuration file, specify its location here',
+        '#',
+        'comtpon_conf_file='
+    ]
 
 
     desc_list = {
@@ -341,6 +348,7 @@ def write_blank_config():
         'icons_dir' : gtk_icons_desc,
         'themes_dir' : themes_desc,
         'pywal_set' : pywal_desc,
+        'compton_file' : comtpon_desc,,
     }
    
     print("[+] Generating empty config file")
