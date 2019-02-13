@@ -55,7 +55,7 @@ For supported theme component programs
 
 **Status Bar** : `tint2` or `polybar`<br>
 **Terminal Emulators** : `terminator`<br>
-**Wallpaper Setters** : `nitrogen`<br>
+**Wallpaper Setters** : `nitrogen` , `pywal`, or `feh`<br>
 
 
 ### CLI Screenshots
