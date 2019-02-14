@@ -506,6 +506,11 @@ def take_screenshot():
 
 def bar(mode):
     
+    if check_param("bar_prog") == False:
+        return
+
+
+
     print("\n[+] Bar files\n * * * * * * * * * * * * *")
     
     if mode == "package":
@@ -535,6 +540,8 @@ def bar(mode):
 
 def vim(mode):
 
+    if check_param("vimrc_file") == False:
+        return
     
     print("\n[+] VIM files\n * * * * * * * * * * * * *")
     if mode == "package":
@@ -598,6 +605,16 @@ def vim(mode):
 
 
 def bash(mode):
+   
+
+    # Introducing optional config params
+    # Skips execution if param is not specified in config file
+    if check_param("bash_visual_file") == False:
+        return
+    if check_param("bash_aliases_file") == False:
+        return
+
+
     print("\n[+] Bash files\n * * * * * * * * * * * * *")
     if mode == "package": 
 
@@ -626,6 +643,9 @@ def bash(mode):
 
 def gtk(mode):
    
+    if check_param("gtk_dir") == False:
+        return
+     
     print("\n[+] GTK files\n * * * * * * * * * * * * *")
     
     gtk_dir = config_arg_list['gtk_dir']
@@ -704,6 +724,11 @@ def get_gtk_assets(gtk_asset):
     
 
 def nitrogen(mode):
+
+    if check_param("nitrogen_dir") == False:
+        return
+
+
     global WALLPAPER
     if "pywal" in config_arg_list:
         with open(USER_HOME + "/.cache/wal/wal", "r") as f:
@@ -780,6 +805,10 @@ def check_image(p):
 # Terminator package function to get config + compile font list
 def terminator(mode):
 
+
+    if check_param("terminal_prog") == False:
+        return
+
     print("\n[+] Terminator files\n * * * * * * * * * * * * *")
     if mode == "package":
         font_list = [] 
@@ -818,6 +847,9 @@ def terminator(mode):
         
 # Workaround for i3 lack of include/source directives
 def i3(mode):
+
+    if check_param("i3_conf_file") == False:
+        return
 
     print("\n[+] i3 files\n * * * * * * * * * * * * *")
     
@@ -926,6 +958,13 @@ def load(mode=False):
             restart_i3_session()
         else:
             quit()
+
+# Only load/store if specified in the config
+def check_param(prog):
+    if prog not in config_arg_list:
+        return False
+    return True
+
 
 
 def restart_i3_session():
