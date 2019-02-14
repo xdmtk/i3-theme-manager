@@ -348,7 +348,7 @@ def write_blank_config():
         'icons_dir' : gtk_icons_desc,
         'themes_dir' : themes_desc,
         'pywal_set' : pywal_desc,
-        'compton_file' : comtpon_desc,,
+        'compton_file' : comtpon_desc
     }
    
     print("[+] Generating empty config file")
