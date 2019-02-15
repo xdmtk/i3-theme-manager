@@ -1,7 +1,7 @@
 # i3-theme-manager
 ----
 
-![](.idea/themes.gif)
+![](src/themes.gif)
 _from various members of /r/unixporn_
 
 
