@@ -30,20 +30,6 @@ FORCE_RESTART = False
 DEBUG = 0
 
 config_arg_list = {
-        'bar_prog' : '',
-        'terminal_prog' : '',
-        'screenshot_prog' : '',
-        'terminal_config_file' : '',
-        'i3_config_file' : '',
-        'bash_visual_file' : '',
-        'bash_aliases_file' : '',
-        'vimrc_file' : '',
-        'nitrogen_dir' : '',
-        'tint2_dir' : '',
-        'polybar_dir' : '',
-        'gtk_dir' : '',
-        'themes_dir' : '',
-        'icons_dir' : '',
 }
 
 
@@ -646,6 +632,10 @@ def gtk(mode):
    
     if check_param("gtk_dir") == False:
         return
+    if check_param("themes_dir") == False:
+        return
+    if check_param("icons_dir") == False:
+        return
      
     print("\n[+] GTK files\n * * * * * * * * * * * * *")
     
@@ -809,6 +799,8 @@ def terminator(mode):
 
     if check_param("terminal_prog") == False:
         return
+    if check_param("terminal_config_file") == False:
+        return
 
     print("\n[+] Terminator files\n * * * * * * * * * * * * *")
     if mode == "package":
@@ -909,7 +901,8 @@ def i3(mode):
 
 def compton(mode):
     
-    check_param('compton_conf_file')
+    if check_param('compton_conf_file') == False:
+        return
     print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
     if mode == "package":
