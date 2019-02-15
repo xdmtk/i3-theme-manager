@@ -408,6 +408,7 @@ def package(backup=False):
     i3("package")
     gtk("package")
     bar("package")
+    compton("package")
    
 
     if backup is False: 
@@ -906,6 +907,25 @@ def i3(mode):
                 i3_conf_write.write(line)
 
 
+def compton(mode):
+    
+    check_param('compton_conf_file')
+    print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
+
+    if mode == "package":
+        print("\n[+] Packaging compton config")
+        os.mkdir("compton")
+        subprocess.call(['cp', config_arg_list['compton_conf_file'], 'compton/'])
+
+    elif mode == "load":
+        print("\n[+] Loading compton config")
+        subprocess.call(['cp', 'compton/compton.conf', config_arg_list['compton_conf_file']])
+
+
+
+
+
+
 def load(mode=False):
     global LOAD_PACKAGE_NAME
     if mode is False: 
@@ -944,6 +964,7 @@ def load(mode=False):
     i3("load")
     gtk("load")
     bar("load")
+    compton("load")
 
     if FORCE_RESTART is True:
         restart_i3_session()
