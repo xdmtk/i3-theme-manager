@@ -23,7 +23,7 @@ but will eventually support more in the future.
 ### Getting Started
 
 `i3-theme-manager` looks for theme components based on where they are specified in the config file.
-On first run, `i3-theme-manager` will generated a configuration file located at `~/.config/i3packager/` 
+On first run, `i3-theme-manager` will generate a configuration file located at `~/.config/i3packager/` 
 with descriptions of all supported configuration options. Uncomment each desired entry to enable them for packaging 
 and loading themes.
 
@@ -82,5 +82,5 @@ For supported theme component programs
 
 ### GUI Screenshots
 
-![](http://i.imgur.com/5xOYo9X.png)
+![](http://i.imgur.com/ybD2Viy.png)
 
