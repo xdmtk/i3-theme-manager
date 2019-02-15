@@ -50,8 +50,8 @@ As long as dependencies are met, you can simply copy the files `i3-theme-manager
 
 ##### i3 Configuration File
 
-Because i3 does not support sourcing parts of the config file from other files, in order for
-`i3-theme-manager` to package only theme specific elements of the config file, you should edit your config file by inserting markers surrounding the theme specific portion:
+Because `i3` does not support sourcing parts of the config file from other files, in order for
+`i3-theme-manager` to package only theme specific elements of the config file, you should edit your `i3` config file by inserting markers surrounding the theme specific portion:
 
 `# i3 THEME SECTION START`
 
