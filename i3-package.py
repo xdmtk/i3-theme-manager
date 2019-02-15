@@ -186,7 +186,9 @@ def write_blank_config():
         '# ',
         '# To have your specified bar start with your config, include an exec command on your specific bar',
         '# in your i3 config file',
-        '# '
+        '# ',
+        '#bar_prog=polybar'
+
     ]
     term_prog_desc = [
         '# Terminal Program',
@@ -194,14 +196,16 @@ def write_blank_config():
         '# Similar to the bar program, the Terminator console emulator is the only program',
         '# hardcoded into the script to work correctly, though it can be easily modified for your',
         '# specific terminal emulator',
-        '# '
+        '# ',
+        '#terminal_prog=terminator'
     ]
     term_conf_desc = [
         '# Terminal Config File',
         '# --------------------:',
         '# For terminator the default name should be \'config\', but this option should still be specified',
         '# as in future releases various config file formats and locations will be supported'
-        '# '
+        '# ',
+        '#terminal_config_file=~/.config/terminator/config'
     ]
     i3_conf_desc = [
         '# i3 Config File',
@@ -222,7 +226,8 @@ def write_blank_config():
         '# 		and',
         '# 		\'# i3 THEME SECTION END\'',
         '# 		',
-        '# '
+        '# ',
+        '#i3_config_file=~/.config/i3/config'
     ]
     screenshot_desc = [
         '# Screenshot Program',
@@ -230,21 +235,26 @@ def write_blank_config():
         '# Once again another area that supports only a particular program (more support to follow in later releases',
         '# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
         '# package creation',
-        '# '
+        '# ',
+        '# Probably going to be moving to `scrot` soon though',
+        '# ',
+        '#screenshot_prog=xfce4-screenshooter'
     ]
     bash_visual_file_desc = [
         '# Bash Visual File',
         '# --------------------:',
         '# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
         '# and should be sourced in your \'master\' .bashrc file as an extension',
-        '# '
+        '# ',
+        '#bash_visual_file='
     ]
     bash_aliases_file_desc = [
         '# Bash Aliases File',
         '# --------------------:',
         '# Self explanatory but include this if your have theme dependent aliases you would like to include',
         '# in your theme package',
-        '# '
+        '# ',
+        '#bash_aliases_file='
     ]
     vimrc_desc = [
         '# Vimrc File',
@@ -254,7 +264,8 @@ def write_blank_config():
         '# ',
         '# If it can\'t be located, the script will ask you to specify continuously until the directory',
         '# is found.',
-        '# '
+        '# ',
+        '#vimrc_file=~/.vim/vimrc'
     ]
     nitrogen_desc = [
         '# Nitrogen Directory',
@@ -264,20 +275,23 @@ def write_blank_config():
         '# in addition to including the entire configuration directory in the package,',
         '# the script will read the config file, and attempt to locate the specified wallpaper to be also',
         '# included in the package',
-        '# '
+        '# ',
+        '#nitrogen_dir=~/.config/nitrogen'
     ]
     tint2_desc = [
         '# Tint2 Directory',
         '# --------------------:',
         '# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
         '# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
-        '# '
+        '# ',
+        '#tint2_dir=~/.config/tint2'
     ]
     polybar_desc = [
         '# Polybar Directory',
         '# --------------------:',
         '# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
-        '# '
+        '# ',
+        '#polybar_dir=~/config/polybar'
     ]
     gtk_desc = [
         '# GTK Directory',
@@ -285,21 +299,24 @@ def write_blank_config():
         '# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
         '# the current theme, cursors and icons. The following directory specifications should provide the',
         '# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
-        '# '
+        '# ',
+        '#gtk_dir=~/.config/gtk-3.0'
     ]
     gtk_icons_desc = [
         '# GTK Icons Directory',
         '# --------------------:',
         '# In addition to the user specified icons directory, the script will also check the default system',
         '# locations for GTK icons, typically /usr/share/icons',
-        '# '
+        '# ',
+        '#icons_dir=~/.icons'
     ]
     themes_desc = [
         '# Themes Directory',
         '# --------------------:',
         '# This is generally ~/.themes, used to store all GTK themes. If the theme specified is not located'
         '# here, the script will attempt to locate it in the system directory \'/usr/share/themes\'',
-        '# '
+        '# ',
+        '#themes_dir=~/.themes'
     ]
     pywal_desc = [
         '# Pywal',
@@ -314,7 +331,7 @@ def write_blank_config():
         '# --------------------:',
         '# If you\'d like to save your compton configuration file, specify its location here',
         '#',
-        'comtpon_conf_file='
+        '#comtpon_conf_file='
     ]
 
 
