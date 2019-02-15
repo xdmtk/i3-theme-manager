@@ -30,6 +30,12 @@ and loading themes.
 
 ### Dependencies 
 
+During execution `i3-theme-manager` calls the following programs:
+`feh`
+`xdotool`
+`xfce4-screenshooter`
+
+
 Both the CLI tool and GUI component require Python 3.
 
 For the GUI component of `i3-theme-manager` to work correctly, you will need to have `pyqt5`
