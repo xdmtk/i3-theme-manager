@@ -76,7 +76,7 @@ For supported theme component programs
 
 ### CLI Screenshots
 
-![](http://imgur.com/ooh9OEgl.png)
+![](http://i.imgur.com/snDad48.png)
 
 
 
