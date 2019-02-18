@@ -492,7 +492,8 @@ def setup_workspace():
     subprocess.call(['xdotool', 'key', 'Return'])
     
     i3_msg('split', 'horizontal')
-    i3_msg('exec', pipe_arg + ' 5"', .75)
+    i3_msg('exec', term_prog, .75)
+#    i3_msg('exec', pipe_arg + ' 5"', .75)
     i3_msg('focus', 'up')
     i3_msg('split', 'horizontal')
     i3_msg('exec', term_prog, .75)
