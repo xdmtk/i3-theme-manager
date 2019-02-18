@@ -155,7 +155,7 @@ class Ui_MainWindow(object):
             if dir == ".last":
                 self.revert_button.setEnabled(True)
 
-    def get_skip_list(self,cur_dir):
+    def get_skip_list(self,cur_dir,mode,prefix):
         skip_list = {
             self.com_check_ba : "bash-alias",
             self.com_check_bv : "bash-visual",
@@ -169,8 +169,8 @@ class Ui_MainWindow(object):
         }
         arg_list = [
                 cur_dir + '/i3-theme-manager',
-                'load',
-                '-t',
+                mode,
+                prefix,
                 CURRENT_SELECTION,
                 '-g',
         ]
@@ -192,7 +192,7 @@ class Ui_MainWindow(object):
             return
         cur_dir = os.getcwd()
 
-        load_args = self.get_skip_list(cur_dir)
+        load_args = self.get_skip_list(cur_dir,"load","-t")
         qbox = QtWidgets.QMessageBox()
         qbox.setText("Load selected theme?")
         qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
