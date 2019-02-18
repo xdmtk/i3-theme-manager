@@ -162,7 +162,18 @@ class Ui_MainWindow(object):
             fail_box.exec_()
             return
         cur_dir = os.getcwd()
-        subprocess.call([cur_dir + '/i3-theme-manager', 'load', '-t ', CURRENT_SELECTION, '-g'])
+
+
+        qbox = QtWidgets.QMessageBox()
+        qbox.setText("Load selected theme?")
+        qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        retval = qbox.exec_()
+        
+        if retval == 1024:
+            subprocess.call([cur_dir + '/i3-theme-manager', 'load', '-t ', CURRENT_SELECTION, '-g'])
+        else:
+            return
+
         qbox = QtWidgets.QMessageBox()
         qbox.setText("i3-theme-manager needs to kill the current i3 session to reload the applied theme. \n\n "
                      + "Kill current i3 session?")

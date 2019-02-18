@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="264c44f2-2570-4242-abd5-6aff87510d4a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/i3-theme-manager-qt" beforeDir="false" afterPath="$PROJECT_DIR$/i3-theme-manager-qt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7-with-taskbar.tint2rc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7.tint2rc" beforeDir="false" />
@@ -111,7 +108,6 @@
       <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-taskbar.tint2rc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-workspace.tint2rc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/zug/zug.tint2rc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/i3-theme-manager-qt/i3-theme-manager-qt.pro.user" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/i3-theme-manager-qt/i3-theme-manager-qt.pro.user" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -146,8 +142,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="15">
-                <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+              <first_editor>
+                <caret column="4" selection-start-column="4" selection-end-column="4" />
               </first_editor>
               <second_editor />
             </state>
@@ -157,8 +153,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="111" column="59" selection-start-line="111" selection-start-column="59" selection-end-line="111" selection-end-column="59" />
+            <state relative-caret-position="90">
+              <caret line="118" column="63" selection-start-line="118" selection-start-column="63" selection-end-line="118" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -166,7 +162,9 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/i3-theme-manager">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-135" />
+            <state relative-caret-position="420">
+              <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -363,12 +361,12 @@
       <workItem from="1549054854204" duration="6956000" />
       <workItem from="1549062472369" duration="7998000" />
       <workItem from="1550479989564" duration="1000" />
-      <workItem from="1550480014971" duration="2220000" />
+      <workItem from="1550480014971" duration="2574000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18756000" />
+    <option name="totallyTimeSpent" value="19110000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1958" y="54" width="1866" height="990" extended-state="0" />
@@ -463,8 +461,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="15">
-            <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
+          <first_editor>
+            <caret column="4" selection-start-column="4" selection-end-column="4" />
           </first_editor>
           <second_editor />
         </state>
@@ -472,13 +470,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/i3-theme-manager">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-135" />
+        <state relative-caret-position="420">
+          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="111" column="59" selection-start-line="111" selection-start-column="59" selection-end-line="111" selection-end-column="59" />
+        <state relative-caret-position="90">
+          <caret line="118" column="63" selection-start-line="118" selection-start-column="63" selection-end-line="118" selection-end-column="63" />
         </state>
       </provider>
     </entry>
