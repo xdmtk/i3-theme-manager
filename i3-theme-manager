@@ -546,7 +546,7 @@ def take_screenshot():
 
 def bar(mode):
     
-    if check_param("bar_prog") == False:
+    if check_param("bar_prog", "bar") == False:
         return
 
 
@@ -580,7 +580,7 @@ def bar(mode):
 
 def vim(mode):
 
-    if check_param("vimrc_file") == False:
+    if check_param("vimrc_file", "vim") == False:
         return
     
     print("\n[+] VIM files\n * * * * * * * * * * * * *")
@@ -649,9 +649,9 @@ def bash(mode):
 
     # Introducing optional config params
     # Skips execution if param is not specified in config file
-    if check_param("bash_visual_file") == False:
+    if check_param("bash_visual_file", "bash_visual") == False:
         return
-    if check_param("bash_aliases_file") == False:
+    if check_param("bash_aliases_file", "bash_alias") == False:
         return
 
 
@@ -683,11 +683,11 @@ def bash(mode):
 
 def gtk(mode):
    
-    if check_param("gtk_dir") == False:
+    if check_param("gtk_dir", "gtk") == False:
         return
-    if check_param("themes_dir") == False:
+    if check_param("themes_dir", "gtk") == False:
         return
-    if check_param("icons_dir") == False:
+    if check_param("icons_dir", "gtk") == False:
         return
      
     print("\n[+] GTK files\n * * * * * * * * * * * * *")
@@ -769,7 +769,7 @@ def get_gtk_assets(gtk_asset):
 
 def nitrogen(mode):
 
-    if check_param("nitrogen_dir") == False:
+    if check_param("nitrogen_dir", "nitrogen") == False:
         return
 
 
@@ -850,9 +850,9 @@ def check_image(p):
 def terminator(mode):
 
 
-    if check_param("terminal_prog") == False:
+    if check_param("terminal_prog", "terminal") == False:
         return
-    if check_param("terminal_config_file") == False:
+    if check_param("terminal_config_file", "terminal") == False:
         return
 
     print("\n[+] Terminator files\n * * * * * * * * * * * * *")
@@ -894,7 +894,7 @@ def terminator(mode):
 # Workaround for i3 lack of include/source directives
 def i3(mode):
 
-    if check_param("i3_conf_file") == False:
+    if check_param("i3_conf_file", "i3") == False:
         return
 
     print("\n[+] i3 files\n * * * * * * * * * * * * *")
@@ -954,7 +954,7 @@ def i3(mode):
 
 def compton(mode):
     
-    if check_param('compton_conf_file') == False:
+    if check_param('compton_conf_file', "compton") == False:
         return
     print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
@@ -1027,8 +1027,10 @@ def load(mode=False):
             quit()
 
 # Only load/store if specified in the config
-def check_param(prog):
+def check_param(prog, component):
     if prog not in config_arg_list:
+        return False
+    if component in skip_list:
         return False
     return True
 
