@@ -2,7 +2,116 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="264c44f2-2570-4242-abd5-6aff87510d4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/i3-theme-manager-qt" beforeDir="false" afterPath="$PROJECT_DIR$/i3-theme-manager-qt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7-with-taskbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/blocks/blocks.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/carina/carina.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/clair/clair-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/launchy/launchy.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/leve/leve-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/liness/liness.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/livia/livia.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/minima/minima.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/neon/neon.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/popside/popside-green.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/popside/popside-red.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/raven/raven-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/repentance/repentance.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/starty/starty.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/triste/triste-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/uncreative/uncreative.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/unleashed/unleashed-bookmark.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/unleashed/unleashed-clock.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/unleashed/unleashed-statusbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/unleashed/unleashed-taskbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/unleashed/unleashed-workspace.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/zug/zug.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/Fmaj7/Fmaj7-with-taskbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/Fmaj7/Fmaj7.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/blocks/blocks.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/carina/carina.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/clair/clair-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/launchy/launchy.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/leve/leve-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/liness/liness.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/livia/livia.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/minima/minima.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/neon/neon.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/popside/popside-green.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/popside/popside-red.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/raven/raven-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/repentance/repentance.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/starty/starty.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-blue.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-crimson.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-cyan.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-froly.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-grey.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-lavender.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-orange.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/triste/triste-violet.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/uncreative/uncreative.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-bookmark.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-clock.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-statusbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-taskbar.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/unleashed/unleashed-workspace.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theMatrix/tint2/tint2-theme-collections/zug/zug.tint2rc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/i3-theme-manager-qt/i3-theme-manager-qt.pro.user" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/i3-theme-manager-qt/i3-theme-manager-qt.pro.user" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,38 +126,47 @@
     <SUITE FILE_PATH="coverage/i3_theme_manager$_pydev_execfile.coverage" NAME="_pydev_execfile Coverage Results" MODIFIED="1549067038848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps" />
     <SUITE FILE_PATH="coverage/i3_theme_manager$i3_qt.coverage" NAME="i3_qt Coverage Results" MODIFIED="1549074965802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/i3_qt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2499">
-              <caret line="167" column="38" lean-forward="true" selection-start-line="167" selection-start-column="38" selection-end-line="167" selection-end-column="38" />
-              <folding>
-                <element signature="e#196#238#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="15">
-                <caret line="1" column="86" selection-start-line="1" selection-start-column="86" selection-end-line="1" selection-end-column="86" />
+                <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
               </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/i3-package.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="887" selection-start-line="887" selection-end-line="887" />
+            <state relative-caret-position="493">
+              <caret line="111" column="59" selection-start-line="111" selection-start-column="59" selection-end-line="111" selection-end-column="59" />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/i3-theme-manager">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-135" />
           </provider>
         </entry>
       </file>
@@ -64,15 +182,17 @@
         <option value="$PROJECT_DIR$/i3-package.py" />
         <option value="$PROJECT_DIR$/i3_qt.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/i3-theme-manager-qt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1958" />
     <option name="y" value="54" />
-    <option name="width" value="1844" />
-    <option name="height" value="969" />
+    <option name="width" value="1866" />
+    <option name="height" value="990" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -85,17 +205,6 @@
             <path>
               <item name="i3-theme-manager" type="b2602c69:ProjectViewProjectNode" />
               <item name="i3-theme-manager" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="i3-theme-manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="i3-theme-manager" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="i3-theme-manager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="i3-theme-manager" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="i3-theme-manager-qt" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -253,16 +362,18 @@
       <workItem from="1549051691123" duration="1581000" />
       <workItem from="1549054854204" duration="6956000" />
       <workItem from="1549062472369" duration="7998000" />
+      <workItem from="1550479989564" duration="1000" />
+      <workItem from="1550480014971" duration="2220000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16535000" />
+    <option name="totallyTimeSpent" value="18756000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1958" y="54" width="1844" height="969" extended-state="0" />
+    <frame x="1958" y="54" width="1866" height="990" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16722408" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17271727" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -276,13 +387,13 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.3282353" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.328" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.32948294" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -338,13 +449,7 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ui/py_qt_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="11" column="34" lean-forward="true" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/py_qt_2.py" />
     <entry file="file://$PROJECT_DIR$/py_qt_2.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -353,30 +458,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/i3-package.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="887" selection-start-line="887" selection-end-line="887" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/i3_qt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
-          <caret line="167" column="38" lean-forward="true" selection-start-line="167" selection-start-column="38" selection-end-line="167" selection-end-column="38" />
-          <folding>
-            <element signature="e#196#238#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/i3_qt.py" />
+    <entry file="file://$PROJECT_DIR$/i3-package.py" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="15">
-            <caret line="1" column="86" selection-start-line="1" selection-start-column="86" selection-end-line="1" selection-end-column="86" />
+            <caret line="1" column="4" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i3-theme-manager">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-135" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="111" column="59" selection-start-line="111" selection-start-column="59" selection-end-line="111" selection-end-column="59" />
         </state>
       </provider>
     </entry>
