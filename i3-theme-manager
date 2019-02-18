@@ -33,7 +33,18 @@ DEBUG = 0
 
 config_arg_list = {
 }
-
+skip_list = []
+com_list = [
+    "i3",
+    "bar",
+    "terminal",
+    "bash_visual",
+    "bash_alias",
+    "vim ",
+    "nitrogen",
+    "gtk",
+    "compton"
+]
 
 def main():
     
@@ -139,6 +150,16 @@ def parse_args():
                 FORCE_RESTART = True
             if sys.argv[x].find("-g") != -1:
                 FORCE_RESTART = "gui"
+            if sys.argv[x].find("-s") != -1:
+                if sys.argv[x+1] in com_list:
+                    skip_list.append(sys.argv[x+1])
+                    continue
+                else: 
+                    print("[-] Invalid component: " + sys.argv[x+1])
+                    return ARG_FAIL
+
+                
+                
         return
     else:
         return ARG_FAIL
@@ -166,7 +187,20 @@ def show_usage():
                 -o [ PACKAGE NAME ] - Specify package name for packaging mode
                 -t [ PACKAGE NAME ] - Specify package name for loading mode
                 -f                  - Automatically kill i3 session after loading theme
+                -s [ COMPONENT ]    - Skip specified component in package/load process
 
+            Component List: 
+
+                i3
+                bar
+                terminal
+                bash_visual
+                bash_alias
+                vim 
+                nitrogen
+                gtk
+                compton
+                
 
             First time use:
                 i3-theme-manager will generate an empty config file in the standard user config directory,
