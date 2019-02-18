@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="264c44f2-2570-4242-abd5-6aff87510d4a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/i3-theme-manager-qt" beforeDir="false" afterPath="$PROJECT_DIR$/i3-theme-manager-qt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7-with-taskbar.tint2rc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7.tint2rc" beforeDir="false" />
@@ -153,8 +154,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="118" column="63" selection-start-line="118" selection-start-column="63" selection-end-line="118" selection-end-column="63" />
+            <state relative-caret-position="405">
+              <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
             </state>
           </provider>
         </entry>
@@ -162,7 +163,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/i3-theme-manager">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
+            <state relative-caret-position="555">
               <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
             </state>
           </provider>
@@ -196,7 +197,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -208,6 +208,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -362,16 +363,17 @@
       <workItem from="1549062472369" duration="7998000" />
       <workItem from="1550479989564" duration="1000" />
       <workItem from="1550480014971" duration="2574000" />
+      <workItem from="1550483386613" duration="30000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19110000" />
+    <option name="totallyTimeSpent" value="19140000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1958" y="54" width="1866" height="990" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17271727" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17436744" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -470,15 +472,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/i3-theme-manager">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
+        <state relative-caret-position="555">
           <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="118" column="63" selection-start-line="118" selection-start-column="63" selection-end-line="118" selection-end-column="63" />
+        <state relative-caret-position="405">
+          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
         </state>
       </provider>
     </entry>

@@ -155,6 +155,35 @@ class Ui_MainWindow(object):
             if dir == ".last":
                 self.revert_button.setEnabled(True)
 
+    def get_skip_list(self,cur_dir):
+        skip_list = {
+            self.com_check_ba : "bash-alias",
+            self.com_check_bv : "bash-visual",
+            self.com_check_i3: "i3",
+            self.com_check_bar: "bar",
+            self.com_check_gtk: "gtk",
+            self.com_check_vim: "vim",
+            self.com_check_term: "terminal",
+            self.com_check_nitro: "nitrogen",
+            self.com_check_compton: "compton"
+        }
+        arg_list = [
+                cur_dir + '/i3-theme-manager',
+                'load',
+                '-t',
+                CURRENT_SELECTION,
+                '-g',
+        ]
+        for component in skip_list:
+            if component.isChecked() == False:
+                print("[-] Skipping component")
+                arg_list.append("-s")
+                arg_list.append(skip_list[component])
+        
+        print(arg_list)
+        return arg_list
+
+
     def onclick_load_button(self):
         if CURRENT_SELECTION is None or CURRENT_SELECTION == "":
             fail_box = QtWidgets.QMessageBox()
@@ -163,14 +192,14 @@ class Ui_MainWindow(object):
             return
         cur_dir = os.getcwd()
 
-
+        load_args = self.get_skip_list(cur_dir)
         qbox = QtWidgets.QMessageBox()
         qbox.setText("Load selected theme?")
         qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
         retval = qbox.exec_()
         
         if retval == 1024:
-            subprocess.call([cur_dir + '/i3-theme-manager', 'load', '-t ', CURRENT_SELECTION, '-g'])
+            subprocess.call(load_args)
         else:
             return
 
@@ -182,6 +211,8 @@ class Ui_MainWindow(object):
 
         if retval == 1024:
             subprocess.call(['killall', 'i3'])
+
+
 
 
     def onclick_package_button(self):
