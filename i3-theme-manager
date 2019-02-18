@@ -198,6 +198,7 @@ def show_usage():
                 bash_alias
                 vim 
                 nitrogen
+                pywal
                 gtk
                 compton
                 
@@ -775,12 +776,15 @@ def nitrogen(mode):
 
     global WALLPAPER
     if "pywal" in config_arg_list:
+        if check_param("pywal", "pywal") == False:
+            return
         with open(USER_HOME + "/.cache/wal/wal", "r") as f:
             for line in f:
                 WALLPAPER = line.replace('\n','')
                 os.mkdir('pywal')
                 subprocess.call(['cp', WALLPAPER, 'pywal/'])
                 break
+        subprocess.call(['cp', USER_HOME + '/.cache/wal/sequences', 'pywal/'])
 
                 
 
