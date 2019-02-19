@@ -155,10 +155,13 @@ class Ui_MainWindow(object):
             if dir == ".last":
                 self.revert_button.setEnabled(True)
 
-    def get_skip_list(self,cur_dir,mode,prefix):
+    def get_skip_list(self,cur_dir,mode,prefix,package_save=None):
+        global CURRENT_SELECTION
+        if mode == "package":
+            CURRENT_SELECTION = package_save
         skip_list = {
-            self.com_check_ba : "bash-alias",
-            self.com_check_bv : "bash-visual",
+            self.com_check_ba : "bash_alias",
+            self.com_check_bv : "bash_visual",
             self.com_check_i3: "i3",
             self.com_check_bar: "bar",
             self.com_check_gtk: "gtk",
@@ -216,11 +219,12 @@ class Ui_MainWindow(object):
 
 
     def onclick_package_button(self):
+        cur_dir = os.getcwd()
         name_package = QtWidgets.QInputDialog()
         (package_name, ok) = name_package.getText(MAIN_WIN_GLOB, "Enter package name", "Enter package name")
+        load_args = self.get_skip_list(cur_dir,"package","-o", package_name)
         if ok is True:
-            cur_dir = os.getcwd()
-            subprocess.call([cur_dir + '/i3-theme-manager', 'package', '-o ', package_name])
+            subprocess.call(load_args)
 
 
             # Quick and dirty...
