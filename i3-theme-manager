@@ -92,7 +92,7 @@ def parse_config():
                         config_arg_list[conf_arg_name] = conf_arg
                         continue
                     else:
-                        print("[-] Couldn't find program '" + conf_arg + "'")
+                        log("[-] Couldn't find program '" + conf_arg + "'")
                         config_arg_list[conf_arg_name] = NO_ARG
                         continue 
 
@@ -100,18 +100,18 @@ def parse_config():
                     # Make sure path is valid
                     if not os.path.exists(conf_arg):
                         FAIL_FLAG = True
-                        print("[-] Path '" + conf_arg + "' doesn't exist")
+                        log("[-] Path '" + conf_arg + "' doesn't exist")
                         continue
 
                 config_arg_list[conf_arg_name] = conf_arg
             else:
                 # For empty args, show error and set failure flag
-                print('[-] Missing parameter for ' + conf_arg_name)
+                log('[-] Missing parameter for ' + conf_arg_name)
                 FAIL_FLAG = True
     
     
     if DEBUG:
-        print(config_arg_list)
+        log(config_arg_list)
     if FAIL_FLAG is True:
         # Do not continue on fail flag
         quit()
@@ -126,7 +126,7 @@ def parse_args():
     if len(sys.argv) > 1:
         mode = sys.argv[1]
         if mode != "load" and mode != "package" and mode != "revert":
-            print("[-] Invalid mode '" + mode + "' supplied")
+            log("[-] Invalid mode '" + mode + "' supplied")
             return ARG_FAIL
         else:
             if mode == "load":
@@ -155,7 +155,7 @@ def parse_args():
                     skip_list.append(sys.argv[x+1])
                     continue
                 else: 
-                    print("[-] Invalid component: " + sys.argv[x+1])
+                    log("[-] Invalid component: " + sys.argv[x+1])
                     return ARG_FAIL
 
                 
@@ -391,7 +391,7 @@ def write_blank_config():
         'compton_file' : comtpon_desc
     }
    
-    print("[+] Generating empty config file")
+    log("[+] Generating empty config file")
     x = 0
     with open(I3P_CONF, 'w') as config:
         for arg in config_arg_list:
@@ -410,12 +410,12 @@ def check_config():
     I3P_CONF = I3P_DIR + 'config'
 
     if not os.path.isdir(I3P_DIR):
-        print("[-] Configuration directory not found... creating config directory" 
+        log("[-] Configuration directory not found... creating config directory" 
                 + "at '" + USER_HOME + "/.config/i3packager'" )
         os.mkdir(I3P_DIR)
         
     if not os.path.isfile(I3P_CONF):
-        print("[-] Configuration file not found... creating config file" 
+        log("[-] Configuration file not found... creating config file" 
                 + " at '" + USER_HOME + "/.config/i3packager/config'" )
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
@@ -452,7 +452,7 @@ def package(backup=False):
    
 
     if backup is False: 
-        print("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
+        log("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
         take_screenshot()
 
 
@@ -522,7 +522,7 @@ def take_screenshot():
    
     # Jump to empty workspace and open some visual programs
     if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
-        print("[-] Screenshot requires i3-msg... how do you not have this?")
+        log("[-] Screenshot requires i3-msg... how do you not have this?")
         return
     os.chdir(BASE_DIR)
     setup_workspace()
@@ -538,9 +538,9 @@ def take_screenshot():
         subprocess.call(['mv', PACKAGE_DIR + '/' +  shot_file, 
             PACKAGE_DIR + '/' + PACKAGE_NAME + '.png'])
 
-        print("[+] Saved screenshot to package directory at '" + PACKAGE_DIR + "'")
+        log("[+] Saved screenshot to package directory at '" + PACKAGE_DIR + "'")
     else:
-        print("[-] Requires 'xfce4-screenshooter' for screen capture")
+        log("[-] Requires 'xfce4-screenshooter' for screen capture")
 
     
     kill_workspace()
@@ -553,29 +553,29 @@ def bar(mode):
 
 
     try:
-        print("\n[+] Bar files\n * * * * * * * * * * * * *")
+        log("\n[+] Bar files\n * * * * * * * * * * * * *")
         
         if mode == "package":
             bar_prog = config_arg_list['bar_prog']
             if bar_prog == "polybar":
-                print("[+] Copying polybar files ")
+                log("[+] Copying polybar files ")
                 subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
             elif bar_prog == "tint2":
-                print("[+] Copying tint2 files ")
+                log("[+] Copying tint2 files ")
                 subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
             else:
-                print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+                log("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
         elif mode == "load":
             bar_prog = config_arg_list['bar_prog']
             if bar_prog == "polybar":
-                print("[+] Loading polybar files ")
+                log("[+] Loading polybar files ")
                 subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
             elif bar_prog == "tint2":
-                print("[+] Loading tint2 files ")
+                log("[+] Loading tint2 files ")
                 subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
             else:
-                print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+                log("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
     except: 
         pass
@@ -587,12 +587,12 @@ def vim(mode):
         return
    
     try:
-        print("\n[+] VIM files\n * * * * * * * * * * * * *")
+        log("\n[+] VIM files\n * * * * * * * * * * * * *")
         if mode == "package":
             os.mkdir('vim')
             os.mkdir('vim/color_scheme')
             subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
-            print("[+] Copying: " + config_arg_list['vimrc_file'])
+            log("[+] Copying: " + config_arg_list['vimrc_file'])
                 
             # Extract colorscheme from vimrc
             color_scheme = None
@@ -612,7 +612,7 @@ def vim(mode):
                 for cs in file_listing:
                     if cs.replace('\'', '').find(color_scheme) != -1:
                         subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
-                        print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                        log("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                         return
             
             # Try system dir if no luck
@@ -624,14 +624,14 @@ def vim(mode):
                     for cs in file_listing:
                         if cs.replace('\'','').find(color_scheme) != -1:
                             subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
-                            print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                            log("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                             return
             
-            print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
+            log("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
 
         elif mode == "load":
             
-            print("[+] Loading: " + config_arg_list['vimrc_file'])
+            log("[+] Loading: " + config_arg_list['vimrc_file'])
             vimrc = len(config_arg_list['vimrc_file'].split('/'))
             vimrc = config_arg_list['vimrc_file'].split('/')[vimrc-1]
             subprocess.call(['cp', 'vim/' + vimrc.replace('\n',''), 
@@ -642,7 +642,7 @@ def vim(mode):
             if not os.path.isdir(USER_HOME + '/.vim/colors'):
                 os.mkdir(USER_HOME + '/.vim/colors')
 
-            print("[+] Loading VIM colorscheme")
+            log("[+] Loading VIM colorscheme")
             color_scheme = subprocess.check_output(['ls', 'vim/color_scheme'])
             color_scheme = str(color_scheme).replace('\\n','')[2:-1]
             subprocess.call(['cp', 'vim/color_scheme/' + color_scheme, USER_HOME + '/.vim/colors'])
@@ -656,16 +656,16 @@ def bash(mode):
     # Skips execution if param is not specified in config file
     if check_param("bash_visual_file", "bash_visual") == True:
         try:
-            print("\n[+] Bash files\n * * * * * * * * * * * * *")
+            log("\n[+] Bash files\n * * * * * * * * * * * * *")
             if mode == "package": 
 
                 os.mkdir('bash')
                 
-                print("[+] Copying: " + config_arg_list['bash_visual_file'])
+                log("[+] Copying: " + config_arg_list['bash_visual_file'])
                 subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
             elif mode == "load":
                
-                print("[+] Loading: " + config_arg_list['bash_visual_file'])
+                log("[+] Loading: " + config_arg_list['bash_visual_file'])
                 bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
                 bash_visual_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
                 subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
@@ -676,12 +676,12 @@ def bash(mode):
     if check_param("bash_aliases_file", "bash_alias") == False:
         try:
             if mode == "package":
-                print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+                log("[+] Copying: " + config_arg_list['bash_aliases_file'])
                 subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
 
 
             elif mode == "load": 
-                print("[+] Loading: " + config_arg_list['bash_aliases_file'])
+                log("[+] Loading: " + config_arg_list['bash_aliases_file'])
                 bash_aliases_file = len(config_arg_list['bash_aliases_file'].split('/'))
                 bash_aliases_file = config_arg_list['bash_aliases_file'].split('/')[bash_aliases_file-1]
                 subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
@@ -700,7 +700,7 @@ def gtk(mode):
         return
    
     try:
-        print("\n[+] GTK files\n * * * * * * * * * * * * *")
+        log("\n[+] GTK files\n * * * * * * * * * * * * *")
         
         gtk_dir = config_arg_list['gtk_dir']
         gtk_settings_file = gtk_dir + '/settings.ini'
@@ -737,9 +737,9 @@ def gtk(mode):
             themes_dir = config_arg_list['themes_dir']
             icons_dir = config_arg_list['icons_dir']
             
-            print("[+] Loading GTK theme '" + gtk_theme + "'")
-            print("[+] Loading GTK icons '" + gtk_icons + "'")
-            print("[+] Loading GTK cursors '" + gtk_cursors + "'")
+            log("[+] Loading GTK theme '" + gtk_theme + "'")
+            log("[+] Loading GTK icons '" + gtk_icons + "'")
+            log("[+] Loading GTK cursors '" + gtk_cursors + "'")
 
             subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_theme, themes_dir])
             subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_icons, icons_dir])
@@ -769,14 +769,14 @@ def get_gtk_assets(gtk_asset):
         else:
             # If can't find theme directory, prompt user until valid location is found
             while True:
-                print("[-] Couldn't locate directory for GKT theme: " + 
+                log("[-] Couldn't locate directory for GKT theme: " + 
                         gtk_asset + ". Please enter location\n>>> ", end="")
                 dir_loc = input()
                 if os.path.isdir(dir_loc):
                     break
         
         subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
-        print("[+] Recursively copying " + dir_loc)    
+        log("[+] Recursively copying " + dir_loc)    
     except:
         pass
 
@@ -788,7 +788,7 @@ def nitrogen(mode):
     try:
         global WALLPAPER
         # Package nitrogen
-        print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
+        log("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
         if mode == "package":
             if "pywal" in config_arg_list:
@@ -816,7 +816,7 @@ def nitrogen(mode):
                         wallpaper_path = line.split('=')[1].replace('\n','')
                         if WALLPAPER == None:
                             WALLPAPER = wallpaper_path
-                        print("[+] Copying:  " + wallpaper_path)
+                        log("[+] Copying:  " + wallpaper_path)
                         subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
         
         elif mode == "load":
@@ -869,7 +869,7 @@ def terminator(mode):
         if check_param("terminal_config_file", "terminal") == False:
             return
 
-        print("\n[+] Terminator files\n * * * * * * * * * * * * *")
+        log("\n[+] Terminator files\n * * * * * * * * * * * * *")
         if mode == "package":
             font_list = [] 
 
@@ -877,7 +877,7 @@ def terminator(mode):
             os.mkdir(term_dir)
 
             subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
-            print("[+] Copying: " + config_arg_list['terminal_config_file'])
+            log("[+] Copying: " + config_arg_list['terminal_config_file'])
             
             with open(config_arg_list['terminal_config_file'], 'r') as config:
                 for line in config:
@@ -899,10 +899,10 @@ def terminator(mode):
             subprocess.call(['cp', 'terminator/' + config_file_name, 
                 config_arg_list['terminal_config_file']])
        
-            print("[-] ##### Fonts required #####")
+            log("[-] ##### Fonts required #####")
             with open('terminator/font_list', 'r') as fl:
                 for font in fl:
-                    print("[-] " + font.replace('\n',''))
+                    log("[-] " + font.replace('\n',''))
     except:
         pass
         
@@ -913,7 +913,7 @@ def i3(mode):
         if check_param("i3_config_file", "i3") == False:
             return
 
-        print("\n[+] i3 files\n * * * * * * * * * * * * *")
+        log("\n[+] i3 files\n * * * * * * * * * * * * *")
         
         if mode == "package":
             os.mkdir('i3')
@@ -931,15 +931,15 @@ def i3(mode):
                     if theme_section_set is True:
                         i3_theme_section.append(line)
             if extracted is True: 
-                print("[+] Extracting theme section from i3 config")
+                log("[+] Extracting theme section from i3 config")
                 
                 subprocess.call(['touch', 'i3/i3_theme_sec'])
-                print("[+] Writing to file `i3_theme_sec`")
+                log("[+] Writing to file `i3_theme_sec`")
                 with open('i3/i3_theme_sec', 'w') as config:
                     for line in i3_theme_section:
                         config.write(line)
             else:
-                print("[+] No theme section found in i3 config file")
+                log("[+] No theme section found in i3 config file")
 
         elif mode == "load":
             theme_section_set = False
@@ -976,16 +976,16 @@ def compton(mode):
         return
     
     try:
-        print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
+        log("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
         
         if mode == "package":
-            print("\n[+] Packaging compton config")
+            log("\n[+] Packaging compton config")
             os.mkdir("compton")
             subprocess.call(['cp', config_arg_list['compton_conf_file'], 'compton/'])
 
         elif mode == "load":
-            print("\n[+] Loading compton config")
+            log("\n[+] Loading compton config")
             subprocess.call(['cp', 'compton/compton.conf', config_arg_list['compton_conf_file']])
 
     except:
@@ -999,23 +999,23 @@ def load(mode=False):
     if mode is False: 
         if LOAD_PACKAGE_NAME != "":
             if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
-                print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                log("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
                 quit()
         else:
             while True:
-                print("[+] Enter package name to load:\n>>>", end="")
+                log("[+] Enter package name to load:\n>>>", end="")
                 LOAD_PACKAGE_NAME = input()
                 if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
-                    print("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                    log("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
                     quit()
                 else:
                     break
     else:
         LOAD_PACKAGE_NAME = ".last"
         if os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME):
-            print("[+] Reverting to last applied theme!")
+            log("[+] Reverting to last applied theme!")
         else:
-            print("[-] No previously applied theme found!")
+            log("[-] No previously applied theme found!")
             quit()
 
 
@@ -1040,7 +1040,7 @@ def load(mode=False):
         quit()
     else:
 
-        print("[+] Theme files sucessfully loaded, kill i3 session " 
+        log("[+] Theme files sucessfully loaded, kill i3 session " 
                 + "to reload files? (y/N)\n>>>", end="")
         res = input()
         if str(res).lower() == "y":
@@ -1055,6 +1055,18 @@ def check_param(prog, component):
     if component in skip_list:
         return False
     return True
+
+def log(msg):
+    print(msg)
+    if not os.path.isfile(USER_HOME + '/.config/i3packager/.logs'):
+        subprocess.call(['touch', USER_HOME + '~/.config/i3packager/.logs'])
+    with open(USER_HOME + '/.config/i3packager/.logs', 'a') as f:
+        if (msg[len(msg)-1] != '\n'):
+            f.write(msg + '\n')
+        else:
+            f.write(msg)
+
+        
 
 
 
