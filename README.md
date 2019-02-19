@@ -16,8 +16,7 @@ _from various members of /r/unixporn_
 7. wallpaper configuartion - ( supports `pywal` )
 8. compton configuartion
 
-For certain theme components like wallpaper setters and terminal emulators, `i3-theme-manager` only supports selected programs,
-but will eventually support more in the future. 
+For certain theme components like wallpaper setters and terminal emulators, `i3-theme-manager` currently only supports selected programs, but will soon support more in the future. 
 
 ### Getting Started
 
