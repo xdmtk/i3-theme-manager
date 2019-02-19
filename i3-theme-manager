@@ -33,7 +33,18 @@ DEBUG = 0
 
 config_arg_list = {
 }
-
+skip_list = []
+com_list = [
+    "i3",
+    "bar",
+    "terminal",
+    "bash_visual",
+    "bash_alias",
+    "vim",
+    "nitrogen",
+    "gtk",
+    "compton"
+]
 
 def main():
     
@@ -139,6 +150,16 @@ def parse_args():
                 FORCE_RESTART = True
             if sys.argv[x].find("-g") != -1:
                 FORCE_RESTART = "gui"
+            if sys.argv[x].find("-s") != -1:
+                if sys.argv[x+1] in com_list:
+                    skip_list.append(sys.argv[x+1])
+                    continue
+                else: 
+                    print("[-] Invalid component: " + sys.argv[x+1])
+                    return ARG_FAIL
+
+                
+                
         return
     else:
         return ARG_FAIL
@@ -166,7 +187,21 @@ def show_usage():
                 -o [ PACKAGE NAME ] - Specify package name for packaging mode
                 -t [ PACKAGE NAME ] - Specify package name for loading mode
                 -f                  - Automatically kill i3 session after loading theme
+                -s [ COMPONENT ]    - Skip specified component in package/load process
 
+            Component List: 
+
+                i3
+                bar
+                terminal
+                bash_visual
+                bash_alias
+                vim 
+                nitrogen
+                pywal
+                gtk
+                compton
+                
 
             First time use:
                 i3-theme-manager will generate an empty config file in the standard user config directory,
@@ -457,7 +492,8 @@ def setup_workspace():
     subprocess.call(['xdotool', 'key', 'Return'])
     
     i3_msg('split', 'horizontal')
-    i3_msg('exec', pipe_arg + ' 5"', .75)
+    i3_msg('exec', term_prog, .75)
+#    i3_msg('exec', pipe_arg + ' 5"', .75)
     i3_msg('focus', 'up')
     i3_msg('split', 'horizontal')
     i3_msg('exec', term_prog, .75)
@@ -512,290 +548,302 @@ def take_screenshot():
 
 def bar(mode):
     
-    if check_param("bar_prog") == False:
+    if check_param("bar_prog", "bar") == False:
         return
 
 
+    try:
+        print("\n[+] Bar files\n * * * * * * * * * * * * *")
+        
+        if mode == "package":
+            bar_prog = config_arg_list['bar_prog']
+            if bar_prog == "polybar":
+                print("[+] Copying polybar files ")
+                subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
+            elif bar_prog == "tint2":
+                print("[+] Copying tint2 files ")
+                subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
+            else:
+                print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
-    print("\n[+] Bar files\n * * * * * * * * * * * * *")
-    
-    if mode == "package":
-        bar_prog = config_arg_list['bar_prog']
-        if bar_prog == "polybar":
-            print("[+] Copying polybar files ")
-            subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
-        elif bar_prog == "tint2":
-            print("[+] Copying tint2 files ")
-            subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
-        else:
-            print("[-] Invalid bar program: " + bar_prog + " ..skipping")
+        elif mode == "load":
+            bar_prog = config_arg_list['bar_prog']
+            if bar_prog == "polybar":
+                print("[+] Loading polybar files ")
+                subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
+            elif bar_prog == "tint2":
+                print("[+] Loading tint2 files ")
+                subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
+            else:
+                print("[-] Invalid bar program: " + bar_prog + " ..skipping")
 
-    elif mode == "load":
-        bar_prog = config_arg_list['bar_prog']
-        if bar_prog == "polybar":
-            print("[+] Loading polybar files ")
-            subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
-        elif bar_prog == "tint2":
-            print("[+] Loading tint2 files ")
-            subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
-        else:
-            print("[-] Invalid bar program: " + bar_prog + " ..skipping")
-
-
+    except: 
+        pass
 
 
 def vim(mode):
 
-    if check_param("vimrc_file") == False:
+    if check_param("vimrc_file", "vim") == False:
         return
-    
-    print("\n[+] VIM files\n * * * * * * * * * * * * *")
-    if mode == "package":
-        os.mkdir('vim')
-        os.mkdir('vim/color_scheme')
-        subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
-        print("[+] Copying: " + config_arg_list['vimrc_file'])
+   
+    try:
+        print("\n[+] VIM files\n * * * * * * * * * * * * *")
+        if mode == "package":
+            os.mkdir('vim')
+            os.mkdir('vim/color_scheme')
+            subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
+            print("[+] Copying: " + config_arg_list['vimrc_file'])
+                
+            # Extract colorscheme from vimrc
+            color_scheme = None
+            with open(config_arg_list['vimrc_file'], 'r') as vimrc:
+                for line in vimrc: 
+                    if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
+                        color_scheme = line.split(' ')[1].replace('\n','')
+                        break
             
-        # Extract colorscheme from vimrc
-        color_scheme = None
-        with open(config_arg_list['vimrc_file'], 'r') as vimrc:
-            for line in vimrc: 
-                if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
-                    color_scheme = line.split(' ')[1].replace('\n','')
-                    break
-        
-        if color_scheme is None:
-            return
-        file_listing = None
-        # Look for colorscheme in home dir
-        if os.path.isdir(USER_HOME + '/.vim/colors'):
-            file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
-            file_listing = str(file_listing)[2:-1].split('\\n')
-            for cs in file_listing:
-                if cs.replace('\'', '').find(color_scheme) != -1:
-                    subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
-                    print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
-                    return
-        
-        # Try system dir if no luck
-        file_listing_sys = None
-        for x in range(70,81):
-            if os.path.isdir('/usr/share/vim/vim' + str(x) + '/colors'):
-                file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
+            if color_scheme is None:
+                return
+            file_listing = None
+            # Look for colorscheme in home dir
+            if os.path.isdir(USER_HOME + '/.vim/colors'):
+                file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
                 file_listing = str(file_listing)[2:-1].split('\\n')
                 for cs in file_listing:
-                    if cs.replace('\'','').find(color_scheme) != -1:
-                        subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                    if cs.replace('\'', '').find(color_scheme) != -1:
+                        subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
                         print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
                         return
-        
-        print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
+            
+            # Try system dir if no luck
+            file_listing_sys = None
+            for x in range(70,81):
+                if os.path.isdir('/usr/share/vim/vim' + str(x) + '/colors'):
+                    file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
+                    file_listing = str(file_listing)[2:-1].split('\\n')
+                    for cs in file_listing:
+                        if cs.replace('\'','').find(color_scheme) != -1:
+                            subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                            print("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                            return
+            
+            print("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
 
-    elif mode == "load":
-        
-        print("[+] Loading: " + config_arg_list['vimrc_file'])
-        vimrc = len(config_arg_list['vimrc_file'].split('/'))
-        vimrc = config_arg_list['vimrc_file'].split('/')[vimrc-1]
-        subprocess.call(['cp', 'vim/' + vimrc.replace('\n',''), 
-            config_arg_list['vimrc_file']])
-        
-        if not os.path.isdir(USER_HOME + '/.vim/'):
-            os.mkdir(USER_HOME + '/.vim/')
-        if not os.path.isdir(USER_HOME + '/.vim/colors'):
-            os.mkdir(USER_HOME + '/.vim/colors')
+        elif mode == "load":
+            
+            print("[+] Loading: " + config_arg_list['vimrc_file'])
+            vimrc = len(config_arg_list['vimrc_file'].split('/'))
+            vimrc = config_arg_list['vimrc_file'].split('/')[vimrc-1]
+            subprocess.call(['cp', 'vim/' + vimrc.replace('\n',''), 
+                config_arg_list['vimrc_file']])
+            
+            if not os.path.isdir(USER_HOME + '/.vim/'):
+                os.mkdir(USER_HOME + '/.vim/')
+            if not os.path.isdir(USER_HOME + '/.vim/colors'):
+                os.mkdir(USER_HOME + '/.vim/colors')
 
-        print("[+] Loading VIM colorscheme")
-        color_scheme = subprocess.check_output(['ls', 'vim/color_scheme'])
-        color_scheme = str(color_scheme).replace('\\n','')[2:-1]
-        subprocess.call(['cp', 'vim/color_scheme/' + color_scheme, USER_HOME + '/.vim/colors'])
-
+            print("[+] Loading VIM colorscheme")
+            color_scheme = subprocess.check_output(['ls', 'vim/color_scheme'])
+            color_scheme = str(color_scheme).replace('\\n','')[2:-1]
+            subprocess.call(['cp', 'vim/color_scheme/' + color_scheme, USER_HOME + '/.vim/colors'])
+    except:
+        pass
 
 def bash(mode):
    
 
     # Introducing optional config params
     # Skips execution if param is not specified in config file
-    if check_param("bash_visual_file") == False:
-        return
-    if check_param("bash_aliases_file") == False:
-        return
+    if check_param("bash_visual_file", "bash_visual") == True:
+        try:
+            print("\n[+] Bash files\n * * * * * * * * * * * * *")
+            if mode == "package": 
+
+                os.mkdir('bash')
+                
+                print("[+] Copying: " + config_arg_list['bash_visual_file'])
+                subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+            elif mode == "load":
+               
+                print("[+] Loading: " + config_arg_list['bash_visual_file'])
+                bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
+                bash_visual_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
+                subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
+                    config_arg_list['bash_visual_file']])
+        except:
+            pass
+
+    if check_param("bash_aliases_file", "bash_alias") == False:
+        try:
+            if mode == "package":
+                print("[+] Copying: " + config_arg_list['bash_aliases_file'])
+                subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
 
 
-    print("\n[+] Bash files\n * * * * * * * * * * * * *")
-    if mode == "package": 
-
-        os.mkdir('bash')
-        
-        print("[+] Copying: " + config_arg_list['bash_visual_file'])
-        subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
-        print("[+] Copying: " + config_arg_list['bash_aliases_file'])
-        subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
-
-    elif mode == "load":
-       
-        print("[+] Loading: " + config_arg_list['bash_visual_file'])
-        bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
-        bash_visual_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
-        subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
-            config_arg_list['bash_visual_file']])
-
-        
-        print("[+] Loading: " + config_arg_list['bash_aliases_file'])
-        bash_aliases_file = len(config_arg_list['bash_aliases_file'].split('/'))
-        bash_aliases_file = config_arg_list['bash_aliases_file'].split('/')[bash_aliases_file-1]
-        subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
-            config_arg_list['bash_aliases_file']])
-        
+            elif mode == "load": 
+                print("[+] Loading: " + config_arg_list['bash_aliases_file'])
+                bash_aliases_file = len(config_arg_list['bash_aliases_file'].split('/'))
+                bash_aliases_file = config_arg_list['bash_aliases_file'].split('/')[bash_aliases_file-1]
+                subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
+                    config_arg_list['bash_aliases_file']])
+        except:
+            pass
+            
 
 def gtk(mode):
    
-    if check_param("gtk_dir") == False:
+    if check_param("gtk_dir", "gtk") == False:
         return
-    if check_param("themes_dir") == False:
+    if check_param("themes_dir", "gtk") == False:
         return
-    if check_param("icons_dir") == False:
+    if check_param("icons_dir", "gtk") == False:
         return
-     
-    print("\n[+] GTK files\n * * * * * * * * * * * * *")
-    
-    gtk_dir = config_arg_list['gtk_dir']
-    gtk_settings_file = gtk_dir + '/settings.ini'
-    gtk_theme = None ; gtk_icons = None ; gtk_cursor = None
-    
-    # Get theme info from settings file
-    with open(gtk_settings_file, 'r') as config:
-        for line in config:
-            if line.find("gtk-theme-name") != -1:
-                gtk_theme = line.split("=")[1].replace('\n','')
-            elif line.find("gtk-icon-theme-name") != -1:
-                gtk_icons = line.split("=")[1].replace('\n','')
-            elif line.find("gtk-cursor-theme-name") != -1:
-                gtk_cursors = line.split("=")[1].replace('\n','')
-
-    
-    if mode == "package": 
-       
-        os.mkdir('gtk')
-        os.mkdir('gtk/themes')
+   
+    try:
+        print("\n[+] GTK files\n * * * * * * * * * * * * *")
         
-        subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
-        subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
-
-        get_gtk_assets(gtk_theme)
-        get_gtk_assets(gtk_icons)
-        get_gtk_assets(gtk_cursors)
-
-    elif mode == "load":
+        gtk_dir = config_arg_list['gtk_dir']
+        gtk_settings_file = gtk_dir + '/settings.ini'
+        gtk_theme = None ; gtk_icons = None ; gtk_cursor = None
         
-        subprocess.call(['cp', 'gtk/settings.ini', gtk_settings_file])
-        subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
-        
-        themes_dir = config_arg_list['themes_dir']
-        icons_dir = config_arg_list['icons_dir']
-        
-        print("[+] Loading GTK theme '" + gtk_theme + "'")
-        print("[+] Loading GTK icons '" + gtk_icons + "'")
-        print("[+] Loading GTK cursors '" + gtk_cursors + "'")
+        # Get theme info from settings file
+        with open(gtk_settings_file, 'r') as config:
+            for line in config:
+                if line.find("gtk-theme-name") != -1:
+                    gtk_theme = line.split("=")[1].replace('\n','')
+                elif line.find("gtk-icon-theme-name") != -1:
+                    gtk_icons = line.split("=")[1].replace('\n','')
+                elif line.find("gtk-cursor-theme-name") != -1:
+                    gtk_cursors = line.split("=")[1].replace('\n','')
 
-        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_theme, themes_dir])
-        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_icons, icons_dir])
-        subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_cursors, icons_dir])
+        
+        if mode == "package": 
+           
+            os.mkdir('gtk')
+            os.mkdir('gtk/themes')
+            
+            subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
+            subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
 
+            get_gtk_assets(gtk_theme)
+            get_gtk_assets(gtk_icons)
+            get_gtk_assets(gtk_cursors)
+
+        elif mode == "load":
+            
+            subprocess.call(['cp', 'gtk/settings.ini', gtk_settings_file])
+            subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
+            
+            themes_dir = config_arg_list['themes_dir']
+            icons_dir = config_arg_list['icons_dir']
+            
+            print("[+] Loading GTK theme '" + gtk_theme + "'")
+            print("[+] Loading GTK icons '" + gtk_icons + "'")
+            print("[+] Loading GTK cursors '" + gtk_cursors + "'")
+
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_theme, themes_dir])
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_icons, icons_dir])
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_cursors, icons_dir])
+    except:
+        pass
 
 def get_gtk_assets(gtk_asset):
     
-    # Attempt to locate themes referenced in settings.ini
-    gtk_asset = gtk_asset.replace('\n','')
-     
-    themes_dir = config_arg_list['themes_dir']
-    icons_dir = config_arg_list['icons_dir']
+    try:
+        # Attempt to locate themes referenced in settings.ini
+        gtk_asset = gtk_asset.replace('\n','')
+         
+        themes_dir = config_arg_list['themes_dir']
+        icons_dir = config_arg_list['icons_dir']
 
-    sys_themes_dir = '/usr/share/themes'
-    sys_icons_dir = '/usr/share/icons'
-    dir_loc = None
-    
-    if os.path.isdir(themes_dir + '/' + gtk_asset):
-        dir_loc = themes_dir + '/'+ gtk_asset
-    elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
-        dir_loc = sys_themes_dir + '/' + gtk_asset 
-    elif os.path.isdir(sys_icons_dir + '/' + gtk_asset):
-        dir_loc = sys_icons_dir + '/' + gtk_asset 
-    else:
-        # If can't find theme directory, prompt user until valid location is found
-        while True:
-            print("[-] Couldn't locate directory for GKT theme: " + 
-                    gtk_asset + ". Please enter location\n>>> ", end="")
-            dir_loc = input()
-            if os.path.isdir(dir_loc):
-                break
-    
-    subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
-    print("[+] Recursively copying " + dir_loc)    
-    
+        sys_themes_dir = '/usr/share/themes'
+        sys_icons_dir = '/usr/share/icons'
+        dir_loc = None
+        
+        if os.path.isdir(themes_dir + '/' + gtk_asset):
+            dir_loc = themes_dir + '/'+ gtk_asset
+        elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+            dir_loc = sys_themes_dir + '/' + gtk_asset 
+        elif os.path.isdir(sys_icons_dir + '/' + gtk_asset):
+            dir_loc = sys_icons_dir + '/' + gtk_asset 
+        else:
+            # If can't find theme directory, prompt user until valid location is found
+            while True:
+                print("[-] Couldn't locate directory for GKT theme: " + 
+                        gtk_asset + ". Please enter location\n>>> ", end="")
+                dir_loc = input()
+                if os.path.isdir(dir_loc):
+                    break
+        
+        subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
+        print("[+] Recursively copying " + dir_loc)    
+    except:
+        pass
 
 def nitrogen(mode):
 
-    if check_param("nitrogen_dir") == False:
+    if check_param("nitrogen_dir", "nitrogen") == False:
         return
-
-
-    global WALLPAPER
-    if "pywal" in config_arg_list:
-        with open(USER_HOME + "/.cache/wal/wal", "r") as f:
-            for line in f:
-                WALLPAPER = line.replace('\n','')
-                os.mkdir('pywal')
-                subprocess.call(['cp', WALLPAPER, 'pywal/'])
-                break
-
-                
-
-    # Package nitrogen
-    print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
-
-    if mode == "package":
-        subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], '.'])
-       
-        # Read bg-saved config to fetch wallpapers
-        bg_saved_file = config_arg_list['nitrogen_dir']
-        if bg_saved_file[len(bg_saved_file)-1] != '/':
-            bg_saved_file += '/'
-        bg_saved_file += 'bg-saved.cfg'
-       
-        # Copy wallpaper file into nitrogen package directory
-        os.mkdir('nitrogen/wallpapers')
-        with open(bg_saved_file, 'r') as config:
-            for line in config:
-                if line.find('file') !=  -1:
-                    wallpaper_path = line.split('=')[1].replace('\n','')
-                    if WALLPAPER == None:
-                        WALLPAPER = wallpaper_path
-                    print("[+] Copying:  " + wallpaper_path)
-                    subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
     
-    elif mode == "load":
+    try:
+        global WALLPAPER
+        # Package nitrogen
+        print("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
 
-        bg_saved_file = 'nitrogen/bg-saved.cfg'
-        subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
-        
-        wallpaper_path = ""
-        with open(bg_saved_file, 'r') as config:
-            for line in config:
-                wallpaper_path_build = ""
-                if line.find('file') !=  -1:
-                    wallpaper_path = line.split('=')[1].replace('\n','')
-                    for x in range(0,len(wallpaper_path.split('/'))):
-                        wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
-                        # If path contains image, stop making directories if needed and make the copy
-                        if check_image(wallpaper_path_build) == True:
-                            subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
-                                wallpaper_path_build])
+        if mode == "package":
+            if "pywal" in config_arg_list:
+                if check_param("pywal", "pywal") == True:
+                    with open(USER_HOME + "/.cache/wal/wal", "r") as f:
+                        for line in f:
+                            WALLPAPER = line.replace('\n','')
+                            os.mkdir('pywal')
+                            subprocess.call(['cp', WALLPAPER, 'pywal/'])
                             break
-                        if not os.path.isdir(wallpaper_path_build):
-                            # If the wallpaper path specified doesn't exist, gradually
-                            # construct the needed directories until image can be copied successfully
-                            os.mkdir(wallpaper_path_build)
+                    subprocess.call(['cp', USER_HOME + '/.cache/wal/sequences', 'pywal/'])
+            subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], '.'])
+           
+            # Read bg-saved config to fetch wallpapers
+            bg_saved_file = config_arg_list['nitrogen_dir']
+            if bg_saved_file[len(bg_saved_file)-1] != '/':
+                bg_saved_file += '/'
+            bg_saved_file += 'bg-saved.cfg'
+           
+            # Copy wallpaper file into nitrogen package directory
+            os.mkdir('nitrogen/wallpapers')
+            with open(bg_saved_file, 'r') as config:
+                for line in config:
+                    if line.find('file') !=  -1:
+                        wallpaper_path = line.split('=')[1].replace('\n','')
+                        if WALLPAPER == None:
+                            WALLPAPER = wallpaper_path
+                        print("[+] Copying:  " + wallpaper_path)
+                        subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
+        
+        elif mode == "load":
 
+            bg_saved_file = 'nitrogen/bg-saved.cfg'
+            subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
+            
+            wallpaper_path = ""
+            with open(bg_saved_file, 'r') as config:
+                for line in config:
+                    wallpaper_path_build = ""
+                    if line.find('file') !=  -1:
+                        wallpaper_path = line.split('=')[1].replace('\n','')
+                        for x in range(0,len(wallpaper_path.split('/'))):
+                            wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
+                            # If path contains image, stop making directories if needed and make the copy
+                            if check_image(wallpaper_path_build) == True:
+                                subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
+                                    wallpaper_path_build])
+                                break
+                            if not os.path.isdir(wallpaper_path_build):
+                                # If the wallpaper path specified doesn't exist, gradually
+                                # construct the needed directories until image can be copied successfully
+                                os.mkdir(wallpaper_path_build)
+
+    except:
+        pass
 
 def check_image(p):
     img_type = [
@@ -815,125 +863,133 @@ def check_image(p):
 # Terminator package function to get config + compile font list
 def terminator(mode):
 
+    try:
+        if check_param("terminal_prog", "terminal") == False:
+            return
+        if check_param("terminal_config_file", "terminal") == False:
+            return
 
-    if check_param("terminal_prog") == False:
-        return
-    if check_param("terminal_config_file") == False:
-        return
+        print("\n[+] Terminator files\n * * * * * * * * * * * * *")
+        if mode == "package":
+            font_list = [] 
 
-    print("\n[+] Terminator files\n * * * * * * * * * * * * *")
-    if mode == "package":
-        font_list = [] 
+            term_dir = config_arg_list['terminal_prog']
+            os.mkdir(term_dir)
 
-        term_dir = config_arg_list['terminal_prog']
-        os.mkdir(term_dir)
+            subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
+            print("[+] Copying: " + config_arg_list['terminal_config_file'])
+            
+            with open(config_arg_list['terminal_config_file'], 'r') as config:
+                for line in config:
+                    if line.find('font') != -1:
+                        try: 
+                            font_list.append(line.split('=')[1])
+                        except:
+                            pass
 
-        subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
-        print("[+] Copying: " + config_arg_list['terminal_config_file'])
-        
-        with open(config_arg_list['terminal_config_file'], 'r') as config:
-            for line in config:
-                if line.find('font') != -1:
-                    try: 
-                        font_list.append(line.split('=')[1])
-                    except:
-                        pass
+            
+            subprocess.call(['touch', term_dir + '/font_list'])
+            with open(term_dir + '/font_list', 'w') as fl:
+                for font in font_list:
+                    fl.write(font + '\n')
 
-        
-        subprocess.call(['touch', term_dir + '/font_list'])
-        with open(term_dir + '/font_list', 'w') as fl:
-            for font in font_list:
-                fl.write(font + '\n')
-
-    elif mode == "load":
-        config_file_name = config_arg_list['terminal_config_file'].split('/')
-        config_file_name = config_file_name[len(config_file_name)-1]
-        subprocess.call(['cp', 'terminator/' + config_file_name, 
-            config_arg_list['terminal_config_file']])
-   
-        print("[-] ##### Fonts required #####")
-        with open('terminator/font_list', 'r') as fl:
-            for font in fl:
-                print("[-] " + font.replace('\n',''))
-                
+        elif mode == "load":
+            config_file_name = config_arg_list['terminal_config_file'].split('/')
+            config_file_name = config_file_name[len(config_file_name)-1]
+            subprocess.call(['cp', 'terminator/' + config_file_name, 
+                config_arg_list['terminal_config_file']])
+       
+            print("[-] ##### Fonts required #####")
+            with open('terminator/font_list', 'r') as fl:
+                for font in fl:
+                    print("[-] " + font.replace('\n',''))
+    except:
+        pass
         
 # Workaround for i3 lack of include/source directives
 def i3(mode):
 
-    if check_param("i3_conf_file") == False:
-        return
+    try:
+        if check_param("i3_config_file", "i3") == False:
+            return
 
-    print("\n[+] i3 files\n * * * * * * * * * * * * *")
-    
-    if mode == "package":
-        os.mkdir('i3')
-        i3_theme_section = [] ; theme_section_set = False ; extracted = False
-        i3_config = config_arg_list['i3_config_file']
-
-        with open(i3_config, 'r') as config:
-            for line in config:
-                if line.find('i3 THEME SECTION START') != -1:
-                    theme_section_set = True
-                    extracted = True
-                elif line.find('i3 THEME SECTION END') != -1:
-                    i3_theme_section.append(line)
-                    theme_section_set = False
-                if theme_section_set is True:
-                    i3_theme_section.append(line)
-        if extracted is True: 
-            print("[+] Extracting theme section from i3 config")
-            
-            subprocess.call(['touch', 'i3/i3_theme_sec'])
-            print("[+] Writing to file `i3_theme_sec`")
-            with open('i3/i3_theme_sec', 'w') as config:
-                for line in i3_theme_section:
-                    config.write(line)
-        else:
-            print("[+] No theme section found in i3 config file")
-
-    elif mode == "load":
-        theme_section_set = False
-        i3_conf_list = []
-
-        # Backup original file just in case
-        subprocess.call(['cp', config_arg_list['i3_config_file'], 
-            config_arg_list['i3_config_file'] + '.backup'])
-        with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
-            for line in i3_conf_read:
-                if line.find("# i3 THEME SECTION START") != -1:
-                    theme_section_set = True
-                    continue
-                if line.find("# i3 THEME SECTION END") != -1:
-                    theme_section_set = False
-                    continue
-                if theme_section_set is False:
-                    i3_conf_list.append(line)
-
-        with open('i3/i3_theme_sec', 'r') as i3_theme_read:
-            for line in i3_theme_read:
-                i3_conf_list.append(line)
+        print("\n[+] i3 files\n * * * * * * * * * * * * *")
         
-        with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
-            for line in i3_conf_list:
-                i3_conf_write.write(line)
+        if mode == "package":
+            os.mkdir('i3')
+            i3_theme_section = [] ; theme_section_set = False ; extracted = False
+            i3_config = config_arg_list['i3_config_file']
 
+            with open(i3_config, 'r') as config:
+                for line in config:
+                    if line.find('i3 THEME SECTION START') != -1:
+                        theme_section_set = True
+                        extracted = True
+                    elif line.find('i3 THEME SECTION END') != -1:
+                        i3_theme_section.append(line)
+                        theme_section_set = False
+                    if theme_section_set is True:
+                        i3_theme_section.append(line)
+            if extracted is True: 
+                print("[+] Extracting theme section from i3 config")
+                
+                subprocess.call(['touch', 'i3/i3_theme_sec'])
+                print("[+] Writing to file `i3_theme_sec`")
+                with open('i3/i3_theme_sec', 'w') as config:
+                    for line in i3_theme_section:
+                        config.write(line)
+            else:
+                print("[+] No theme section found in i3 config file")
+
+        elif mode == "load":
+            theme_section_set = False
+            i3_conf_list = []
+
+            # Backup original file just in case
+            subprocess.call(['cp', config_arg_list['i3_config_file'], 
+                config_arg_list['i3_config_file'] + '.backup'])
+            with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
+                for line in i3_conf_read:
+                    if line.find("# i3 THEME SECTION START") != -1:
+                        theme_section_set = True
+                        continue
+                    if line.find("# i3 THEME SECTION END") != -1:
+                        theme_section_set = False
+                        continue
+                    if theme_section_set is False:
+                        i3_conf_list.append(line)
+
+            with open('i3/i3_theme_sec', 'r') as i3_theme_read:
+                for line in i3_theme_read:
+                    i3_conf_list.append(line)
+            
+            with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
+                for line in i3_conf_list:
+                    i3_conf_write.write(line)
+    except:
+        pass
 
 def compton(mode):
-    
-    if check_param('compton_conf_file') == False:
+   
+
+    if check_param('compton_conf_file', "compton") == False:
         return
-    print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
+    
+    try:
+        print("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
-    if mode == "package":
-        print("\n[+] Packaging compton config")
-        os.mkdir("compton")
-        subprocess.call(['cp', config_arg_list['compton_conf_file'], 'compton/'])
+        
+        if mode == "package":
+            print("\n[+] Packaging compton config")
+            os.mkdir("compton")
+            subprocess.call(['cp', config_arg_list['compton_conf_file'], 'compton/'])
 
-    elif mode == "load":
-        print("\n[+] Loading compton config")
-        subprocess.call(['cp', 'compton/compton.conf', config_arg_list['compton_conf_file']])
+        elif mode == "load":
+            print("\n[+] Loading compton config")
+            subprocess.call(['cp', 'compton/compton.conf', config_arg_list['compton_conf_file']])
 
-
+    except:
+        pass
 
 
 
@@ -993,8 +1049,10 @@ def load(mode=False):
             quit()
 
 # Only load/store if specified in the config
-def check_param(prog):
+def check_param(prog, component):
     if prog not in config_arg_list:
+        return False
+    if component in skip_list:
         return False
     return True
 

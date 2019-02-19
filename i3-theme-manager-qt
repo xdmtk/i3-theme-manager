@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
         MAIN_WIN_GLOB = MainWindow
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
-        MainWindow.resize(848, 796)
+        MainWindow.resize(848, 826)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
         self.centralWidget = QtWidgets.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.theme_list = QtWidgets.QListWidget(self.centralWidget)
-        self.theme_list.setGeometry(QtCore.QRect(10, 660, 691, 121))
+        self.theme_list.setGeometry(QtCore.QRect(10, 690, 691, 121))
         self.theme_list.setObjectName("theme_list")
         self.theme_view = QtWidgets.QLabel(self.centralWidget)
         self.theme_view.setGeometry(QtCore.QRect(10, 10, 831, 631))
@@ -39,21 +39,85 @@ class Ui_MainWindow(object):
         self.theme_view.setText("No theme selected")
         self.theme_view.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignCenter)
         self.load_button = QtWidgets.QPushButton(self.centralWidget)
-        self.load_button.setGeometry(QtCore.QRect(710, 660, 131, 31))
+        self.load_button.setGeometry(QtCore.QRect(710, 690, 131, 31))
         self.load_button.setObjectName("load_button")
         self.load_button.setEnabled(False)
         self.package_button = QtWidgets.QPushButton(self.centralWidget)
-        self.package_button.setGeometry(QtCore.QRect(710, 690, 131, 31))
+        self.package_button.setGeometry(QtCore.QRect(710, 720, 131, 31))
         self.package_button.setObjectName("package_button")
         self.revert_button = QtWidgets.QPushButton(self.centralWidget)
-        self.revert_button.setGeometry(QtCore.QRect(710, 720, 131, 31))
+        self.revert_button.setGeometry(QtCore.QRect(710, 750, 131, 31))
         self.revert_button.setObjectName("revert_button")
         self.revert_button.setEnabled(False)
         self.delete_button = QtWidgets.QPushButton(self.centralWidget)
-        self.delete_button.setGeometry(QtCore.QRect(710, 750, 131, 31))
+        self.delete_button.setGeometry(QtCore.QRect(710, 780, 131, 31))
         self.delete_button.setObjectName("delete_button")
         self.delete_button.setEnabled(False)
         MainWindow.setCentralWidget(self.centralWidget)
+
+        self.com_check_i3 = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_i3.setGeometry(QtCore.QRect(10,660,10,10))
+        self.com_check_i3.setChecked(True)
+        self.com_check_i3_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_i3_lab.setGeometry(QtCore.QRect(30,655,60,20))
+        self.com_check_i3_lab.setText("i3 Config")
+
+        self.com_check_bar = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_bar.setGeometry(QtCore.QRect(95,660,10,10))
+        self.com_check_bar.setChecked(True)
+        self.com_check_bar_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_bar_lab.setGeometry(QtCore.QRect(110,655,60,20))
+        self.com_check_bar_lab.setText("Bar Config")
+
+
+        self.com_check_term = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_term.setGeometry(QtCore.QRect(185,660,10,10))
+        self.com_check_term.setChecked(True)
+        self.com_check_term_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_term_lab.setGeometry(QtCore.QRect(200,655,100,20))
+        self.com_check_term_lab.setText("Terminal Config")
+
+        self.com_check_bv = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_bv.setGeometry(QtCore.QRect(300,660,10,10))
+        self.com_check_bv.setChecked(True)
+        self.com_check_bv_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_bv_lab.setGeometry(QtCore.QRect(320,655,100,20))
+        self.com_check_bv_lab.setText("Bash Visual")
+
+        self.com_check_ba = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_ba.setGeometry(QtCore.QRect(400,660,10,10))
+        self.com_check_ba.setChecked(True)
+        self.com_check_ba_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_ba_lab.setGeometry(QtCore.QRect(420,655,100,20))
+        self.com_check_ba_lab.setText("Bash Alias")
+
+        self.com_check_vim = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_vim.setGeometry(QtCore.QRect(490,660,10,10))
+        self.com_check_vim.setChecked(True)
+        self.com_check_vim_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_vim_lab.setGeometry(QtCore.QRect(510,655,100,20))
+        self.com_check_vim_lab.setText("Vim Config")
+
+        self.com_check_nitro = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_nitro.setGeometry(QtCore.QRect(585,660,10,10))
+        self.com_check_nitro.setChecked(True)
+        self.com_check_nitro_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_nitro_lab.setGeometry(QtCore.QRect(605,655,100,20))
+        self.com_check_nitro_lab.setText("Nitrogen Config")
+
+        self.com_check_gtk = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_gtk.setGeometry(QtCore.QRect(700,660,10,10))
+        self.com_check_gtk.setChecked(True)
+        self.com_check_gtk_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_gtk_lab.setGeometry(QtCore.QRect(720,655,100,20))
+        self.com_check_gtk_lab.setText("GTK")
+
+        self.com_check_compton = QtWidgets.QCheckBox(self.centralWidget)
+        self.com_check_compton.setGeometry(QtCore.QRect(760,660,10,10))
+        self.com_check_compton.setChecked(True)
+        self.com_check_compton_lab = QtWidgets.QLabel(self.centralWidget)
+        self.com_check_compton_lab.setGeometry(QtCore.QRect(780,655,100,20))
+        self.com_check_compton_lab.setText("Compton")
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -91,6 +155,38 @@ class Ui_MainWindow(object):
             if dir == ".last":
                 self.revert_button.setEnabled(True)
 
+    def get_skip_list(self,cur_dir,mode,prefix,package_save=None):
+        global CURRENT_SELECTION
+        if mode == "package":
+            CURRENT_SELECTION = package_save
+        skip_list = {
+            self.com_check_ba : "bash_alias",
+            self.com_check_bv : "bash_visual",
+            self.com_check_i3: "i3",
+            self.com_check_bar: "bar",
+            self.com_check_gtk: "gtk",
+            self.com_check_vim: "vim",
+            self.com_check_term: "terminal",
+            self.com_check_nitro: "nitrogen",
+            self.com_check_compton: "compton"
+        }
+        arg_list = [
+                cur_dir + '/i3-theme-manager',
+                mode,
+                prefix,
+                CURRENT_SELECTION,
+                '-g',
+        ]
+        for component in skip_list:
+            if component.isChecked() == False:
+                print("[-] Skipping component")
+                arg_list.append("-s")
+                arg_list.append(skip_list[component])
+        
+        print(arg_list)
+        return arg_list
+
+
     def onclick_load_button(self):
         if CURRENT_SELECTION is None or CURRENT_SELECTION == "":
             fail_box = QtWidgets.QMessageBox()
@@ -98,7 +194,18 @@ class Ui_MainWindow(object):
             fail_box.exec_()
             return
         cur_dir = os.getcwd()
-        subprocess.call([cur_dir + '/i3-theme-manager', 'load', '-t ', CURRENT_SELECTION, '-g'])
+
+        load_args = self.get_skip_list(cur_dir,"load","-t")
+        qbox = QtWidgets.QMessageBox()
+        qbox.setText("Load selected theme?")
+        qbox.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+        retval = qbox.exec_()
+        
+        if retval == 1024:
+            subprocess.call(load_args)
+        else:
+            return
+
         qbox = QtWidgets.QMessageBox()
         qbox.setText("i3-theme-manager needs to kill the current i3 session to reload the applied theme. \n\n "
                      + "Kill current i3 session?")
@@ -109,12 +216,15 @@ class Ui_MainWindow(object):
             subprocess.call(['killall', 'i3'])
 
 
+
+
     def onclick_package_button(self):
+        cur_dir = os.getcwd()
         name_package = QtWidgets.QInputDialog()
         (package_name, ok) = name_package.getText(MAIN_WIN_GLOB, "Enter package name", "Enter package name")
+        load_args = self.get_skip_list(cur_dir,"package","-o", package_name)
         if ok is True:
-            cur_dir = os.getcwd()
-            subprocess.call([cur_dir + '/i3-theme-manager', 'package', '-o ', package_name])
+            subprocess.call(load_args)
 
 
             # Quick and dirty...
