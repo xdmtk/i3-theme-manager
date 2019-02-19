@@ -6,8 +6,7 @@ _from various members of /r/unixporn_
 
 
 
-`i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting of
-the various components of your chosen theme. A package consists of: 
+`i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting of various theme components. A package consists of: 
 1. i3 configuation 
 2. status bar configuation - ( `polybar` and `tint2` )
 3. terminal emulator configuration - ( `terminator` )
