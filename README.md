@@ -87,5 +87,5 @@ For supported theme component programs
 
 ### GUI Screenshots
 
-![](http://i.imgur.com/POeOCEt.png)
+![](http://i67.tinypic.com/opdbmh.gif)
 
