@@ -1,0 +1,13 @@
+# i3 THEME SECTION START 
+#
+#
+default_orientation horizontal
+
+
+for_window [class="^.*"] border pixel 2
+gaps inner 15
+gaps outer 10
+client.focused          #ffffff #ffffff #ffffff #ffffff
+#
+#
+# i3 THEME SECTION END

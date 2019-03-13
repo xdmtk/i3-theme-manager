@@ -170,8 +170,15 @@ class Ui_MainWindow(object):
             self.com_check_nitro: "nitrogen",
             self.com_check_compton: "compton"
         }
+        loc_arg = None
+        if os.path.isfile(cur_dir + '/i3-theme-manager'):
+            loc_arg = cur_dir + '/i3-theme-manager'
+        elif os.path.isfile('/usr/bin/i3-theme-manager') or os.path.isfile('/home/' + os.getenv('USER') + '/bin/i3-theme-manager'):
+            loc_arg = 'i3-theme-manager'
+
+            
         arg_list = [
-                cur_dir + '/i3-theme-manager',
+                loc_arg,
                 mode,
                 prefix,
                 CURRENT_SELECTION,
