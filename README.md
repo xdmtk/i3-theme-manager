@@ -89,3 +89,7 @@ For supported theme component programs
 
 ![](http://i67.tinypic.com/opdbmh.gif)
 
+
+### Issues
+
+`i3-theme-manager` is under active development. For bugs and other concerns, please open an issue at https://github.com/xdmtk/i3-theme-manager/issues
