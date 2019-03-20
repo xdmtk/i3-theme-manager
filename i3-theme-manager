@@ -224,7 +224,8 @@ def write_blank_config():
         '# To have your specified bar start with your config, include an exec command on your specific bar',
         '# in your i3 config file',
         '# ',
-        '#bar_prog=polybar'
+        '#bar_prog=polybar',
+        '#bar_prog=tint2'
 
     ]
     term_prog_desc = [
@@ -368,7 +369,7 @@ def write_blank_config():
         '# --------------------:',
         '# If you\'d like to save your compton configuration file, specify its location here',
         '#',
-        '#comtpon_conf_file='
+        '#comtpon_conf_file=~/.config/compton.conf'
     ]
 
 
