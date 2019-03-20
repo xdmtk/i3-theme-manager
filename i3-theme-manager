@@ -400,10 +400,15 @@ def write_blank_config():
             # Write arg list into config file
             config.write(arg + '=' + '\n')
             x += 1
+
+def check_dependencies():
+
+    
     
 def check_config():
     global USER_HOME ; global I3P_DIR ; global I3P_CONF 
     
+    check_dependencies()
     # Check for config settings
     USER_HOME = '/home/' + os.getenv('USER')
     I3P_DIR = USER_HOME + '/.config/i3packager/'
