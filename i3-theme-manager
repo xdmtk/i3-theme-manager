@@ -403,6 +403,68 @@ def write_blank_config():
 
 def check_dependencies():
 
+    print('Checking dependencies...')
+    dep_list = [
+            'tint2',
+            'polybar',
+            'wal',
+            'nitrogen',
+            'compton',
+            'terminator',
+            'vim',
+            'xfce4-screenshooter',
+            'xdotool',
+            'feh',
+            'pip3',
+        ]
+    for program in dep_list:
+        if which(program) == False:
+            if program == 'polybar':
+                print('Do you want to install polybar? (y/N)')
+                if (input() == 'y'):
+                    p_bar_deps = "sudo apt-get install cmake " + 
+                        "cmake-data libcairo2-dev libxcb1-dev " + 
+                        "libxcb-ewmh-dev libxcb-icccm4-dev " + 
+                        "libxcb-image0-dev libxcb-randr0-dev " + 
+                        "libxcb-util0-dev libxcb-xkb-dev pkg-config " +
+                        "python-xcbgen xcb-proto libxcb-xrm-dev i3-wm " + 
+                        "libasound2-dev libmpdclient-dev libiw-dev " + 
+                        "libcurl4-openssl-dev libpulse-dev".split(' ')
+                    subprocess.call(p_bar_deps)
+                    subprocess.call("git clone https://github.com/jaagr/polybar.git".split(' '))
+                    subprocess.call('cd polybar'.split(' '))
+                    subprocess.call('./build.sh')
+            elif program == 'wal':
+                print('Do you want to install pywal? (y/N)')
+                if (input() == 'y'):
+                    if which('pip3') == False:
+                        subprocess.call('sudo apt-get install pip3'.split(' '))
+                    subprocess.call('pip3 install pywal'.split(' '))
+            else:
+                print('Do you want to install ' + program + '? (y/N)')
+                if (input() == 'y'):
+                    install_str = 'sudo apt-get install ' + program
+                    subprocess.call(install_str.split(' '))
+
+
+
+
+
+
+
+
+
+def which(prog):
+    out = subprocess.check_output(['which', prog])
+    if len(out) > 0:
+        return True
+    return False
+    
+
+
+
+
+
     
     
 def check_config():
