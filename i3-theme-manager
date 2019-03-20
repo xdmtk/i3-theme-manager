@@ -487,6 +487,8 @@ def check_config():
                 + " at '" + USER_HOME + "/.config/i3packager/config'" )
         subprocess.call(['touch', I3P_CONF])
         write_blank_config()
+
+        print("\n\nSuccessfully wrote config file.. Edit this file to specify theme component locations")
         quit()
 
 def package(backup=False):
