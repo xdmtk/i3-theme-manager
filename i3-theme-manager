@@ -470,13 +470,13 @@ def which(prog):
 def check_config():
     global USER_HOME ; global I3P_DIR ; global I3P_CONF 
     
-    check_dependencies()
     # Check for config settings
     USER_HOME = '/home/' + os.getenv('USER')
     I3P_DIR = USER_HOME + '/.config/i3packager/'
     I3P_CONF = I3P_DIR + 'config'
 
     if not os.path.isdir(I3P_DIR):
+        check_dependencies()
 
         # Log function makes directory #19
         log("[-] Configuration directory not found... creating config directory" 
