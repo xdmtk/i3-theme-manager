@@ -961,8 +961,9 @@ def terminator(mode):
             with open(config_arg_list['terminal_config_file'], 'r') as config:
                 for line in config:
                     if line.find('font') != -1:
-                        try: 
-                            font_list.append(line.split('=')[1])
+                        try:
+                            if line.split('=')[1] != 'False' or line.split('=')[1] != 'True':
+                                font_list.append(line.split('=')[1])
                         except Exception as e:
                             log(str(e))
 
