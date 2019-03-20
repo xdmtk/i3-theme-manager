@@ -423,6 +423,7 @@ def check_dependencies():
             'xdotool',
             'feh',
             'pip3',
+            'fc-list',
         ]
     for program in dep_list:
         if which(program) == False:
@@ -514,8 +515,11 @@ def package(backup=False):
     if os.path.isdir(PACKAGE_DIR):
         subprocess.call(['rm', '-rf', PACKAGE_DIR])
     os.mkdir(PACKAGE_DIR)
-    
     os.chdir(PACKAGE_DIR)
+    
+    # Make font directory
+    os.mkdir('fonts')
+    subprocess.call(['touch', 'fonts/font_list'])
    
     bash("package") 
     vim("package")
@@ -998,6 +1002,15 @@ def i3(mode):
 
             with open(i3_config, 'r') as config:
                 for line in config:
+
+                    # Extract fonts using i3 font format
+                    if line.find('font') != -1:
+                        font_line = line.split(':')[1]
+                        fonts = font_line.split(',')
+                        with open('fonts/font_list', 'a+') as fl:
+                            for font in fonts:
+                                fl.write(font + '\n')
+
                     if line.find('i3 THEME SECTION START') != -1:
                         theme_section_set = True
                         extracted = True
