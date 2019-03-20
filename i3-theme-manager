@@ -962,8 +962,8 @@ def terminator(mode):
                 for line in config:
                     if line.find('font') != -1:
                         try:
-                            if line.split('=')[1] != 'False' or line.split('=')[1] != 'True':
-                                font_list.append(line.split('=')[1])
+                            if line.split('=')[1].strip() != 'False' and line.split('=')[1].strip() != 'True':
+                                font_list.append(line.split('=')[1].strip() + '\n')
                         except Exception as e:
                             log(str(e))
 
@@ -1008,7 +1008,7 @@ def i3(mode):
                             fonts = font_line.split(',')
                             with open('fonts/font_list', 'a+') as fl:
                                 for font in fonts:
-                                    fl.write(font)
+                                    fl.write(font.strip() + '\n')
 
             with open(i3_config, 'r') as config:
                 for line in config:
