@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="264c44f2-2570-4242-abd5-6aff87510d4a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/i3-theme-manager-qt" beforeDir="false" afterPath="$PROJECT_DIR$/i3-theme-manager-qt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/i3-theme-manager" beforeDir="false" afterPath="$PROJECT_DIR$/i3-theme-manager" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" beforeDir="false" afterPath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7-with-taskbar.tint2rc" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/pacmanSpace/tint2/tint2-theme-collections/Fmaj7/Fmaj7.tint2rc" beforeDir="false" />
@@ -122,6 +122,7 @@
     <SUITE FILE_PATH="coverage/i3_theme_manager$i3_package.coverage" NAME="i3-package Coverage Results" MODIFIED="1549060303984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/i3_theme_manager$_pydev_execfile.coverage" NAME="_pydev_execfile Coverage Results" MODIFIED="1549067038848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps" />
     <SUITE FILE_PATH="coverage/i3_theme_manager$i3_qt.coverage" NAME="i3_qt Coverage Results" MODIFIED="1549074965802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/i3_theme_manager$i3_theme_manager.coverage" NAME="i3-theme-manager Coverage Results" MODIFIED="1553069560657" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -139,7 +140,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -151,11 +152,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/i3-theme-manager">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+            <state relative-caret-position="208">
+              <caret line="1012" selection-start-line="1012" selection-end-line="1012" />
             </state>
           </provider>
         </entry>
@@ -173,14 +174,15 @@
         <option value="$PROJECT_DIR$/i3_qt.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/i3-theme-manager-qt" />
+        <option value="$PROJECT_DIR$/i3-theme-manager" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="6" />
     <option name="y" value="22" />
-    <option name="width" value="1908" />
-    <option name="height" value="1032" />
+    <option name="width" value="1872" />
+    <option name="height" value="1028" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -204,7 +206,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -218,7 +220,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.i3_qt">
+  <component name="RunManager" selected="Python.i3-theme-manager">
     <configuration name="_pydev_execfile" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="i3-theme-manager" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -256,6 +258,28 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/i3-package.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="i3-theme-manager" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="i3-theme-manager" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/i3-theme-manager" />
+      <option name="PARAMETERS" value="package -o testfont" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -307,35 +331,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="py_qt_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="i3-theme-manager" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ui" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ui/py_qt_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+    <list>
+      <item itemvalue="Python._pydev_execfile" />
+      <item itemvalue="Python.i3-package" />
+      <item itemvalue="Python.i3-theme-manager" />
+      <item itemvalue="Python.i3_qt" />
+      <item itemvalue="Python.py_qt_2 (1)" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.i3-theme-manager" />
         <item itemvalue="Python.i3_qt" />
         <item itemvalue="Python._pydev_execfile" />
         <item itemvalue="Python.i3-package" />
         <item itemvalue="Python.py_qt_2 (1)" />
-        <item itemvalue="Python.py_qt_2" />
       </list>
     </recent_temporary>
   </component>
@@ -356,14 +365,16 @@
       <workItem from="1550480014971" duration="2574000" />
       <workItem from="1550483386613" duration="30000" />
       <workItem from="1551566734941" duration="43000" />
+      <workItem from="1553069137620" duration="530000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19183000" />
+    <option name="totallyTimeSpent" value="19713000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="6" y="22" width="1908" height="1032" extended-state="0" />
+    <frame x="6" y="22" width="1872" height="1028" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.17634408" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -371,7 +382,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3282353" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.40941176" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.40854326" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -413,6 +424,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/i3-theme-manager</url>
+          <line>1012</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
@@ -475,13 +497,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/i3_qt.py" />
     <entry file="file://$PROJECT_DIR$/i3-package.py" />
-    <entry file="file://$PROJECT_DIR$/i3-theme-manager">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/i3-theme-manager-qt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -496,6 +511,13 @@
             <caret column="4" selection-start-column="4" selection-end-column="4" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/i3-theme-manager">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="1012" selection-start-line="1012" selection-end-line="1012" />
         </state>
       </provider>
     </entry>

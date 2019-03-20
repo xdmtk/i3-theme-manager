@@ -999,17 +999,21 @@ def i3(mode):
             os.mkdir('i3')
             i3_theme_section = [] ; theme_section_set = False ; extracted = False
             i3_config = config_arg_list['i3_config_file']
+            
+            with open(i3_config, 'r') as config:
+                for line in config:
+                    if line.find('font') != -1:
+                        if len(line.split(':')) > 1:
+                            font_line = line.split(':')[1]
+                            fonts = font_line.split(',')
+                            with open('fonts/font_list', 'a+') as fl:
+                                for font in fonts:
+                                    fl.write(font)
 
             with open(i3_config, 'r') as config:
                 for line in config:
 
                     # Extract fonts using i3 font format
-                    if line.find('font') != -1:
-                        font_line = line.split(':')[1]
-                        fonts = font_line.split(',')
-                        with open('fonts/font_list', 'a+') as fl:
-                            for font in fonts:
-                                fl.write(font + '\n')
 
                     if line.find('i3 THEME SECTION START') != -1:
                         theme_section_set = True
@@ -1037,6 +1041,7 @@ def i3(mode):
             # Backup original file just in case
             subprocess.call(['cp', config_arg_list['i3_config_file'], 
                 config_arg_list['i3_config_file'] + '.backup'])
+
             with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
                 for line in i3_conf_read:
                     if line.find("# i3 THEME SECTION START") != -1:
@@ -1055,19 +1060,19 @@ def i3(mode):
             with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
                 for line in i3_conf_list:
                     i3_conf_write.write(line)
-    except:
+    except Exception as e:
+        log(str(e))
         pass
+
 
 def compton(mode):
    
-
     if check_param('compton_conf_file', "compton") == False:
         return
     
     try:
         log("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
-        
         if mode == "package":
             log("\n[+] Packaging compton config")
             os.mkdir("compton")
