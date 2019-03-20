@@ -468,6 +468,13 @@ def which(prog):
         return False
     
 
+def collect_fonts():
+
+    with open('fonts/font_list', 'r') as fl:
+        for line in fl:
+           # TODO: Parse the font list and use 'fc-list' to
+           # extract the fonts!
+
 
 
 
