@@ -862,7 +862,7 @@ def get_gtk_assets(gtk_asset):
 
 def nitrogen(mode):
 
-    if check_param("nitrogen_dir", "nitrogen") == False:
+    if check_param("nitrogen_dir", "nitrogen") is False:
         return
     
     try:
@@ -872,7 +872,7 @@ def nitrogen(mode):
 
         if mode == "package":
             if "pywal" in config_arg_list:
-                if check_param("pywal", "pywal") == True:
+                if check_param("pywal", "pywal") is True:
                     with open(USER_HOME + "/.cache/wal/wal", "r") as f:
                         for line in f:
                             WALLPAPER = line.replace('\n','')
@@ -892,9 +892,9 @@ def nitrogen(mode):
             os.mkdir('nitrogen/wallpapers')
             with open(bg_saved_file, 'r') as config:
                 for line in config:
-                    if line.find('file') !=  -1:
+                    if line.find('file') != -1:
                         wallpaper_path = line.split('=')[1].replace('\n','')
-                        if WALLPAPER == None:
+                        if WALLPAPER is None:
                             WALLPAPER = wallpaper_path
                         log("[+] Copying:  " + wallpaper_path)
                         subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
@@ -904,16 +904,15 @@ def nitrogen(mode):
             bg_saved_file = 'nitrogen/bg-saved.cfg'
             subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
             
-            wallpaper_path = ""
             with open(bg_saved_file, 'r') as config:
                 for line in config:
                     wallpaper_path_build = ""
-                    if line.find('file') !=  -1:
+                    if line.find('file') != -1:
                         wallpaper_path = line.split('=')[1].replace('\n','')
                         for x in range(0,len(wallpaper_path.split('/'))):
                             wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
                             # If path contains image, stop making directories if needed and make the copy
-                            if check_image(wallpaper_path_build) == True:
+                            if check_image(wallpaper_path_build) is True:
                                 subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
                                     wallpaper_path_build])
                                 break
@@ -944,9 +943,9 @@ def check_image(p):
 def terminator(mode):
 
     try:
-        if check_param("terminal_prog", "terminal") == False:
+        if check_param("terminal_prog", "terminal") is False:
             return
-        if check_param("terminal_config_file", "terminal") == False:
+        if check_param("terminal_config_file", "terminal") is False:
             return
 
         log("\n[+] Terminator files\n * * * * * * * * * * * * *")
@@ -985,7 +984,8 @@ def terminator(mode):
                     log("[-] " + font.replace('\n',''))
     except:
         pass
-        
+
+
 # Workaround for i3 lack of include/source directives
 def i3(mode):
 
