@@ -88,13 +88,19 @@ def parse_config():
                     continue
                 # For program names, verify existence 
                 elif conf_arg_name.find('prog') != -1:
-                    if len(subprocess.check_output(['which', conf_arg])) != 0:
-                        config_arg_list[conf_arg_name] = conf_arg
-                        continue
-                    else:
+                    try:
+                        if len(subprocess.check_output(['which', conf_arg])) != 0:
+                            config_arg_list[conf_arg_name] = conf_arg
+                            continue
+                        else:
+                            log("[-] Couldn't find program '" + conf_arg + "'")
+                            config_arg_list[conf_arg_name] = NO_ARG
+                            continue 
+                    except:
                         log("[-] Couldn't find program '" + conf_arg + "'")
                         config_arg_list[conf_arg_name] = NO_ARG
-                        continue 
+
+
 
                 if conf_arg_name.find("file") != -1 or conf_arg_name.find("dir") != -1:
                     # Make sure path is valid
