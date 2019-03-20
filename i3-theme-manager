@@ -422,17 +422,18 @@ def check_dependencies():
             if program == 'polybar':
                 print('Do you want to install polybar? (y/N)')
                 if (input() == 'y'):
-                    p_bar_deps = "sudo apt-get install cmake " + 
+                    p_bar_deps = ("sudo apt-get install cmake " + 
                         "cmake-data libcairo2-dev libxcb1-dev " + 
                         "libxcb-ewmh-dev libxcb-icccm4-dev " + 
                         "libxcb-image0-dev libxcb-randr0-dev " + 
                         "libxcb-util0-dev libxcb-xkb-dev pkg-config " +
                         "python-xcbgen xcb-proto libxcb-xrm-dev i3-wm " + 
                         "libasound2-dev libmpdclient-dev libiw-dev " + 
-                        "libcurl4-openssl-dev libpulse-dev".split(' ')
+                        "libcurl4-openssl-dev libpulse-dev libxcb-composite0 " + 
+                        "libxcb-composite0-dev").split(' ')
                     subprocess.call(p_bar_deps)
                     subprocess.call("git clone https://github.com/jaagr/polybar.git".split(' '))
-                    subprocess.call('cd polybar'.split(' '))
+                    os.chdir('polybar')
                     subprocess.call('./build.sh')
             elif program == 'wal':
                 print('Do you want to install pywal? (y/N)')
@@ -445,20 +446,18 @@ def check_dependencies():
                 if (input() == 'y'):
                     install_str = 'sudo apt-get install ' + program
                     subprocess.call(install_str.split(' '))
-
-
-
-
-
-
-
+    # Clean up polybar git
+    subprocess.call(['rm', '-rf', 'polybar'])
 
 
 def which(prog):
-    out = subprocess.check_output(['which', prog])
-    if len(out) > 0:
-        return True
-    return False
+    try:
+        out = subprocess.check_output(['which', prog])
+        if len(out) > 0:
+            return True
+        return False
+    except: 
+        return False
     
 
 
