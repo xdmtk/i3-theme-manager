@@ -388,7 +388,7 @@ def write_blank_config():
         'icons_dir' : gtk_icons_desc,
         'themes_dir' : themes_desc,
         'pywal_set' : pywal_desc,
-        'compton_file' : comtpon_desc
+        'compton_file' : compton_desc
     }
    
     log("[+] Generating empty config file")
@@ -410,9 +410,10 @@ def check_config():
     I3P_CONF = I3P_DIR + 'config'
 
     if not os.path.isdir(I3P_DIR):
+
+        # Log function makes directory #19
         log("[-] Configuration directory not found... creating config directory" 
                 + "at '" + USER_HOME + "/.config/i3packager'" )
-        os.mkdir(I3P_DIR)
         
     if not os.path.isfile(I3P_CONF):
         log("[-] Configuration file not found... creating config file" 
@@ -1058,8 +1059,10 @@ def check_param(prog, component):
 
 def log(msg):
     print(msg)
+    if not os.path.isdir(USER_HOME + '/.config/i3packager'):
+        os.mkdir(USER_HOME + '/.config/i3packager');
     if not os.path.isfile(USER_HOME + '/.config/i3packager/.logs'):
-        subprocess.call(['touch', USER_HOME + '~/.config/i3packager/.logs'])
+        subprocess.call(['touch', USER_HOME + '/.config/i3packager/.logs'])
     with open(USER_HOME + '/.config/i3packager/.logs', 'a') as f:
         if (msg[len(msg)-1] != '\n'):
             f.write(msg + '\n')
