@@ -963,14 +963,13 @@ def terminator(mode):
                     if line.find('font') != -1:
                         try: 
                             font_list.append(line.split('=')[1])
-                        except:
-                            pass
+                        except Exception as e:
+                            log(str(e))
 
-            
             subprocess.call(['touch', term_dir + '/font_list'])
-            with open(term_dir + '/font_list', 'w') as fl:
+            with open('fonts/font_list', 'a+') as fl:
                 for font in font_list:
-                    fl.write(font + '\n')
+                    fl.write(font)
 
         elif mode == "load":
             config_file_name = config_arg_list['terminal_config_file'].split('/')
