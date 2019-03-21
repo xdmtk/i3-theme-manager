@@ -7,14 +7,14 @@ _from various members of /r/unixporn_
 
 
 `i3-theme-manager` is a simple script with an optional graphical interface to create loadable theme packages consisting of various theme components. A package consists of: 
-1. i3 configuation 
-2. status bar configuation - ( `polybar` and `tint2` )
-3. terminal emulator configuration - ( `terminator` )
-4. vim configuartion
-5. gtk themes/icons/cursors
-6. bash configuaration + aliases
-7. wallpaper configuartion - ( supports `pywal` )
-8. compton configuartion
+* `i3` configuration 
+* status bar configuration - ( `polybar` and `tint2` )
+* terminal emulator configuration - ( `terminator` )
+* `vim` configuration 
+* GTK themes/icons/cursors
+* `bash` configuration + aliases
+* wallpaper configuration - ( supports `pywal` )
+* `compton` configuration
 
 For certain theme components like wallpaper setters and terminal emulators, `i3-theme-manager` currently only supports selected programs, but will soon support more in the future. 
 
@@ -28,27 +28,27 @@ and loading themes.
 
 ### Dependencies 
 
-During execution `i3-theme-manager` calls the following programs:
-`feh`
-`xdotool`
+On first run, `i3-theme-manager` will verify and optionally install all dependencies required for basic operation,
+and in addition can also install all theme component programs supported + `polybar` and/or `pywal` if specified. 
+
+The complete list of dependencies are:
+
+`python3`
 `xfce4-screenshooter`
+`xdotool`
+`feh`
+`pip3`
+`fc-list`
+`pyqt5` (`pip3` package)
 
-
-Both the CLI tool and GUI component require Python 3.
-
-For the GUI component of `i3-theme-manager` to work correctly, you will need to have `pyqt5`
-which can be installed by:
-
-`pip3 install pyqt5`
-
-The screenshot feature of `i3-theme-manager` currently depends on `xfce4-screenshooter`, but 
-will soon be implemented to use `scrot` instead.
 
 
 ### Installation
 
 As long as dependencies are met, you can simply copy the files `i3-theme-manager` and `i3-theme-manager-qt` to
 `~/bin` and execute them directly from the command line.
+
+
 
 ### Configuration
 
@@ -65,7 +65,7 @@ and
 
 This will allow the script to save and deploy only parts of your configuration that are theme 
 specific, allowing you to keep non theme essential settings intact when switching themes, or 
-deploying themes to a seperate machine.
+deploying themes to a separate machine.
 
 
 
