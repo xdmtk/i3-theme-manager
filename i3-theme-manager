@@ -423,6 +423,7 @@ def check_dependencies():
             'xdotool',
             'feh',
             'pip3',
+            'fc-list',
         ]
     for program in dep_list:
         if which(program) == False:
@@ -467,6 +468,23 @@ def which(prog):
         return False
     
 
+def collect_fonts():
+    f_path = []
+    fc_list = str(subprocess.check_output('fc-list')).split('\\n')
+    with open('fonts/font_list', 'r') as fl:
+        for line in fl:
+            for f_line in fc_list:
+                if f_line.find(line.split(' ')[0]) != -1:
+                    f_path.append(f_line.split(':')[0])
+
+    for line in f_path:
+        try:
+            subprocess.call(['cp', line, 'fonts'])
+        except Exception as e:
+            log(str(e))
+
+
+
 
 
 
@@ -474,7 +492,7 @@ def which(prog):
     
     
 def check_config():
-    global USER_HOME ; global I3P_DIR ; global I3P_CONF 
+    global USER_HOME; global I3P_DIR; global I3P_CONF
     
     # Check for config settings
     USER_HOME = '/home/' + os.getenv('USER')
@@ -514,8 +532,11 @@ def package(backup=False):
     if os.path.isdir(PACKAGE_DIR):
         subprocess.call(['rm', '-rf', PACKAGE_DIR])
     os.mkdir(PACKAGE_DIR)
-    
     os.chdir(PACKAGE_DIR)
+    
+    # Make font directory
+    os.mkdir('fonts')
+    subprocess.call(['touch', 'fonts/font_list'])
    
     bash("package") 
     vim("package")
@@ -525,7 +546,8 @@ def package(backup=False):
     gtk("package")
     bar("package")
     compton("package")
-   
+
+    collect_fonts()
 
     if backup is False: 
         log("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
@@ -858,7 +880,7 @@ def get_gtk_assets(gtk_asset):
 
 def nitrogen(mode):
 
-    if check_param("nitrogen_dir", "nitrogen") == False:
+    if check_param("nitrogen_dir", "nitrogen") is False:
         return
     
     try:
@@ -868,7 +890,7 @@ def nitrogen(mode):
 
         if mode == "package":
             if "pywal" in config_arg_list:
-                if check_param("pywal", "pywal") == True:
+                if check_param("pywal", "pywal") is True:
                     with open(USER_HOME + "/.cache/wal/wal", "r") as f:
                         for line in f:
                             WALLPAPER = line.replace('\n','')
@@ -888,9 +910,9 @@ def nitrogen(mode):
             os.mkdir('nitrogen/wallpapers')
             with open(bg_saved_file, 'r') as config:
                 for line in config:
-                    if line.find('file') !=  -1:
+                    if line.find('file') != -1:
                         wallpaper_path = line.split('=')[1].replace('\n','')
-                        if WALLPAPER == None:
+                        if WALLPAPER is None:
                             WALLPAPER = wallpaper_path
                         log("[+] Copying:  " + wallpaper_path)
                         subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
@@ -900,16 +922,15 @@ def nitrogen(mode):
             bg_saved_file = 'nitrogen/bg-saved.cfg'
             subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
             
-            wallpaper_path = ""
             with open(bg_saved_file, 'r') as config:
                 for line in config:
                     wallpaper_path_build = ""
-                    if line.find('file') !=  -1:
+                    if line.find('file') != -1:
                         wallpaper_path = line.split('=')[1].replace('\n','')
                         for x in range(0,len(wallpaper_path.split('/'))):
                             wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
                             # If path contains image, stop making directories if needed and make the copy
-                            if check_image(wallpaper_path_build) == True:
+                            if check_image(wallpaper_path_build) is True:
                                 subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
                                     wallpaper_path_build])
                                 break
@@ -940,9 +961,9 @@ def check_image(p):
 def terminator(mode):
 
     try:
-        if check_param("terminal_prog", "terminal") == False:
+        if check_param("terminal_prog", "terminal") is False:
             return
-        if check_param("terminal_config_file", "terminal") == False:
+        if check_param("terminal_config_file", "terminal") is False:
             return
 
         log("\n[+] Terminator files\n * * * * * * * * * * * * *")
@@ -958,16 +979,16 @@ def terminator(mode):
             with open(config_arg_list['terminal_config_file'], 'r') as config:
                 for line in config:
                     if line.find('font') != -1:
-                        try: 
-                            font_list.append(line.split('=')[1])
-                        except:
-                            pass
+                        try:
+                            if line.split('=')[1].strip() != 'False' and line.split('=')[1].strip() != 'True':
+                                font_list.append(line.split('=')[1].strip() + '\n')
+                        except Exception as e:
+                            log(str(e))
 
-            
             subprocess.call(['touch', term_dir + '/font_list'])
-            with open(term_dir + '/font_list', 'w') as fl:
+            with open('fonts/font_list', 'a+') as fl:
                 for font in font_list:
-                    fl.write(font + '\n')
+                    fl.write(font)
 
         elif mode == "load":
             config_file_name = config_arg_list['terminal_config_file'].split('/')
@@ -981,7 +1002,8 @@ def terminator(mode):
                     log("[-] " + font.replace('\n',''))
     except:
         pass
-        
+
+
 # Workaround for i3 lack of include/source directives
 def i3(mode):
 
@@ -995,9 +1017,22 @@ def i3(mode):
             os.mkdir('i3')
             i3_theme_section = [] ; theme_section_set = False ; extracted = False
             i3_config = config_arg_list['i3_config_file']
+            
+            with open(i3_config, 'r') as config:
+                for line in config:
+                    if line.find('font') != -1:
+                        if len(line.split(':')) > 1:
+                            font_line = line.split(':')[1]
+                            fonts = font_line.split(',')
+                            with open('fonts/font_list', 'a+') as fl:
+                                for font in fonts:
+                                    fl.write(font.strip() + '\n')
 
             with open(i3_config, 'r') as config:
                 for line in config:
+
+                    # Extract fonts using i3 font format
+
                     if line.find('i3 THEME SECTION START') != -1:
                         theme_section_set = True
                         extracted = True
@@ -1024,6 +1059,7 @@ def i3(mode):
             # Backup original file just in case
             subprocess.call(['cp', config_arg_list['i3_config_file'], 
                 config_arg_list['i3_config_file'] + '.backup'])
+
             with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
                 for line in i3_conf_read:
                     if line.find("# i3 THEME SECTION START") != -1:
@@ -1042,19 +1078,19 @@ def i3(mode):
             with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
                 for line in i3_conf_list:
                     i3_conf_write.write(line)
-    except:
+    except Exception as e:
+        log(str(e))
         pass
+
 
 def compton(mode):
    
-
     if check_param('compton_conf_file', "compton") == False:
         return
     
     try:
         log("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
 
-        
         if mode == "package":
             log("\n[+] Packaging compton config")
             os.mkdir("compton")
