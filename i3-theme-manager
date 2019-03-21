@@ -456,6 +456,13 @@ def check_dependencies():
                     subprocess.call(install_str.split(' '))
     # Clean up polybar git
     subprocess.call(['rm', '-rf', 'polybar'])
+    install_pip3_deps()
+
+
+def install_pip3_deps():
+
+    subprocess.call(['pip3', 'install', 'pycairo'])
+    subprocess.call(['pip3', 'install', 'PyGObject'])
 
 
 def which(prog):
