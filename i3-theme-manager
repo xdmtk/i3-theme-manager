@@ -469,11 +469,21 @@ def which(prog):
     
 
 def collect_fonts():
-
+    f_path = []
+    fc_list = str(subprocess.check_output('fc-list')).split('\\n')
     with open('fonts/font_list', 'r') as fl:
         for line in fl:
-           # TODO: Parse the font list and use 'fc-list' to
-           # extract the fonts!
+            for f_line in fc_list:
+                if f_line.find(line.split(' ')[0]) != -1:
+                    f_path.append(f_line.split(':')[0])
+
+    for line in f_path:
+        try:
+            subprocess.call(['cp', line, 'fonts'])
+        except Exception as e:
+            log(str(e))
+
+
 
 
 
@@ -482,7 +492,7 @@ def collect_fonts():
     
     
 def check_config():
-    global USER_HOME ; global I3P_DIR ; global I3P_CONF 
+    global USER_HOME; global I3P_DIR; global I3P_CONF
     
     # Check for config settings
     USER_HOME = '/home/' + os.getenv('USER')
@@ -536,7 +546,8 @@ def package(backup=False):
     gtk("package")
     bar("package")
     compton("package")
-   
+
+    collect_fonts()
 
     if backup is False: 
         log("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
