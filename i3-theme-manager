@@ -5,9 +5,8 @@ import time
 import os
 import subprocess
 import sys
-import curses
-import signal
 import pdb
+
 
 
 
@@ -424,6 +423,7 @@ def check_dependencies():
             'feh',
             'pip3',
             'fc-list',
+            'gsettings',
         ]
     for program in dep_list:
         if which(program) == False:
@@ -490,13 +490,6 @@ def collect_fonts():
         except Exception as e:
             log(str(e))
 
-
-
-
-
-
-
-    
     
 def check_config():
     global USER_HOME; global I3P_DIR; global I3P_CONF
@@ -830,6 +823,11 @@ def gtk(mode):
             subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
             subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
 
+            # Load GTK2 file
+            if os.path.isfile(USER_HOME + '/.gtkrc-2.0'):
+                subprocess.call(['cp', USER_HOME + '/.gtkrc-2.0', 'gtk/'])
+            
+            
             get_gtk_assets(gtk_theme)
             get_gtk_assets(gtk_icons)
             get_gtk_assets(gtk_cursors)
@@ -838,6 +836,10 @@ def gtk(mode):
             
             subprocess.call(['cp', 'gtk/settings.ini', gtk_settings_file])
             subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
+            subprocess.call(['cp', 'gtk/.gtkrc-2.0', USER_HOME])
+            subprocess.call(['gsettings', 'set', 'org.gnome.desktop.interface', 'gtk-theme', gtk_theme])
+            subprocess.call(['gsettings', 'set', 'org.gnome.desktop.wm.preferences', 'theme', gtk_theme])
+            
             
             themes_dir = config_arg_list['themes_dir']
             icons_dir = config_arg_list['icons_dir']
