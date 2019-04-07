@@ -411,6 +411,7 @@ def check_dependencies():
 
     print('Checking dependencies...')
     dep_list = [
+            'python3',
             'tint2',
             'polybar',
             'wal',
@@ -447,7 +448,7 @@ def check_dependencies():
                 print('Do you want to install pywal? (y/N)')
                 if (input() == 'y'):
                     if which('pip3') == False:
-                        subprocess.call('sudo apt-get install pip3'.split(' '))
+                        subprocess.call('sudo apt-get install python3-pip'.split(' '))
                     subprocess.call('pip3 install pywal'.split(' '))
             else:
                 print('Do you want to install ' + program + '? (y/N)')
