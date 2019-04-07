@@ -30,6 +30,7 @@ FORCE_RESTART = False
 
 DEBUG = 0
 
+config_arg_list_t = []
 config_arg_list = {
 }
 skip_list = []
@@ -176,6 +177,17 @@ def parse_args():
 
 
 def show_usage():
+    no_config = '''
+
+    Config file has no arguments! 
+    
+    Edit your config file at ~/.config/i3packager/config to start using i3-theme-manager
+
+
+
+    '''
+
+
     usage = '''
     
     * * * * * * * * * * * * *  i3-Gaps Theme Packaging Script * * * * * * * * * 
@@ -213,10 +225,20 @@ def show_usage():
                 edit this file to specify directories for various theme components
 
 '''
+    no_arg_flag = True
+    with open(I3P_CONF, 'r') as f:
+        for line in f:
+            if ( line != '\n' and line != '\n\n' ) and line[0] != '#':
+                no_arg_flag = False
+
+                
+    if no_arg_flag:
+        print(no_config)
     print(usage)
         
 
 def write_blank_config():	
+
 
     bar_prog_desc = [
         '# Bar Program:',
@@ -377,6 +399,7 @@ def write_blank_config():
         '#comtpon_conf_file=~/.config/compton.conf'
     ]
 
+    quick_arg_append()
 
     desc_list = {
         'bar_prog' : bar_prog_desc,
@@ -400,13 +423,14 @@ def write_blank_config():
     log("[+] Generating empty config file")
     x = 0
     with open(I3P_CONF, 'w') as config:
-        for arg in config_arg_list:
+        for arg in config_arg_list_t:
             for line in desc_list[arg]:
                 config.write(line + '\n')
             # Write arg list into config file
-            config.write(arg + '=' + '\n')
+            config.write('\n\n')
             x += 1
-
+    
+    quit()
 def check_dependencies():
 
     print('Checking dependencies...')
@@ -1198,6 +1222,24 @@ def restart_i3_session():
     subprocess.call(['killall', 'i3'])
     quit() 
     
+
+def quick_arg_append():
+    config_arg_list_t.append('bar_prog') 
+    config_arg_list_t.append('terminal_prog') 
+    config_arg_list_t.append('terminal_config_file') 
+    config_arg_list_t.append('i3_config_file') 
+    config_arg_list_t.append('screenshot_prog') 
+    config_arg_list_t.append('bash_visual_file') 
+    config_arg_list_t.append('bash_aliases_file') 
+    config_arg_list_t.append('vimrc_file') 
+    config_arg_list_t.append('nitrogen_dir') 
+    config_arg_list_t.append('tint2_dir') 
+    config_arg_list_t.append('polybar_dir') 
+    config_arg_list_t.append('gtk_dir') 
+    config_arg_list_t.append('icons_dir') 
+    config_arg_list_t.append('themes_dir') 
+    config_arg_list_t.append('pywal_set') 
+    config_arg_list_t.append('compton_file') 
 
 
 main()
