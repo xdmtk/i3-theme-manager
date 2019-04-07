@@ -177,6 +177,17 @@ def parse_args():
 
 
 def show_usage():
+    no_config = '''
+
+    Config file has no arguments! 
+    
+    Edit your config file at ~/.config/i3packager/config to start using i3-theme-manager
+
+
+
+    '''
+
+
     usage = '''
     
     * * * * * * * * * * * * *  i3-Gaps Theme Packaging Script * * * * * * * * * 
@@ -214,6 +225,15 @@ def show_usage():
                 edit this file to specify directories for various theme components
 
 '''
+    no_arg_flag = True
+    with open(I3P_CONF, 'r') as f:
+        for line in f:
+            if ( line != '\n' and line != '\n\n' ) and line[0] != '#':
+                no_arg_flag = False
+
+                
+    if no_arg_flag:
+        print(no_config)
     print(usage)
         
 
