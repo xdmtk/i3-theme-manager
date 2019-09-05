@@ -1,0 +1,1245 @@
+#!/usr/bin/env python3
+
+import json
+import time
+import os
+import subprocess
+import sys
+import pdb
+
+
+
+
+MODE_PACKAGE = False
+MODE_REVERT = False
+MODE_LOAD = False
+MODE_CONFIG = False
+ARG_FAIL = -1
+NO_ARG = -1
+
+WALLPAPER = None
+CURRENT_WORKSPACE = None
+USER_HOME = None
+I3P_DIR = None
+I3P_CONF = None
+PACKAGE_NAME = ""
+LOAD_PACKAGE_NAME = ""
+BASE_DIR = None
+PACKAGE_DIR = None
+FORCE_RESTART = False
+
+DEBUG = 0
+
+config_arg_list_t = []
+config_arg_list = {
+}
+skip_list = []
+com_list = [
+    "i3",
+    "bar",
+    "terminal",
+    "bash_visual",
+    "bash_alias",
+    "vim",
+    "nitrogen",
+    "gtk",
+    "compton"
+]
+
+def main():
+    
+    # Check if config file exists
+    check_config()
+    if (parse_args() == ARG_FAIL):
+        # Show usage if no valid args
+        show_usage()
+        quit()
+   
+    # Parse config files for theming directories
+    parse_config()
+    
+    if MODE_PACKAGE is True:
+        package()
+    elif MODE_LOAD is True:
+        load()
+    elif MODE_REVERT is True:
+        load("revert")
+
+
+def parse_config():
+    FAIL_FLAG = False
+    with open(I3P_CONF, "r") as config:
+        for line in config:
+            # Skip comments
+            if line.find("#") != -1:
+                continue
+            # Load config args into dictionary `config_arg_list`
+            if not len(line.split('=')) > 1:
+                continue
+            conf_arg = line.split('=')[1].replace('\n','') 
+            conf_arg_name = line.split('=')[0]
+
+            # Expand tilda
+            conf_arg = conf_arg.replace('~', USER_HOME).replace('\n','')
+
+            if len(conf_arg) != 0:
+                if conf_arg.find('none') != -1:
+                    config_arg_list[conf_arg_name] = NO_ARG 
+                    continue
+                # For program names, verify existence 
+                elif conf_arg_name.find('prog') != -1:
+                    try:
+                        if len(subprocess.check_output(['which', conf_arg])) != 0:
+                            config_arg_list[conf_arg_name] = conf_arg
+                            continue
+                        else:
+                            log("[-] Couldn't find program '" + conf_arg + "'")
+                            config_arg_list[conf_arg_name] = NO_ARG
+                            continue 
+                    except:
+                        log("[-] Couldn't find program '" + conf_arg + "'")
+                        config_arg_list[conf_arg_name] = NO_ARG
+
+
+
+                if conf_arg_name.find("file") != -1 or conf_arg_name.find("dir") != -1:
+                    # Make sure path is valid
+                    if not os.path.exists(conf_arg):
+                        FAIL_FLAG = True
+                        log("[-] Path '" + conf_arg + "' doesn't exist")
+                        continue
+
+                config_arg_list[conf_arg_name] = conf_arg
+            else:
+                # For empty args, show error and set failure flag
+                log('[-] Missing parameter for ' + conf_arg_name)
+                FAIL_FLAG = True
+    
+    
+    if DEBUG:
+        log(config_arg_list)
+    if FAIL_FLAG is True:
+        # Do not continue on fail flag
+        quit()
+
+
+def parse_args():
+    global MODE_PACKAGE ; global MODE_LOAD ; global MODE_REVERT
+    global PACKAGE_NAME ; global LOAD_PACKAGE_NAME ; global USER_HOME
+    global FORCE_RESTART 
+    
+    # Parse args ( only  one ) 
+    if len(sys.argv) > 1:
+        mode = sys.argv[1]
+        if mode != "load" and mode != "package" and mode != "revert":
+            log("[-] Invalid mode '" + mode + "' supplied")
+            return ARG_FAIL
+        else:
+            if mode == "load":
+                MODE_LOAD = True
+            elif mode == "package":
+                MODE_PACKAGE = True
+            elif mode == "revert":
+                MODE_REVERT = True
+        x = 1
+        for x in range(1,len(sys.argv)):
+            # Optional CLI package name specification
+            if sys.argv[x].find("-o") != -1:
+                PACKAGE_NAME = sys.argv[x+1]
+                x += 1
+                continue
+            if sys.argv[x].find("-t") != -1:
+                LOAD_PACKAGE_NAME = sys.argv[x+1]
+                x += 1
+                continue
+            if sys.argv[x].find("-f") != -1:
+                FORCE_RESTART = True
+            if sys.argv[x].find("-g") != -1:
+                FORCE_RESTART = "gui"
+            if sys.argv[x].find("-s") != -1:
+                if sys.argv[x+1] in com_list:
+                    skip_list.append(sys.argv[x+1])
+                    continue
+                else: 
+                    log("[-] Invalid component: " + sys.argv[x+1])
+                    return ARG_FAIL
+
+                
+                
+        return
+    else:
+        return ARG_FAIL
+
+                
+
+
+
+
+
+def show_usage():
+    no_config = '''
+
+    Config file has no arguments! 
+    
+    Edit your config file at ~/.config/i3packager/config to start using i3-theme-manager
+
+
+
+    '''
+
+
+    usage = '''
+    
+    * * * * * * * * * * * * *  i3-Gaps Theme Packaging Script * * * * * * * * * 
+
+        usage: python i3-package.py [ MODE ] [ OPTIONS ]
+            
+            Modes:
+                load - Load and apply specified theme package
+                package - Package current theme setup
+                revert - Revert to the last applied theme
+
+
+            Options:
+                -o [ PACKAGE NAME ] - Specify package name for packaging mode
+                -t [ PACKAGE NAME ] - Specify package name for loading mode
+                -f                  - Automatically kill i3 session after loading theme
+                -s [ COMPONENT ]    - Skip specified component in package/load process
+
+            Component List: 
+
+                i3
+                bar
+                terminal
+                bash_visual
+                bash_alias
+                vim 
+                nitrogen
+                pywal
+                gtk
+                compton
+                
+
+            First time use:
+                i3-theme-manager will generate an empty config file in the standard user config directory,
+                edit this file to specify directories for various theme components
+
+'''
+    no_arg_flag = True
+    with open(I3P_CONF, 'r') as f:
+        for line in f:
+            if ( line != '\n' and line != '\n\n' ) and line[0] != '#':
+                no_arg_flag = False
+
+                
+    if no_arg_flag:
+        print(no_config)
+    print(usage)
+        
+
+def write_blank_config():	
+
+
+    bar_prog_desc = [
+        '# Bar Program:',
+        '# --------------------:',
+        '# As of right now, only tint2 and polybar are supported, though the script',
+        '# can be easily tweaked to whatever status bar program you are using, as the copy/load functions',
+        '# are simply just recursive copy operations on the current set of bar themes over to',
+        '# your specified bar config directory',
+        '# ',
+        '# To have your specified bar start with your config, include an exec command on your specific bar',
+        '# in your i3 config file',
+        '# ',
+        '#bar_prog=polybar',
+        '#bar_prog=tint2'
+
+    ]
+    term_prog_desc = [
+        '# Terminal Program',
+        '# --------------------:',
+        '# Similar to the bar program, the Terminator console emulator is the only program',
+        '# hardcoded into the script to work correctly, though it can be easily modified for your',
+        '# specific terminal emulator',
+        '# ',
+        '#terminal_prog=terminator'
+    ]
+    term_conf_desc = [
+        '# Terminal Config File',
+        '# --------------------:',
+        '# For terminator the default name should be \'config\', but this option should still be specified',
+        '# as in future releases various config file formats and locations will be supported'
+        '# ',
+        '#terminal_config_file=~/.config/terminator/config'
+    ]
+    i3_conf_desc = [
+        '# i3 Config File',
+        '# --------------------:',
+        '# The i3 config file is handled by specifying a region that is unique to the theme',
+        '# which becomes the only part of the config file that is stored during package creation',
+        '# ',
+        '# During package loading, if no specified theme region is found, the theme region stored',
+        '# in the package is simply appended to the i3 config file, otherwise it is replaced',
+        '# ',
+        '# Aside from the obvious visual configuration elements that should be included in this region',
+        '# some other considerations are exec commands against other theme specified items like your status',
+        '# bar or other theme specific programs',
+        '# ',
+        '# Format this region by',
+        '# 		',
+        '# 		\'# i3 THEME SECTION START\'',
+        '# 		and',
+        '# 		\'# i3 THEME SECTION END\'',
+        '# 		',
+        '# ',
+        '#i3_config_file=~/.config/i3/config'
+    ]
+    screenshot_desc = [
+        '# Screenshot Program',
+        '# --------------------:',
+        '# Once again another area that supports only a particular program (more support to follow in later releases',
+        '# this script requires \'xfce4-screenshooter\' to programmatically take screenshots during theme',
+        '# package creation',
+        '# ',
+        '# Probably going to be moving to `scrot` soon though',
+        '# ',
+        '#screenshot_prog=xfce4-screenshooter'
+    ]
+    bash_visual_file_desc = [
+        '# Bash Visual File',
+        '# --------------------:',
+        '# This file should contain your bash prompt, or any other theme dependent .bashrc configurations',
+        '# and should be sourced in your \'master\' .bashrc file as an extension',
+        '# ',
+        '#bash_visual_file='
+    ]
+    bash_aliases_file_desc = [
+        '# Bash Aliases File',
+        '# --------------------:',
+        '# Self explanatory but include this if your have theme dependent aliases you would like to include',
+        '# in your theme package',
+        '# ',
+        '#bash_aliases_file='
+    ]
+    vimrc_desc = [
+        '# Vimrc File',
+        '# --------------------:',
+        '# Any colorscheme specified in this file will also be included in the theme package, the script',
+        '# will make an attempt to search for that color scheme in the standard home and system directories',
+        '# ',
+        '# If it can\'t be located, the script will ask you to specify continuously until the directory',
+        '# is found.',
+        '# ',
+        '#vimrc_file=~/.vim/vimrc'
+    ]
+    nitrogen_desc = [
+        '# Nitrogen Directory',
+        '# --------------------:',
+        '# Another area where only one specified program is supported, though this should change in future',
+        '# releases. Given your nitrogen configuration directory, typically located in ~/.config/nitrogen, ',
+        '# in addition to including the entire configuration directory in the package,',
+        '# the script will read the config file, and attempt to locate the specified wallpaper to be also',
+        '# included in the package',
+        '# ',
+        '#nitrogen_dir=~/.config/nitrogen'
+    ]
+    tint2_desc = [
+        '# Tint2 Directory',
+        '# --------------------:',
+        '# For packaging, entire tint2 directory, typically located in ~/.config/tint2 will be included',
+        '# in packaging. For theme dependent bars, include their autostarts in your i3 config section',
+        '# ',
+        '#tint2_dir=~/.config/tint2'
+    ]
+    polybar_desc = [
+        '# Polybar Directory',
+        '# --------------------:',
+        '# If polybar is used over tint2, the same logic applies, just provide polybar config directory',
+        '# ',
+        '#polybar_dir=~/config/polybar'
+    ]
+    gtk_desc = [
+        '# GTK Directory',
+        '# --------------------:',
+        '# For GTK themes, the config directory should contain the \'settings.ini\' file that specifies',
+        '# the current theme, cursors and icons. The following directory specifications should provide the',
+        '# locations for all icons/cursors/themes, generally ~/.themes and ~/.icons. ',
+        '# ',
+        '#gtk_dir=~/.config/gtk-3.0'
+    ]
+    gtk_icons_desc = [
+        '# GTK Icons Directory',
+        '# --------------------:',
+        '# In addition to the user specified icons directory, the script will also check the default system',
+        '# locations for GTK icons, typically /usr/share/icons',
+        '# ',
+        '#icons_dir=~/.icons'
+    ]
+    themes_desc = [
+        '# Themes Directory',
+        '# --------------------:',
+        '# This is generally ~/.themes, used to store all GTK themes. If the theme specified is not located'
+        '# here, the script will attempt to locate it in the system directory \'/usr/share/themes\'',
+        '# ',
+        '#themes_dir=~/.themes'
+    ]
+    pywal_desc = [
+        '# Pywal',
+        '# --------------------:',
+        '# If you dynamically set your background and prompt colors with pywal',
+        '# uncomment the following line ',
+        '#',
+        '#pywal=true'
+    ]
+    compton_desc = [
+        '# Compton',
+        '# --------------------:',
+        '# If you\'d like to save your compton configuration file, specify its location here',
+        '#',
+        '#comtpon_conf_file=~/.config/compton.conf'
+    ]
+
+    quick_arg_append()
+
+    desc_list = {
+        'bar_prog' : bar_prog_desc,
+        'terminal_prog' : term_prog_desc,
+        'terminal_config_file' : term_conf_desc,
+        'i3_config_file' : i3_conf_desc,
+        'screenshot_prog' : screenshot_desc,
+        'bash_visual_file' : bash_visual_file_desc,
+        'bash_aliases_file' : bash_aliases_file_desc,
+        'vimrc_file' : vimrc_desc,
+        'nitrogen_dir' : nitrogen_desc,
+        'tint2_dir' : tint2_desc,
+        'polybar_dir' : polybar_desc,
+        'gtk_dir' : gtk_desc,
+        'icons_dir' : gtk_icons_desc,
+        'themes_dir' : themes_desc,
+        'pywal_set' : pywal_desc,
+        'compton_file' : compton_desc
+    }
+   
+    log("[+] Generating empty config file")
+    x = 0
+    with open(I3P_CONF, 'w') as config:
+        for arg in config_arg_list_t:
+            for line in desc_list[arg]:
+                config.write(line + '\n')
+            # Write arg list into config file
+            config.write('\n\n')
+            x += 1
+    
+    quit()
+def check_dependencies():
+
+    print('Checking dependencies...')
+    dep_list = [
+            'python3',
+            'tint2',
+            'polybar',
+            'wal',
+            'nitrogen',
+            'compton',
+            'terminator',
+            'vim',
+            'xfce4-screenshooter',
+            'xdotool',
+            'feh',
+            'pip3',
+            'fc-list',
+            'gsettings',
+        ]
+    for program in dep_list:
+        if which(program) == False:
+            if program == 'polybar':
+                print('Do you want to install polybar? (y/N)')
+                if (input() == 'y'):
+                    p_bar_deps = ("sudo apt-get install cmake " + 
+                        "cmake-data libcairo2-dev libxcb1-dev " + 
+                        "libxcb-ewmh-dev libxcb-icccm4-dev " + 
+                        "libxcb-image0-dev libxcb-randr0-dev " + 
+                        "libxcb-util0-dev libxcb-xkb-dev pkg-config " +
+                        "python-xcbgen xcb-proto libxcb-xrm-dev i3-wm " + 
+                        "libasound2-dev libmpdclient-dev libiw-dev " + 
+                        "libcurl4-openssl-dev libpulse-dev libxcb-composite0 " + 
+                        "libxcb-composite0-dev").split(' ')
+                    subprocess.call(p_bar_deps)
+                    subprocess.call("git clone https://github.com/jaagr/polybar.git".split(' '))
+                    os.chdir('polybar')
+                    subprocess.call('./build.sh')
+            elif program == 'wal':
+                print('Do you want to install pywal? (y/N)')
+                if (input() == 'y'):
+                    if which('pip3') == False:
+                        subprocess.call('sudo apt-get install python3-pip'.split(' '))
+                    subprocess.call('pip3 install pywal'.split(' '))
+            else:
+                print('Do you want to install ' + program + '? (y/N)')
+                if (input() == 'y'):
+                    install_str = 'sudo apt-get install ' + program
+                    subprocess.call(install_str.split(' '))
+    # Clean up polybar git
+    subprocess.call(['rm', '-rf', 'polybar'])
+    install_pip3_deps()
+
+
+def install_pip3_deps():
+
+    subprocess.call(['pip3', 'install', 'pycairo'])
+    subprocess.call(['pip3', 'install', 'PyGObject'])
+
+
+def which(prog):
+    try:
+        out = subprocess.check_output(['which', prog])
+        if len(out) > 0:
+            return True
+        return False
+    except: 
+        return False
+    
+
+def collect_fonts():
+    f_path = []
+    fc_list = str(subprocess.check_output('fc-list')).split('\\n')
+    with open('fonts/font_list', 'r') as fl:
+        for line in fl:
+            for f_line in fc_list:
+                if f_line.find(line.split(' ')[0]) != -1:
+                    f_path.append(f_line.split(':')[0])
+
+    for line in f_path:
+        try:
+            subprocess.call(['cp', line, 'fonts'])
+        except Exception as e:
+            log(str(e))
+
+    
+def check_config():
+    global USER_HOME; global I3P_DIR; global I3P_CONF
+    
+    # Check for config settings
+    USER_HOME = '/home/' + os.getenv('USER')
+    I3P_DIR = USER_HOME + '/.config/i3packager/'
+    I3P_CONF = I3P_DIR + 'config'
+
+    if not os.path.isdir(I3P_DIR):
+        check_dependencies()
+
+        # Log function makes directory #19
+        log("[-] Configuration directory not found... creating config directory" 
+                + "at '" + USER_HOME + "/.config/i3packager'" )
+        
+    if not os.path.isfile(I3P_CONF):
+        log("[-] Configuration file not found... creating config file" 
+                + " at '" + USER_HOME + "/.config/i3packager/config'" )
+        subprocess.call(['touch', I3P_CONF])
+        write_blank_config()
+
+        print("\n\nSuccessfully wrote config file.. Edit this file to specify theme component locations")
+        quit()
+
+def package(backup=False):
+    
+    global PACKAGE_NAME ; global PACKAGE_DIR ; global BASE_DIR
+    BASE_DIR = str(subprocess.check_output(['pwd']))[2:-3]
+    # Create tmp dir for package name
+    if backup is False:
+        if PACKAGE_NAME == "":
+            print("Enter package name:\n>>>", end="")
+            PACKAGE_NAME = input()
+    else: 
+        PACKAGE_NAME = ".last"
+
+    
+    PACKAGE_DIR = I3P_DIR + PACKAGE_NAME
+    if os.path.isdir(PACKAGE_DIR):
+        subprocess.call(['rm', '-rf', PACKAGE_DIR])
+    os.mkdir(PACKAGE_DIR)
+    os.chdir(PACKAGE_DIR)
+    
+    # Make font directory
+    os.mkdir('fonts')
+    subprocess.call(['touch', 'fonts/font_list'])
+   
+    bash("package") 
+    vim("package")
+    nitrogen("package")
+    terminator("package")
+    i3("package")
+    gtk("package")
+    bar("package")
+    compton("package")
+
+    collect_fonts()
+
+    if backup is False: 
+        log("\n\n[+] Successfully created package file at '" + PACKAGE_DIR)
+        take_screenshot()
+
+
+def i3_msg(mode, args=False, t=0.1):
+    if args is not False:
+        subprocess.call(['i3-msg', mode, args])
+        time.sleep(t)
+        return
+    subprocess.call(['i3-msg', mode])
+    time.sleep(t)
+    
+
+def setup_workspace():
+    global CURRENT_WORKSPACE 
+    # Before switching workspaces, get current workspace to jump back,
+    # i3-msg -t get_workspaces returns JSON, so need to parse
+    workspace_json = subprocess.check_output(['i3-msg', '-t','get_workspaces'])
+    workspace_json = json.loads(str(workspace_json)[2:-3])
+    for x in range(0,len(workspace_json)):
+        if workspace_json[x]["focused"] == True:
+            CURRENT_WORKSPACE = x+1
+            break
+
+    # Quick and dirty calls to i3-msg to setup 4 panel display with
+    # various visual terminal scripts for screenshot
+    term_prog = config_arg_list['terminal_prog']
+    pipe_arg = term_prog + ' -e "' + BASE_DIR + '/visual-scripts/pipes ' + ' -t '
+
+    i3_msg('workspace', '666')
+    i3_msg('split', 'horizontal')
+    i3_msg('exec', 'feh --scale-down --zoom fill ' + WALLPAPER)
+
+    i3_msg('split', 'vertical')
+    i3_msg('exec', term_prog, .75)
+    
+    subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/cmatrix'])
+    subprocess.call(['xdotool', 'key', 'Return'])
+    
+    i3_msg('split', 'horizontal')
+    i3_msg('exec', term_prog, .75)
+#    i3_msg('exec', pipe_arg + ' 5"', .75)
+    i3_msg('focus', 'up')
+    i3_msg('split', 'horizontal')
+    i3_msg('exec', term_prog, .75)
+    
+#    subprocess.call(['xdotool', 'type', BASE_DIR + '/visual-scripts/neofetch'])
+#    subprocess.call(['xdotool', 'key', 'Return'])
+
+
+
+
+
+def kill_workspace():
+    workspaces =  subprocess.check_output('xdotool search --all --onlyvisible' +
+        ' --desktop $(xprop -notype -root _NET_CURRENT_DESKTOP' +
+        ' | cut -c 24-) "" 2>/dev/null', shell=True) 
+    window_count = len(str(workspaces)[2:-1].split('\\n'))
+    for x in range(0,window_count):
+        subprocess.call(['xdotool', 'key', 'c'])
+        i3_msg('kill')
+    
+    i3_msg('workspace', str(CURRENT_WORKSPACE))
+
+
+
+def take_screenshot():
+   
+    # Jump to empty workspace and open some visual programs
+    if len(subprocess.check_output(['which', 'i3-msg'])) == 0:
+        log("[-] Screenshot requires i3-msg... how do you not have this?")
+        return
+    os.chdir(BASE_DIR)
+    setup_workspace()
+
+    screenshot_prog = config_arg_list['screenshot_prog']
+    time.sleep(2)
+    # For now, only include logic/args for xfce4-screenshooter, maybe expand later..
+    if screenshot_prog == "xfce4-screenshooter":
+
+        tmp_ss_loc = subprocess.check_output([screenshot_prog, '-fo', 'ls'])[:-1]
+        subprocess.call(['cp', tmp_ss_loc, PACKAGE_DIR])
+        shot_file = str(tmp_ss_loc).split('/')[2][:-1]
+        subprocess.call(['mv', PACKAGE_DIR + '/' +  shot_file, 
+            PACKAGE_DIR + '/' + PACKAGE_NAME + '.png'])
+
+        log("[+] Saved screenshot to package directory at '" + PACKAGE_DIR + "'")
+    else:
+        log("[-] Requires 'xfce4-screenshooter' for screen capture")
+
+    
+    kill_workspace()
+
+
+def bar(mode):
+    
+    if check_param("bar_prog", "bar") == False:
+        return
+
+
+    try:
+        log("\n[+] Bar files\n * * * * * * * * * * * * *")
+        
+        if mode == "package":
+            bar_prog = config_arg_list['bar_prog']
+            if bar_prog == "polybar":
+                log("[+] Copying polybar files ")
+                subprocess.call(['cp', '-R', config_arg_list['polybar_dir'], '.'])
+            elif bar_prog == "tint2":
+                log("[+] Copying tint2 files ")
+                subprocess.call(['cp', '-R', config_arg_list['tint2_dir'], '.'])
+            else:
+                log("[-] Invalid bar program: " + bar_prog + " ..skipping")
+
+        elif mode == "load":
+            bar_prog = config_arg_list['bar_prog']
+            if bar_prog == "polybar":
+                log("[+] Loading polybar files ")
+                subprocess.call(['cp', '-R', bar_prog, config_arg_list['polybar_dir'] + '/..'])
+            elif bar_prog == "tint2":
+                log("[+] Loading tint2 files ")
+                subprocess.call(['cp', '-R', bar_prog, config_arg_list['tint2_dir'] + '/..'])
+            else:
+                log("[-] Invalid bar program: " + bar_prog + " ..skipping")
+
+    except: 
+        pass
+
+
+def vim(mode):
+
+    if check_param("vimrc_file", "vim") == False:
+        return
+   
+    try:
+        log("\n[+] VIM files\n * * * * * * * * * * * * *")
+        if mode == "package":
+            os.mkdir('vim')
+            os.mkdir('vim/color_scheme')
+            subprocess.call(['cp', config_arg_list['vimrc_file'], 'vim/'])
+            log("[+] Copying: " + config_arg_list['vimrc_file'])
+                
+            # Extract colorscheme from vimrc
+            color_scheme = None
+            with open(config_arg_list['vimrc_file'], 'r') as vimrc:
+                for line in vimrc: 
+                    if (line.find("colorscheme") != -1) and (len(line.split(' ')) == 2):
+                        color_scheme = line.split(' ')[1].replace('\n','')
+                        break
+            
+            if color_scheme is None:
+                return
+            file_listing = None
+            # Look for colorscheme in home dir
+            if os.path.isdir(USER_HOME + '/.vim/colors'):
+                file_listing = subprocess.check_output(['ls', USER_HOME + '/.vim/colors'])
+                file_listing = str(file_listing)[2:-1].split('\\n')
+                for cs in file_listing:
+                    if cs.replace('\'', '').find(color_scheme) != -1:
+                        subprocess.call(['cp', USER_HOME + '/.vim/colors/' + cs, 'vim/color_scheme'])
+                        log("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                        return
+            
+            # Try system dir if no luck
+            file_listing_sys = None
+            for x in range(70,81):
+                if os.path.isdir('/usr/share/vim/vim' + str(x) + '/colors'):
+                    file_listing = subprocess.check_output(['ls', '/usr/share/vim/vim' + str(x) + '/colors'])
+                    file_listing = str(file_listing)[2:-1].split('\\n')
+                    for cs in file_listing:
+                        if cs.replace('\'','').find(color_scheme) != -1:
+                            subprocess.call(['cp', '/usr/share/vim/vim' + str(x) + '/colors/' + cs, 'vim/color_scheme'])
+                            log("[+] Copying VIM colorscheme: '" + color_scheme + "'")
+                            return
+            
+            log("[-] Couldnt locate colorscheme: '" + color_scheme + "'")
+
+        elif mode == "load":
+            
+            log("[+] Loading: " + config_arg_list['vimrc_file'])
+            vimrc = len(config_arg_list['vimrc_file'].split('/'))
+            vimrc = config_arg_list['vimrc_file'].split('/')[vimrc-1]
+            subprocess.call(['cp', 'vim/' + vimrc.replace('\n',''), 
+                config_arg_list['vimrc_file']])
+            
+            if not os.path.isdir(USER_HOME + '/.vim/'):
+                os.mkdir(USER_HOME + '/.vim/')
+            if not os.path.isdir(USER_HOME + '/.vim/colors'):
+                os.mkdir(USER_HOME + '/.vim/colors')
+
+            log("[+] Loading VIM colorscheme")
+            color_scheme = subprocess.check_output(['ls', 'vim/color_scheme'])
+            color_scheme = str(color_scheme).replace('\\n','')[2:-1]
+            subprocess.call(['cp', 'vim/color_scheme/' + color_scheme, USER_HOME + '/.vim/colors'])
+    except:
+        pass
+
+def bash(mode):
+   
+
+    # Introducing optional config params
+    # Skips execution if param is not specified in config file
+    if check_param("bash_visual_file", "bash_visual") == True:
+        try:
+            log("\n[+] Bash files\n * * * * * * * * * * * * *")
+            if mode == "package": 
+
+                os.mkdir('bash')
+                
+                log("[+] Copying: " + config_arg_list['bash_visual_file'])
+                subprocess.call(['cp', config_arg_list['bash_visual_file'], 'bash/'])
+            elif mode == "load":
+               
+                log("[+] Loading: " + config_arg_list['bash_visual_file'])
+                bash_visual_file = len(config_arg_list['bash_visual_file'].split('/'))
+                bash_visual_file = config_arg_list['bash_visual_file'].split('/')[bash_visual_file-1]
+                subprocess.call(['cp', 'bash/' + bash_visual_file.replace('\n',''), 
+                    config_arg_list['bash_visual_file']])
+        except:
+            pass
+
+    if check_param("bash_aliases_file", "bash_alias") == False:
+        try:
+            if mode == "package":
+                log("[+] Copying: " + config_arg_list['bash_aliases_file'])
+                subprocess.call(['cp', config_arg_list['bash_aliases_file'], 'bash/'])
+
+
+            elif mode == "load": 
+                log("[+] Loading: " + config_arg_list['bash_aliases_file'])
+                bash_aliases_file = len(config_arg_list['bash_aliases_file'].split('/'))
+                bash_aliases_file = config_arg_list['bash_aliases_file'].split('/')[bash_aliases_file-1]
+                subprocess.call(['cp', 'bash/' + bash_aliases_file.replace('\n',''), 
+                    config_arg_list['bash_aliases_file']])
+        except:
+            pass
+            
+
+def gtk(mode):
+   
+    if check_param("gtk_dir", "gtk") == False:
+        return
+    if check_param("themes_dir", "gtk") == False:
+        return
+    if check_param("icons_dir", "gtk") == False:
+        return
+   
+    try:
+        log("\n[+] GTK files\n * * * * * * * * * * * * *")
+        
+        gtk_dir = config_arg_list['gtk_dir']
+        gtk_settings_file = gtk_dir + '/settings.ini'
+        gtk_theme = None ; gtk_icons = None ; gtk_cursor = None
+        
+        # Get theme info from settings file
+        with open(gtk_settings_file, 'r') as config:
+            for line in config:
+                if line.find("gtk-theme-name") != -1:
+                    gtk_theme = line.split("=")[1].replace('\n','')
+                elif line.find("gtk-icon-theme-name") != -1:
+                    gtk_icons = line.split("=")[1].replace('\n','')
+                elif line.find("gtk-cursor-theme-name") != -1:
+                    gtk_cursors = line.split("=")[1].replace('\n','')
+
+        
+        if mode == "package": 
+           
+            os.mkdir('gtk')
+            os.mkdir('gtk/themes')
+            
+            subprocess.call(['cp',  gtk_settings_file , 'gtk/'])
+            subprocess.call(['cp', gtk_dir + '/gtk.css', 'gtk/'])
+
+            # Load GTK2 file
+            if os.path.isfile(USER_HOME + '/.gtkrc-2.0'):
+                subprocess.call(['cp', USER_HOME + '/.gtkrc-2.0', 'gtk/'])
+            
+            
+            get_gtk_assets(gtk_theme)
+            get_gtk_assets(gtk_icons)
+            get_gtk_assets(gtk_cursors)
+
+        elif mode == "load":
+            
+            subprocess.call(['cp', 'gtk/settings.ini', gtk_settings_file])
+            subprocess.call(['cp', 'gtk/gtk.css', gtk_dir])
+            subprocess.call(['cp', 'gtk/.gtkrc-2.0', USER_HOME])
+            subprocess.call(['gsettings', 'set', 'org.gnome.desktop.interface', 'gtk-theme', gtk_theme])
+            subprocess.call(['gsettings', 'set', 'org.gnome.desktop.wm.preferences', 'theme', gtk_theme])
+            
+            
+            themes_dir = config_arg_list['themes_dir']
+            icons_dir = config_arg_list['icons_dir']
+            
+            log("[+] Loading GTK theme '" + gtk_theme + "'")
+            log("[+] Loading GTK icons '" + gtk_icons + "'")
+            log("[+] Loading GTK cursors '" + gtk_cursors + "'")
+
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_theme, themes_dir])
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_icons, icons_dir])
+            subprocess.call(['cp', '-R', 'gtk/themes/' + gtk_cursors, icons_dir])
+    except:
+        pass
+
+def get_gtk_assets(gtk_asset):
+    
+    try:
+        # Attempt to locate themes referenced in settings.ini
+        gtk_asset = gtk_asset.replace('\n','')
+         
+        themes_dir = config_arg_list['themes_dir']
+        icons_dir = config_arg_list['icons_dir']
+
+        sys_themes_dir = '/usr/share/themes'
+        sys_icons_dir = '/usr/share/icons'
+        dir_loc = None
+        
+        if os.path.isdir(themes_dir + '/' + gtk_asset):
+            dir_loc = themes_dir + '/'+ gtk_asset
+        elif os.path.isdir(sys_themes_dir + '/' + gtk_asset):
+            dir_loc = sys_themes_dir + '/' + gtk_asset 
+        elif os.path.isdir(sys_icons_dir + '/' + gtk_asset):
+            dir_loc = sys_icons_dir + '/' + gtk_asset 
+        else:
+            # If can't find theme directory, prompt user until valid location is found
+            while True:
+                log("[-] Couldn't locate directory for GKT theme: " + 
+                        gtk_asset + ". Please enter location\n>>> ", end="")
+                dir_loc = input()
+                if os.path.isdir(dir_loc):
+                    break
+        
+        subprocess.call(['cp', '-R', dir_loc, 'gtk/themes'])
+        log("[+] Recursively copying " + dir_loc)    
+    except:
+        pass
+
+def nitrogen(mode):
+
+    if check_param("nitrogen_dir", "nitrogen") is False:
+        return
+    
+    try:
+        global WALLPAPER
+        # Package nitrogen
+        log("\n[+] Nitrogen files\n * * * * * * * * * * * * *\n")
+
+        if mode == "package":
+            if "pywal" in config_arg_list:
+                if check_param("pywal", "pywal") is True:
+                    with open(USER_HOME + "/.cache/wal/wal", "r") as f:
+                        for line in f:
+                            WALLPAPER = line.replace('\n','')
+                            os.mkdir('pywal')
+                            subprocess.call(['cp', WALLPAPER, 'pywal/'])
+                            break
+                    subprocess.call(['cp', USER_HOME + '/.cache/wal/sequences', 'pywal/'])
+            subprocess.call(['cp', '-R', config_arg_list['nitrogen_dir'], '.'])
+           
+            # Read bg-saved config to fetch wallpapers
+            bg_saved_file = config_arg_list['nitrogen_dir']
+            if bg_saved_file[len(bg_saved_file)-1] != '/':
+                bg_saved_file += '/'
+            bg_saved_file += 'bg-saved.cfg'
+           
+            # Copy wallpaper file into nitrogen package directory
+            os.mkdir('nitrogen/wallpapers')
+            with open(bg_saved_file, 'r') as config:
+                for line in config:
+                    if line.find('file') != -1:
+                        wallpaper_path = line.split('=')[1].replace('\n','')
+                        if WALLPAPER is None:
+                            WALLPAPER = wallpaper_path
+                        log("[+] Copying:  " + wallpaper_path)
+                        subprocess.call(['cp', wallpaper_path, 'nitrogen/wallpapers'])
+        
+        elif mode == "load":
+
+            bg_saved_file = 'nitrogen/bg-saved.cfg'
+            subprocess.call(['cp', bg_saved_file, config_arg_list['nitrogen_dir']])
+            
+            with open(bg_saved_file, 'r') as config:
+                for line in config:
+                    wallpaper_path_build = ""
+                    if line.find('file') != -1:
+                        wallpaper_path = line.split('=')[1].replace('\n','')
+                        for x in range(0,len(wallpaper_path.split('/'))):
+                            wallpaper_path_build += '/' + wallpaper_path.split('/')[x]
+                            # If path contains image, stop making directories if needed and make the copy
+                            if check_image(wallpaper_path_build) is True:
+                                subprocess.call(['cp', 'nitrogen/wallpapers/' + wallpaper_path.split('/')[x],
+                                    wallpaper_path_build])
+                                break
+                            if not os.path.isdir(wallpaper_path_build):
+                                # If the wallpaper path specified doesn't exist, gradually
+                                # construct the needed directories until image can be copied successfully
+                                os.mkdir(wallpaper_path_build)
+
+    except:
+        pass
+
+def check_image(p):
+    img_type = [
+            ".png",
+            ".jpeg",
+            ".jpg",
+            ".gif",
+            ".bmp",
+       ] 
+    for img in img_type:
+        if p.find(img) != -1:
+            return True
+
+    return False
+
+
+# Terminator package function to get config + compile font list
+def terminator(mode):
+
+    try:
+        if check_param("terminal_prog", "terminal") is False:
+            return
+        if check_param("terminal_config_file", "terminal") is False:
+            return
+
+        log("\n[+] Terminator files\n * * * * * * * * * * * * *")
+        if mode == "package":
+            font_list = [] 
+
+            term_dir = config_arg_list['terminal_prog']
+            os.mkdir(term_dir)
+
+            subprocess.call(['cp', config_arg_list['terminal_config_file'], config_arg_list['terminal_prog']])
+            log("[+] Copying: " + config_arg_list['terminal_config_file'])
+            
+            with open(config_arg_list['terminal_config_file'], 'r') as config:
+                for line in config:
+                    if line.find('font') != -1:
+                        try:
+                            if line.split('=')[1].strip() != 'False' and line.split('=')[1].strip() != 'True':
+                                font_list.append(line.split('=')[1].strip() + '\n')
+                        except Exception as e:
+                            log(str(e))
+
+            subprocess.call(['touch', term_dir + '/font_list'])
+            with open('fonts/font_list', 'a+') as fl:
+                for font in font_list:
+                    fl.write(font)
+
+        elif mode == "load":
+            config_file_name = config_arg_list['terminal_config_file'].split('/')
+            config_file_name = config_file_name[len(config_file_name)-1]
+            subprocess.call(['cp', 'terminator/' + config_file_name, 
+                config_arg_list['terminal_config_file']])
+       
+            log("[-] ##### Fonts required #####")
+            with open('terminator/font_list', 'r') as fl:
+                for font in fl:
+                    log("[-] " + font.replace('\n',''))
+    except:
+        pass
+
+
+# Workaround for i3 lack of include/source directives
+def i3(mode):
+
+    try:
+        if check_param("i3_config_file", "i3") == False:
+            return
+
+        log("\n[+] i3 files\n * * * * * * * * * * * * *")
+        
+        if mode == "package":
+            os.mkdir('i3')
+            i3_theme_section = [] ; theme_section_set = False ; extracted = False
+            i3_config = config_arg_list['i3_config_file']
+            
+            with open(i3_config, 'r') as config:
+                for line in config:
+                    if line.find('font') != -1:
+                        if len(line.split(':')) > 1:
+                            font_line = line.split(':')[1]
+                            fonts = font_line.split(',')
+                            with open('fonts/font_list', 'a+') as fl:
+                                for font in fonts:
+                                    fl.write(font.strip() + '\n')
+
+            with open(i3_config, 'r') as config:
+                for line in config:
+
+                    # Extract fonts using i3 font format
+
+                    if line.find('i3 THEME SECTION START') != -1:
+                        theme_section_set = True
+                        extracted = True
+                    elif line.find('i3 THEME SECTION END') != -1:
+                        i3_theme_section.append(line)
+                        theme_section_set = False
+                    if theme_section_set is True:
+                        i3_theme_section.append(line)
+            if extracted is True: 
+                log("[+] Extracting theme section from i3 config")
+                
+                subprocess.call(['touch', 'i3/i3_theme_sec'])
+                log("[+] Writing to file `i3_theme_sec`")
+                with open('i3/i3_theme_sec', 'w') as config:
+                    for line in i3_theme_section:
+                        config.write(line)
+            else:
+                log("[+] No theme section found in i3 config file")
+
+        elif mode == "load":
+            theme_section_set = False
+            i3_conf_list = []
+
+            # Backup original file just in case
+            subprocess.call(['cp', config_arg_list['i3_config_file'], 
+                config_arg_list['i3_config_file'] + '.backup'])
+
+            with open(config_arg_list['i3_config_file'], 'r') as i3_conf_read:
+                for line in i3_conf_read:
+                    if line.find("# i3 THEME SECTION START") != -1:
+                        theme_section_set = True
+                        continue
+                    if line.find("# i3 THEME SECTION END") != -1:
+                        theme_section_set = False
+                        continue
+                    if theme_section_set is False:
+                        i3_conf_list.append(line)
+
+            with open('i3/i3_theme_sec', 'r') as i3_theme_read:
+                for line in i3_theme_read:
+                    i3_conf_list.append(line)
+            
+            with open(config_arg_list['i3_config_file'], 'w') as i3_conf_write:
+                for line in i3_conf_list:
+                    i3_conf_write.write(line)
+    except Exception as e:
+        log(str(e))
+        pass
+
+
+def compton(mode):
+   
+    if check_param('compton_conf_file', "compton") == False:
+        return
+    
+    try:
+        log("\n[+] Compton Configuration\n * * * * * * * * * * * * *")
+
+        if mode == "package":
+            log("\n[+] Packaging compton config")
+            os.mkdir("compton")
+            subprocess.call(['cp', config_arg_list['compton_conf_file'], 'compton/'])
+
+        elif mode == "load":
+            log("\n[+] Loading compton config")
+            subprocess.call(['cp', 'compton/compton.conf', config_arg_list['compton_conf_file']])
+
+    except:
+        pass
+
+
+
+
+def load(mode=False):
+    global LOAD_PACKAGE_NAME
+    if mode is False: 
+        if LOAD_PACKAGE_NAME != "":
+            if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
+                log("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                quit()
+        else:
+            while True:
+                log("[+] Enter package name to load:\n>>>", end="")
+                LOAD_PACKAGE_NAME = input()
+                if not os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME): 
+                    log("[-] Couldn't find specified package '" + LOAD_PACKAGE_NAME + "'")
+                    quit()
+                else:
+                    break
+    else:
+        LOAD_PACKAGE_NAME = ".last"
+        if os.path.isdir(I3P_DIR + LOAD_PACKAGE_NAME):
+            log("[+] Reverting to last applied theme!")
+        else:
+            log("[-] No previously applied theme found!")
+            quit()
+
+
+    # Before load, create backup of current theme
+    if mode is False:
+        package(True)
+    
+    os.chdir(I3P_DIR + LOAD_PACKAGE_NAME)
+
+    bash("load") 
+    vim("load")
+    nitrogen("load")
+    terminator("load")
+    i3("load")
+    gtk("load")
+    bar("load")
+    compton("load")
+
+    if FORCE_RESTART is True:
+        restart_i3_session()
+    elif FORCE_RESTART == "gui":
+        quit()
+    else:
+
+        log("[+] Theme files sucessfully loaded, kill i3 session " 
+                + "to reload files? (y/N)\n>>>", end="")
+        res = input()
+        if str(res).lower() == "y":
+            restart_i3_session()
+        else:
+            quit()
+
+# Only load/store if specified in the config
+def check_param(prog, component):
+    if prog not in config_arg_list:
+        return False
+    if component in skip_list:
+        return False
+    return True
+
+def log(msg):
+    print(msg)
+    if not os.path.isdir(USER_HOME + '/.config/i3packager'):
+        os.mkdir(USER_HOME + '/.config/i3packager');
+    if not os.path.isfile(USER_HOME + '/.config/i3packager/.logs'):
+        subprocess.call(['touch', USER_HOME + '/.config/i3packager/.logs'])
+    with open(USER_HOME + '/.config/i3packager/.logs', 'a') as f:
+        if (msg[len(msg)-1] != '\n'):
+            f.write(msg + '\n')
+        else:
+            f.write(msg)
+
+        
+
+
+
+def restart_i3_session():
+    subprocess.call(['killall', 'i3'])
+    quit() 
+    
+
+def quick_arg_append():
+    config_arg_list_t.append('bar_prog') 
+    config_arg_list_t.append('terminal_prog') 
+    config_arg_list_t.append('terminal_config_file') 
+    config_arg_list_t.append('i3_config_file') 
+    config_arg_list_t.append('screenshot_prog') 
+    config_arg_list_t.append('bash_visual_file') 
+    config_arg_list_t.append('bash_aliases_file') 
+    config_arg_list_t.append('vimrc_file') 
+    config_arg_list_t.append('nitrogen_dir') 
+    config_arg_list_t.append('tint2_dir') 
+    config_arg_list_t.append('polybar_dir') 
+    config_arg_list_t.append('gtk_dir') 
+    config_arg_list_t.append('icons_dir') 
+    config_arg_list_t.append('themes_dir') 
+    config_arg_list_t.append('pywal_set') 
+    config_arg_list_t.append('compton_file') 
+
+
+main()
