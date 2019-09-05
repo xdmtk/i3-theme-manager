@@ -19,7 +19,7 @@ _from various members of /r/unixporn_
 
 For certain theme components like wallpaper setters and terminal emulators, `i3-theme-manager` currently only supports selected programs, but will soon support more in the future. 
 
-**NOTE**: This project is pretty dead ( and a bit bloated from my personal dotfile packages ), so I most likely won't be fixing bugs for a while ( and I'm sure they're present ), so if you find any, I would welcome and appreciate any pull requests. 
+**NOTE**: This project is pretty dead, so I most likely won't be fixing bugs very frequently ( and I'm sure there are bugs present ), so if you find any, I would welcome and appreciate any pull requests. 
 
 
 ### Getting Started
