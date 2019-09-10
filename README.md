@@ -83,15 +83,10 @@ For supported theme component programs
 **Wallpaper Setters** : `nitrogen` , `pywal`, or `feh`<br>
 
 
-### CLI Screenshots
+### Screenshots
 
 ![](http://i.imgur.com/snDad48.png)
 
-
-
-### GUI Screenshots
-
-![](http://i67.tinypic.com/opdbmh.gif)
 
 
 ### Issues
